@@ -1,0 +1,16 @@
+{
+    "VITE_BASE_URL": "https://rest.fxdream11.com/api",
+    "VITE_COMPANY_NAME": "FXDream11",
+    "VITE_SUPPORT_EMAIL": "support@fxdream11.com",
+    "VITE_SUPPORT_PHONE": "+1-800-123-4567",
+    "VITE_SOCIAL_LINKS": {
+        "facebook": "https://www.facebook.com",
+        "twitter": "https://twitter.com",
+        "instagram": "https://www.instagram.com",
+        "linkedin": "https://www.linkedin.com/company"
+    },
+    "VITE_VERSION": "1.0.0",
+    "VITE_COMPANY_LOGO": "/assets/logo.png",
+    "VITE_COMPANY_ADDRESS": "123 Main Street, City, Country",
+    "VITE_SECRET_KEY":"FXDREAM"
+}

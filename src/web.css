@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@reference "tailwindcss";
+
+:root {
+    --theme-bg: #f4f7fa;
+    --theme-text: #080d12;
+    --gradient-primary: linear-gradient(135deg, #00A6BE, #00A5BE);
+    --text-primary: #00A6BE;
+    --text-primary-soft:#00A6BE4b;
+}
+
+.dark {
+    --theme-bg: #080d12;
+    --theme-text: #f4f7fa;
+    --gradient-primary: linear-gradient(135deg, #00A6BE, #00A5BE);
+    --text-primary: #00A6BE;
+    --text-primary-soft:#00A6BE4b;
+}
+
+body {
+    background: var(--theme-bg);
+    color: var(--theme-text);
+    transition: all 0.3s ease;
+}
+
+.bg-body {
+    background: var(--theme-bg);
+}
+
+.text-muted {
+    color: var(--theme-text);
+}
+.bg-soft {
+    background: var(--text-primary-soft);
+}
+
+.gradient-primary {
+    background: var(--gradient-primary)
+}
+
+.shadow-glow {
+    --shadow-glow: 0 8px 32px -10px rgba(59, 130, 246, 0.3);
+}
+
+.text-primary {
+    color: var(--text-primary);
+}
+
+/* ================= LOGIN PAGE ================= */
+
+.login-card {
+    @apply rounded-2xl shadow-xl px-8 py-5;
+    background: var(--theme-card);
+}
+
+.login-input input.ant-input,
+.login-input .ant-input-affix-wrapper,
+.login-input .ant-select-selector,
+.login-input .ant-picker,
+.login-input .ant-input-number {
+    height: 35px !important;
+    border-radius: 6px !important;
+    background: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    width: 100%;
+    padding: 0 10px !important;
+    display: flex;
+    align-items: center;
+}
+
+.login-input textarea.ant-input {
+    height: auto !important;
+    min-height: 80px !important;
+    border-radius: 6px !important;
+    background: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    padding: 8px 10px !important;
+}
+
+.login-input .ant-input-password input,
+.login-input .ant-picker input,
+.login-input .ant-input-number-input {
+    border: none !important;
+    box-shadow: none !important;
+    height: 35px !important;
+    background: transparent !important;
+    color: var(--theme-text) !important;
+    outline: none !important;
+}
+
+.login-input .ant-form-item {
+    margin-bottom: 10px !important;
+}
+
+.login-input .ant-form-item-label {
+    padding-bottom: 0px !important;
+}
+
+.login-input .ant-form-item-label>label {
+    line-height: 1.2 !important;
+    height: auto !important;
+}
+
+.login-btn {
+    height: 35px;
+    border-radius: 6px !important;
+    border: none !important;
+    background: var(--blueGradient) !important;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+.bg-dots {
+    background-image: radial-gradient(circle, rgba(99, 102, 241, 0.3) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+
+.login-input .ant-input-password:focus-within,
+.login-input .ant-input-affix-wrapper-focused,
+.login-input .ant-picker-focused,
+.login-input .ant-input-number-focused,
+.ant-input:focus,
+.ant-input-focused,
+.ant-input-password:focus,
+.ant-input-password-focused {
+    box-shadow: none !important;
+    border-color: var(--theme-primary) !important;
+}
+
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: var(--theme-primary) !important;
+    border-color: var(--theme-primary) !important;
+}
+
+.label {
+    font-size: 13px !important;
+}
+
+.login-input .ant-input::placeholder,
+.login-input .ant-input-password input::placeholder,
+.login-input .ant-select-placeholder,
+.login-input .ant-picker input::placeholder,
+.login-input .ant-input-number-input::placeholder {
+    font-size: 13px !important;
+    color: var(--theme-light-gray) !important;
+}
+
+.phoneNumber {
+    font-size: 13px !important;
+    border: none;
+}
+
+.country-select.ant-select {
+    --ant-select-height: 40px;
+    --ant-select-font-size: 13px;
+
+}
+
+.country-select.ant-select .ant-select-selection-placeholder {
+    font-size: 13px !important;
+    color: var(--theme-light-gray);
+}
+
+.ant-input-group-addon {
+    display: flex;
+    align-items: center;
+    background: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    border-right: none !important;
+}
+
+.login-input .ant-select-focused .ant-select {
+    border-color: var(--theme-primary) !important;
+    box-shadow: none !important;
+}
+
+.login-input .ant-select {
+    height: 35px !important;
+    border-radius: 6px !important;
+    background: var(--input-bg) !important;
+    border: 1px solid var(--input-border) !important;
+    padding: 0 10px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.login-input p,
+.login-input span {
+    color: var(--label-text);
+}
+
+.login-input p {
+    font-size: 10.5px !important;
+
+}
+
+.ant-input,
+.ant-input-affix-wrapper,
+.ant-input-number-input,
+.ant-picker-input>input,
+.ant-select-selection-item,
+.ant-select-selection-placeholder {
+    font-size: 0.8rem !important;
+}

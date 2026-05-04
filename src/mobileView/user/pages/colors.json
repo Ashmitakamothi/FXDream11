@@ -1,0 +1,50 @@
+{
+  "portfolio": {
+    "gradient": "linear-gradient(135deg, #173629 0%, #1c4a40 40%, #1e3e34 70%, #3c3521 100%)",
+    "shadow": "0 8px 32px #0a141080, 0 0 60px #ffbc000f",
+    "glow": "radial-gradient(circle, #ffbc1a 0%, transparent 70%)",
+    "button": "linear-gradient(135deg, #1ba170 0%, #24b37e 100%)",
+    "buttonShadow": "0 4px 16px #1ba17059",
+    "winnings": "#33e6a6",
+    "ratio": "#ffbc33"
+  },
+  "palettes": {
+    "blue": {
+      "gradient": "from-[#f2f7fb] via-[#f1f4f8] to-[#f6f8fa]",
+      "darkGradient": "dark:from-[#121a22] dark:via-[#11161b] dark:to-[#161a1f]",
+      "barGradient": "from-[#2692ed] via-[#2767ba] to-[#2948a3]",
+      "btnGradient": "from-[#2388eb] to-[#22419f]",
+      "statBg": "bg-[#ebf1f6] dark:bg-[#1c242b]"
+    },
+    "gold": {
+      "gradient": "from-[#fdfbf2] via-[#faf7f1] to-[#faf8f6]",
+      "darkGradient": "dark:from-[#211d12] dark:via-[#1b1811] dark:to-[#211a16]",
+      "barGradient": "from-[#f5a600] via-[#c46a1b] to-[#a1442b]",
+      "btnGradient": "from-[#eb9f00] to-[#a14022]",
+      "statBg": "bg-[#f6f1eb] dark:bg-[#2b241c]"
+    },
+    "purple": {
+      "gradient": "from-[#f8f2fd] via-[#f6f1f9] to-[#f8f6fa]",
+      "darkGradient": "dark:from-[#191222] dark:via-[#16111b] dark:to-[#1b161f]",
+      "barGradient": "from-[#9966cc] via-[#804db3] to-[#664599]",
+      "btnGradient": "from-[#8c52cc] to-[#5e3da6]",
+      "statBg": "bg-[#f2ebf6] dark:bg-[#241c2b]"
+    }
+  },
+  "badges": {
+    "hot": "bg-[#f15b1a]",
+    "trending": "bg-[#c18c1e]",
+    "winner": "bg-[#22a061]",
+    "pro": "bg-[#8040bf]",
+    "active": "bg-[#2d8ce6]",
+    "soon": "bg-[#c18c1e]",
+    "rank": "bg-[#da8a1a]"
+  },
+  "accent": {
+    "profit": "#1ba170",
+    "loss": "#ed2b2b",
+    "running": "#1a75cc",
+    "soon": "#cc841a",
+    "rank": "#cc841a"
+  }
+}

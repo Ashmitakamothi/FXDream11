@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+/* mobile css */
+
+
+@layer base {
+:root {
+  --background: #f2f7f4;
+  --foreground: #12211c;
+  --card: #ffffff;
+  --card-foreground: #12211c;
+  --popover: #ffffff;
+  --popover-foreground: #12211c;
+  --primary: #1fa97a;
+  --primary-foreground: #ffffff;
+  --secondary: #e8f1ec;
+  --secondary-foreground: #12211c;
+  --muted: #e6efea;
+  --muted-foreground: #6b7f78;
+  --muted-soft: #f2f7f499;
+  --accent: #f5c518;
+  --accent-foreground: #1a1a1a;
+  --destructive: #f05252;
+  --destructive-foreground: #ffffff;
+  --border: #e1ebe5;
+  --input: #e1ebe5;
+  --ring: #1fa97a;
+  --radius: 1rem;
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
+  --success: #1fa97a;
+  --success-foreground: #ffffff;
+  --glass-bg: #ffffffcc;
+  --live: #f05252;
+  --neon-glow: #33e6a6;
+  --sidebar-background: #fafafa;
+  --sidebar-foreground: #3f4447;
+  --sidebar-primary: #1fa97a;
+  --sidebar-primary-foreground: #fafafa;
+  --sidebar-accent: #eef5f1;
+  --sidebar-accent-foreground: #12211c;
+  --sidebar-border: #e6efea;
+  --sidebar-ring: #1fa97a;
+}
+
+.dark {
+  --background: #06140f;
+  --foreground: #e6f2ec;
+  --card: #0f1d17;
+  --card-foreground: #e6f2ec;
+  --popover: #0f1d17;
+  --popover-foreground: #e6f2ec;
+  --primary: #2ecc97;
+  --primary-foreground: #ffffff;
+  --secondary: #1f2e28;
+  --secondary-foreground: #e6f2ec;
+  --muted: #1f2e28;
+  --muted-foreground: #8fa8a0;
+  --muted-soft: #1f2e2899;
+  --accent: #f5c518;
+  --accent-foreground: #1a1a1a;
+  --destructive: #7f1d1d;
+  --destructive-foreground: #e6f2ec;
+  --border: #1f2e28;
+  --input: #1f2e28;
+  --ring: #2ecc97;
+  --neon-glow: #33e6a6;
+  --glass-bg: #0f1d17cc;
+  --sidebar-background: #0b1a14;
+  --sidebar-foreground: #d9e6df;
+  --sidebar-primary: #2ecc97;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #16241f;
+  --sidebar-accent-foreground: #d9e6df;
+  --sidebar-border: #1f2e28;
+  --sidebar-ring: #2ecc97;
+}
+}
+
+@layer base {
+  * {
+    /* @apply border-border; */
+  }
+  body {
+    /* @apply bg-primary font-sans antialiased; */
+    font-family: 'Inter', sans-serif;
+    background-image: linear-gradient(180deg, #f6f8f7 0%, #f1f6f3 100%);
+  }
+  .dark body {
+    background-image: linear-gradient(180deg, #09100d 0%, #080c0b 100%);
+  }
+ 
+}
+ .bg-background {
+    background: var(--background);
+  }
+  .bg-foreground {
+    background: var(--foreground);
+  }
+  .bg-cardM {
+    background: var(--card);
+  }
+  .bg-popover {
+    background: var(--popover);
+  }
+  .bg-primary {
+    background: var(--primary);
+  }
+  .bg-secondary {
+    background: var(--secondary);
+  }
+  .bg-muted-soft {
+    background: var(--muted-soft);
+  }
+@layer utilities {
+  .card-shadow {
+    box-shadow: 0 2px 12px 0 #2e6b570d, 0 1px 3px 0 #00000008;
+  }
+  .card-shadow-md {
+    box-shadow: 0 4px 20px 0 #2e6b5714, 0 1px 4px 0 #0000000a;
+  }
+  .card-shadow-lg {
+    box-shadow: 0 8px 32px 0 #2e6b571f, 0 2px 8px 0 #0000000f;
+  }
+  .neon-glow {
+    box-shadow: 0 0 20px #30e9ac26, 0 0 60px #30e9ac0d;
+  }
+  .glass-effect {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: hsl(var(--card) / 0.8);
+    background: var(--glass-bg);
+  }
+  .card-shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .card-shine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, #ffffff08, transparent);
+    transform: skewX(-25deg);
+    animation: shine 5s ease-in-out infinite;
+  }
+  @keyframes shine {
+    0%, 100% { left: -75%; }
+    50% { left: 125%; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+  }
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50% { transform: translateY(-3px) scale(1.01); }
+  }
+  .animate-float-slow {
+    animation: float-slow 4s ease-in-out infinite;
+  }
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+}
