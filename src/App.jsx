@@ -22,7 +22,7 @@ function App() {
     }
   }, [isLogin, user?.isAdmin, fetchAppData]);
 
-  if (loading) return <GlobalLoader isSuspense={true} />;
+  // if (loading) return <GlobalLoader isSuspense={true} />;
 
   return (
     <>

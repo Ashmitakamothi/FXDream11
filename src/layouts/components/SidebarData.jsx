@@ -33,7 +33,7 @@ export const UserSidebar = [
     mobileNav: true,
   },
   {
-    label: "MyContests",
+    label: "My Contests",
     icon: <AiOutlineFileDone size={20} />,
     url: "/my-contests",
     activeUrl: ["/my-contests"],

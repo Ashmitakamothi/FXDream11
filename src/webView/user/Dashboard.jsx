@@ -262,7 +262,7 @@ export default function Dashboard() {
                       <Trophy className="h-[18px] w-[18px]" />
                     </div>
                     <div className="min-w-0">
-                      <div className="truncate text-sm font-semibold" style={{ color: 'var(--foreground)' }}>{c.contestName}</div>
+                      <div className="text-sm font-semibold" style={{ color: 'var(--foreground)' }}>{c.contestName}</div>
                       <div className="mt-0.5 flex items-center gap-1.5 text-[11px]" style={{ color: 'var(--muted-foreground)' }}>
                         <span>{c.allowedTradingPairs?.[0] === 'All' ? 'Multi-Pair' : c.allowedTradingPairs?.[0]}</span><span className="opacity-40">•</span>
                         <span>Entry ${c.entryFee}</span><span className="opacity-40">•</span>

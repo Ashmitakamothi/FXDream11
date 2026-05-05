@@ -37,7 +37,7 @@ const RoutesWrapper = () => {
 const AppRoutes = () => {
   return (
     <Router>
-      <Suspense fallback={<GlobalLoader size="large" fullScreen />}>
+      <Suspense fallback={null}>
         <RoutesWrapper />
       </Suspense>
     </Router>

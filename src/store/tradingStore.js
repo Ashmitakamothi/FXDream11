@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import * as api from '../api/generalApi';
+import useContestStore from './contestStore';
 
 const useTradingStore = create((set, get) => ({
   account: null,
