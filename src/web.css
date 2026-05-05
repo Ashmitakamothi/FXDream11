@@ -195,14 +195,14 @@ body {
 
 .custom-table .ant-table-thead>tr>th {
     background: transparent;
-    color: #6b7280;
-    border-bottom: 1px solid #1f2a37;
+    color: var(--theme-text);
+    border-bottom: 1px solid var(--border);
     font-size: 10px ;
     font-weight: 600;
 }
 
 .custom-table .ant-table-tbody>tr>td {
-    border-bottom: 1px solid #1f2a37;
+    border-bottom: 1px solid var(--border);
     font-size: 13px ;
 }
 

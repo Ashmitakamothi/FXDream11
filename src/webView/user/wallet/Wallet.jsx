@@ -98,7 +98,7 @@ export default function Wallet() {
         {
             title: "TOTAL WITHDRAW",
             value: `$${totals.withdraw.toFixed(2)}`,
-            color: "text-gray-300",
+            // color: "text-gray-500",
             icon: <HiUpload />,
         },
         {
