@@ -6,6 +6,7 @@ import { HiArrowTrendingUp } from "react-icons/hi2";
 import ThemeToggle from "./ThemeToggle";
 import { UserSidebar } from "./SidebarData";
 import { useTheme } from "../../ThemeContext";
+import useWalletStore from "../../store/walletStore";
 import '../../web.css'
 
 const { Header } = Layout;
@@ -20,6 +21,7 @@ const isActivePath = (paths = [], currentPathname) => {
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
+  const { wallet } = useWalletStore();
   const location = useLocation();
   const currentPathname = location.pathname;
 
@@ -82,7 +84,7 @@ const Navbar = () => {
             <div className="text-right leading-tight">
               <div className="text-xs text-gray-500">Balance</div>
               <div className="text-sm font-semibold text-primary">
-                $8,420.50
+                ${wallet?.balance?.toLocaleString() || '0.00'}
               </div>
             </div>
 

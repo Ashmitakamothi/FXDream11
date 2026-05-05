@@ -12,6 +12,7 @@ const VerifyOTP = lazy(() => import("../auth/VerifyOTP"));
 
 // User
 const Dashboard = lazy(() => import("../webView/user/Dashboard"));
+const Explore = lazy(() => import("../webView/user/Explore"));
 
 //  mobile 
 const DashboardUser = lazy(() => import("../mobileView/user/DashboardUser"));
@@ -56,6 +57,7 @@ const routes = [
     // Private Routes
     { path: "/", type: "private", title: "Dashboard", mobile: DashboardUser , component:Dashboard},
     { path: "/dashboard", type: "private",  title: "Dashboard", mobile: DashboardUser },
+    { path: "/explore", type: "private", component: Explore, title: "Explore" },
     // { path: "/admin-dashboard", type: "private", component: AdminDashboard, title: "AdminDashboard" },
 
     // User Dashboard Routes

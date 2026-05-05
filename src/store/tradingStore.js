@@ -19,13 +19,19 @@ const useTradingStore = create((set, get) => ({
 
 
   fetchTradingDetails: async () => {
-    const { getTradingGroups } = get();
+    const { getTradingGroups, getTradingPerformance } = get();
+    const { myContests } = useContestStore.getState();
     try {
       set({ loading: true });
-      await Promise.all([
-        getTradingGroups(),
-        // getTradingAccount()
-      ]);
+      const calls = [getTradingGroups()];
+      
+      // If there's at least one active contest, fetch performance for it
+      if (myContests && myContests.length > 0) {
+        const activeId = myContests[0].id || myContests[0].contestId;
+        if (activeId) calls.push(getTradingPerformance(activeId));
+      }
+
+      await Promise.all(calls);
     } catch (err) {
       set({ error: err, loading: false });
     } finally {

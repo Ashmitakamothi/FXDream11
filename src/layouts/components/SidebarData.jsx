@@ -26,6 +26,13 @@ export const UserSidebar = [
     mobileNav: true,
   },
   {
+    label: "Explore",
+    icon: <PiStarLight size={20} />,
+    url: "/explore",
+    activeUrl: ["/explore"],
+    mobileNav: true,
+  },
+  {
     label: "TopPicks",
     icon: <PiStarLight size={20} />,
     url: "/top-picks",
