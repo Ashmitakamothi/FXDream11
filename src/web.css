@@ -4,9 +4,19 @@
 
 @reference "tailwindcss";
 
+@variant dark (&:where(.dark, .dark *));
+
 :root {
     --theme-bg: #f4f7fa;
     --theme-text: #080d12;
+    --foreground: #0f172a;
+    --muted-foreground: #64748b;
+    --card-bg: #ffffff;
+    --muted: rgba(15,23,42,0.05);
+    --border: rgba(15,23,42,0.12);
+    --accent: #0891B2;
+    --destructive: #ef4444;
+    --gold: #D4AF37;
     --gradient-primary: linear-gradient(135deg, #00A6BE, #00A5BE);
     --text-primary: #047788;
     --text-primary-soft: #0F2F3F;
@@ -14,6 +24,23 @@
     --card: #2B313B;
     --glass-card: rgba(255, 255, 255, 0.558);
     --soft-btn-bg: #00a5be2a;
+
+    /* Premium Dashboard Variables */
+    --lovable-primary: oklch(0.60 0.13 215);
+    --lovable-card: oklch(1 0 0);
+    --lovable-gold: oklch(0.78 0.15 80);
+    --lovable-gradient-banner: linear-gradient(120deg, oklch(0.22 0.04 250) 0%, oklch(0.32 0.08 220) 55%, oklch(0.55 0.13 210) 100%);
+    --lovable-shadow-card: 0 1px 2px oklch(0.20 0.04 260 / 0.05), 0 12px 28px -18px oklch(0.20 0.04 260 / 0.14);
+
+    /* Banner Specific Variables */
+    --banner-bg: #e2e8f0;
+    --banner-text: #0f172a;
+    --banner-desc: #334155;
+    --banner-badge-bg: rgba(0,0,0,0.05);
+    --banner-badge-border: rgba(0,0,0,0.1);
+    --banner-badge-text: #1e293b;
+    --banner-btn-bg: rgba(0,0,0,0.05);
+    --banner-btn-text: #0f172a;
     --muted: #F1F3F5;
     --gradient-card: linear-gradient(160deg, #FFFFFF, #F7FAFF);
     --card: #F7FBFC;
@@ -23,12 +50,37 @@
 .dark {
     --theme-bg: #080d12;
     --theme-text: #f4f7fa;
+    --foreground: #ffffff;
+    --muted-foreground: #94a3b8;
+    --card-bg: #1C2433;
+    --muted: rgba(255,255,255,0.06);
+    --border: rgba(255,255,255,0.08);
+    --accent: #06B6D4;
+    --destructive: #f87171;
+    --gold: #FACC15;
     --gradient-primary: linear-gradient(135deg, #00A6BE, #00A5BE);
     --text-primary: #1ebcd4;
     --text-primary-soft: #0F2F3F;
     --link: #22D3EE;
     --glass-card: rgba(43, 49, 59, 0.558);
     --soft-btn-bg: #0f2f3f5b;
+
+    /* Premium Dashboard Variables */
+    --lovable-primary: oklch(0.74 0.14 205);
+    --lovable-card: oklch(0.235 0.022 252);
+    --lovable-gold: oklch(0.82 0.16 80);
+    --lovable-gradient-banner: linear-gradient(120deg, oklch(0.17 0.02 250) 0%, oklch(0.25 0.05 230) 50%, oklch(0.45 0.13 210) 100%);
+    --lovable-shadow-card: 0 1px 0 oklch(1 0 0 / 0.04) inset, 0 1px 2px oklch(0 0 0 / 0.5), 0 14px 32px -18px oklch(0 0 0 / 0.7);
+
+    /* Banner Specific Variables */
+    --banner-bg: #080d12;
+    --banner-text: #ffffff;
+    --banner-desc: #9BA7B4;
+    --banner-badge-bg: rgba(255,255,255,0.08);
+    --banner-badge-border: rgba(255,255,255,0.15);
+    --banner-badge-text: rgba(255,255,255,0.9);
+    --banner-btn-bg: rgba(255,255,255,0.1);
+    --banner-btn-text: #ffffff;
     --muted: #2F3642;
     --gradient-card: linear-gradient(160deg, #17212A 0%, #18262F 100%);
     --card: #121a24;
@@ -94,6 +146,13 @@ body {
     border: none !important;
 }
 
+.gradient-card { background: var(--card-bg); }
+.shadow-card   { box-shadow: var(--lovable-shadow-card); }
+.bg-muted      { background: var(--muted); }
+.text-destructive { color: var(--destructive); }
+.text-accent   { color: var(--accent); }
+.border-border { border-color: var(--border); }
+
 /* live dot */
 .live-dot {
     @apply w-2 h-2 rounded-full bg-red-500 relative;
@@ -117,6 +176,15 @@ body {
 
 .animate-marquee {
     animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee-slow {
+  0%   { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee-slow {
+  animation: marquee-slow 40s linear infinite;
 }
 
 /* wallet */
@@ -310,10 +378,125 @@ body {
 }
 
 .ant-input,
-.ant-input-affix-wrapper,
-.ant-input-number-input,
-.ant-picker-input>input,
-.ant-select-selection-item,
-.ant-select-selection-placeholder {
-    font-size: 0.8rem !important;
+    .ant-input-affix-wrapper,
+    .ant-input-number-input,
+    .ant-picker-input>input,
+    .ant-select-selection-item,
+    .ant-select-selection-placeholder {
+        font-size: 0.8rem !important;
+    }
+
+/* ================= PREMIUM DASHBOARD STYLES ================= */
+
+@theme inline {
+  --animate-pulse-glow: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--lovable-primary) 45%, transparent); }
+  50% { box-shadow: 0 0 0 8px color-mix(in oklab, var(--lovable-primary) 0%, transparent); }
+}
+
+@layer utilities {
+  .glass {
+    background: color-mix(in oklab, var(--lovable-card) 72%, transparent);
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+  }
+  .gradient-banner { background-image: var(--lovable-gradient-banner); }
+  .shadow-card { box-shadow: var(--lovable-shadow-card); }
+  
+  .hover-lift {
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .hover-lift:hover {
+    transform: translateY(-2px);
+  }
+
+  .premium-card {
+    position: relative;
+    background:
+      linear-gradient(160deg,
+        color-mix(in oklab, var(--lovable-card) 100%, transparent) 0%,
+        color-mix(in oklab, var(--lovable-primary) 4%, var(--lovable-card)) 100%);
+    border: 1px solid color-mix(in oklab, white 6%, transparent);
+    box-shadow:
+      0 1px 0 color-mix(in oklab, white 6%, transparent) inset,
+      0 1px 2px oklch(0 0 0 / 0.4),
+      0 14px 32px -22px oklch(0 0 0 / 0.6);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .premium-card:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in oklab, var(--lovable-gold) 35%, transparent);
+    box-shadow:
+      0 1px 0 color-mix(in oklab, white 8%, transparent) inset,
+      0 18px 44px -20px color-mix(in oklab, var(--lovable-gold) 35%, transparent),
+      0 8px 24px -16px oklch(0 0 0 / 0.6);
+  }
+  .premium-card::after {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    background:
+      radial-gradient(120% 80% at 100% 0%, color-mix(in oklab, var(--lovable-primary) 10%, transparent), transparent 60%),
+      radial-gradient(80% 60% at 0% 100%, color-mix(in oklab, var(--lovable-gold) 6%, transparent), transparent 60%);
+    pointer-events: none;
+  }
+
+  .inset-tile {
+    background: color-mix(in oklab, white 4%, var(--lovable-card));
+    border: 1px solid color-mix(in oklab, white 5%, transparent);
+    box-shadow:
+      inset 0 1px 0 color-mix(in oklab, white 5%, transparent),
+      inset 0 -1px 0 oklch(0 0 0 / 0.25);
+    border-radius: 16px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .inset-tile:hover {
+    border-color: color-mix(in oklab, var(--lovable-gold) 30%, transparent);
+  }
+
+  .gold-badge {
+    position: relative;
+    display: inline-grid; place-items: center;
+    height: 36px; width: 36px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 12px -2px rgba(212, 175, 55, 0.15);
+    color: #D4AF37;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .gold-badge svg {
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+  }
+  .gold-badge:hover {
+    transform: scale(1.05);
+    color: #FACC15;
+    border-color: rgba(212, 175, 55, 0.35);
+    box-shadow: 0 0 18px -2px rgba(212, 175, 55, 0.30);
+  }
+  :root:not(.dark) .gold-badge {
+    background: rgba(15, 23, 42, 0.04);
+    border-color: rgba(15, 23, 42, 0.08);
+    color: #B8860B;
+  }
+
+  .wave-overlay {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image:
+      radial-gradient(ellipse at 0% 100%, color-mix(in oklab, var(--lovable-primary) 80%, transparent) 0%, transparent 55%),
+      repeating-linear-gradient(115deg,
+        transparent 0 22px,
+        color-mix(in oklab, white 60%, transparent) 22px 23px,
+        transparent 23px 46px);
+    mask-image: linear-gradient(180deg, black, transparent 90%);
+  }
 }

@@ -24,7 +24,10 @@ const Navbar = () => {
   const currentPathname = location.pathname;
 
   return (
-    <Header className="sticky top-0 z-50 card glass-card backdrop-blur-md border-b border-gray-200 dark:border-gray-700 px-0">
+    <Header 
+      className="sticky top-0 z-50 backdrop-blur-xl border-b border-black/5 dark:border-white/5 px-0 transition-all duration-300"
+      style={{ background: theme === 'dark' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)', height: '64px' }}
+    >
       <div className="custom-container  flex h-16 items-center justify-between gap-4 px-4 lg:px-8">
 
         {/* Logo */}
@@ -68,11 +71,11 @@ const Navbar = () => {
           <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
 
           {/* Notification */}
-          <Button type="text" shape="circle">
-            <Badge dot offset={[-2, 2]}>
-              <BellOutlined />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-transparent text-gray-500 dark:text-gray-400 cursor-pointer transition-all duration-300 hover:bg-[#f59e0b] hover:text-white hover:scale-105 active:scale-95 hover:shadow-[0_8px_32px_-10px_rgba(245,158,11,0.5)] group">
+            <Badge dot offset={[-2, 2]} color="#f59e0b">
+              <BellOutlined className="text-lg transition-colors duration-300 group-hover:text-white" />
             </Badge>
-          </Button>
+          </div>
 
           {/* Balance */}
           <div className="hidden sm:flex items-center gap-3 rounded-full  border border-gray-200 dark:border-gray-700 pl-3 pr-1 py-1">
