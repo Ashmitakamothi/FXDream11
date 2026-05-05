@@ -7,27 +7,33 @@ const ThemeToggle = ({ theme, toggleTheme }) => {
   const isDark = theme === "dark";
 
   return (
-    <div onClick={toggleTheme} className={`w-6 h-6 flex items-center px-1  cursor-pointer transition-all duration-500 relative `}>
-      <motion.div layout transition={{ type: "spring", stiffness: 500, damping: 30 }} className="w-5 h-5 rounded-full flex items-center justify-center relative overflow-hidden">
+    <div 
+      onClick={toggleTheme} 
+      className="flex h-9 w-9 items-center justify-center rounded-xl bg-transparent text-gray-500 dark:text-gray-400 cursor-pointer transition-all duration-300 hover:bg-[#f59e0b] hover:text-white hover:scale-105 active:scale-95 hover:shadow-[0_8px_32px_-10px_rgba(245,158,11,0.5)]"
+    >
+      <motion.div 
+        layout 
+        transition={{ type: "spring", stiffness: 500, damping: 30 }} 
+        className="flex items-center justify-center relative"
+      >
         {/* Sun */}
-        <motion.div initial={false} animate={{ scale: isDark ? 0 : 1, opacity: isDark ? 0 : 1, rotate: isDark ? 180 : 0, }} className="absolute text-sm">
-          <HiOutlineSun fontSize={18}/>
+        <motion.div 
+          initial={false} 
+          animate={{ scale: isDark ? 0 : 1, opacity: isDark ? 0 : 1, rotate: isDark ? 90 : 0 }} 
+          className="absolute"
+        >
+          <HiOutlineSun fontSize={20} />
         </motion.div>
-
+        
         {/* Moon */}
-        <motion.div initial={false} animate={{ scale: isDark ? 1 : 0, opacity: isDark ? 1 : 0, rotate: isDark ? 0 : -180, }}className="absolute text-sm">
-          <LuMoon fontSize={16}/>
+        <motion.div 
+          initial={false} 
+          animate={{ scale: isDark ? 1 : 0, opacity: isDark ? 1 : 0, rotate: isDark ? 0 : -90 }} 
+          className="absolute"
+        >
+          <LuMoon fontSize={18} />
         </motion.div>
       </motion.div>
-
-      {/* Clouds */}
-      {/* <div className="absolute w-full h-full pointer-events-none">
-        {!isDark ? (
-          <div className="absolute left-2 top-1 text-white text-xs">☁️ </div>
-        ) : (
-          <div className="absolute right-2 top-1 text-gray-300 text-xs">☁️</div>
-        )}
-      </div> */}
     </div>
   );
 };

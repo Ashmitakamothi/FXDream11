@@ -33,11 +33,9 @@ const PrivateLayout = ({ title, children }) => {
         </motion.div> */}
 
         <div className={`w-full h-full transition-all duration-300 ease-in-out`}>
-          <div className="h-[60px]">
-            <Navbar title={title} collapsed={collapsed} setCollapsed={setCollapsed} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
-          </div>
+          <Navbar title={title} collapsed={collapsed} setCollapsed={setCollapsed} isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
 
-          <div className="h-[calc(100vh-60px)] min-h-[calc(100vh-60px)] overflow-auto ">
+          <div className="w-full">
             <div className={`min-h-fit h-full w-full ${location.pathname.includes("/view_ticket") ? "" : "bg-light "}`}>
               {children}
             </div>
