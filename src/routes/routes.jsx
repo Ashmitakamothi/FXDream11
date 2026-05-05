@@ -12,6 +12,7 @@ const VerifyOTP = lazy(() => import("../auth/VerifyOTP"));
 
 // User
 const Dashboard = lazy(() => import("../webView/user/Dashboard"));
+const Wallet = lazy(() => import("../webView/user/wallet/Wallet"));
 
 //  mobile 
 const DashboardUser = lazy(() => import("../mobileView/user/DashboardUser"));
@@ -55,13 +56,13 @@ const routes = [
 
     // Private Routes
     { path: "/", type: "private", title: "Dashboard", mobile: DashboardUser , component:Dashboard},
-    { path: "/dashboard", type: "private",  title: "Dashboard", mobile: DashboardUser },
+    { path: "/dashboard", type: "private",  title: "Dashboard", mobile: DashboardUser, component:Dashboard },
     // { path: "/admin-dashboard", type: "private", component: AdminDashboard, title: "AdminDashboard" },
 
     // User Dashboard Routes
     { path: "/user/contests", type: "private",  title: "Contests", mobile: MobileContests },
     { path: "/user/contests/:id", type: "private", mobile:ContestDetail, title: (params, location) => location.state?.contest?.contestName || "ContestDetails", },
-    { path: "/wallet", type: "private",  title: "Wallet", mobile: MobileWallet },
+    { path: "/wallet", type: "private",  title: "Wallet", mobile: MobileWallet , component:Wallet},
     { path: "/profile", type: "private",  title: "Profile", mobile: MobileProfile },
     { path: "/my-contests", type: "private", title: "MyContests",mobile: MobileMyContests },
     { path: "/top-picks", type: "private",  title: "TopPicks", },

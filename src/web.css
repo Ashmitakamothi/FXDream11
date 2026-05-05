@@ -11,10 +11,13 @@
     --text-primary: #047788;
     --text-primary-soft: #0F2F3F;
     --link: #055764;
-    --card:#2B313B;
+    --card: #2B313B;
     --glass-card: rgba(255, 255, 255, 0.558);
     --soft-btn-bg: #00a5be2a;
-
+    --muted: #F1F3F5;
+    --gradient-card: linear-gradient(160deg, #FFFFFF, #F7FAFF);
+    --card: #F7FBFC;
+    --border: #E5EAF0;
 }
 
 .dark {
@@ -26,6 +29,11 @@
     --link: #22D3EE;
     --glass-card: rgba(43, 49, 59, 0.558);
     --soft-btn-bg: #0f2f3f5b;
+    --muted: #2F3642;
+    --gradient-card: linear-gradient(160deg, #17212A 0%, #18262F 100%);
+    --card: #121a24;
+    --border: #1f2a37;
+    --input: #0b1117;
 }
 
 body {
@@ -68,43 +76,90 @@ body {
     background: linear-gradient(135deg, #06b6d4, #0891b2);
     /* box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4); */
 }
-.card{
+
+.card {
     background: var(--card)
 }
+
 .glass-card {
-  background: var(--glass-card);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.05);
+    background: var(--glass-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
+
 .dashboard-btn {
-  background: var(--soft-btn-bg);
-  color: var(--text-primary);
-  box-shadow: none !important;
-  border: none !important;
+    background: var(--soft-btn-bg);
+    color: var(--text-primary);
+    box-shadow: none !important;
+    border: none !important;
 }
 
 /* live dot */
 .live-dot {
-  @apply w-2 h-2 rounded-full bg-red-500 relative;
+    @apply w-2 h-2 rounded-full bg-red-500 relative;
 }
+
 .live-dot::after {
-  content: "";
-  @apply absolute inset-0 rounded-full bg-red-500 animate-ping;
+    content: "";
+    @apply absolute inset-0 rounded-full bg-red-500 animate-ping;
 }
 
 /* marquee animation */
 @keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
 }
 
 .animate-marquee {
-  animation: marquee 20s linear infinite;
+    animation: marquee 20s linear infinite;
 }
+
+/* wallet */
+.custom-table .ant-table {
+    background: transparent;
+    color: var(--theme-text);
+}
+
+.custom-table .ant-table-thead>tr>th {
+    background: transparent;
+    color: #6b7280;
+    border-bottom: 1px solid #1f2a37;
+    font-size: 10px ;
+    font-weight: 600;
+}
+
+.custom-table .ant-table-tbody>tr>td {
+    border-bottom: 1px solid #1f2a37;
+    font-size: 13px ;
+}
+
+.gradient-card {
+    background: var(--gradient-card);
+}
+
+.card-gradient {
+    background: linear-gradient(90deg, #00BACE, #0095B1);;
+}
+.custom-table .ant-table-tbody > tr:hover > td {
+  background: var(--glass-card) !important;
+}
+
+.neon-cyan-card {
+  transition: all 0.3s ease;
+}
+
+.neon-cyan-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    -2px 6px 10px rgba(0, 255, 255, 0.25),   /* main left-bottom shadow */
+    inset 0 0 8px rgba(0, 255, 255, 0.08);   /* subtle inner glow */
+}
+
 /* ================= LOGIN PAGE ================= */
 
 .login-card {

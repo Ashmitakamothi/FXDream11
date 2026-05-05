@@ -7,7 +7,7 @@ import { GoShieldLock } from "react-icons/go";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { RxFileText } from "react-icons/rx";
 import { HiOutlineUsers } from "react-icons/hi2";
-import { PiDatabaseLight, PiGoogleCardboardLogo, PiStarLight } from "react-icons/pi";
+import { PiDatabaseLight, PiGoogleCardboardLogo,  } from "react-icons/pi";
 import { m } from "framer-motion";
 
 export const UserSidebar = [
@@ -18,33 +18,55 @@ export const UserSidebar = [
     activeUrl: ["/", "/dashboard"],
     mobileNav: true,
   },
-  {
-    label: "Contests",
-    icon: <RxFileText size={20} />,
-    url: "/user/contests",
-    activeUrl: ["/user/contests"],
+    {
+    label: "Wallet",
+    icon: <IoWalletOutline size={20} />,
+    url: "/wallet",
+    activeUrl: ["/wallet"],
     mobileNav: true,
   },
-  {
-    label: "TopPicks",
-    icon: <PiStarLight size={20} />,
-    url: "/top-picks",
-    activeUrl: ["/top-picks"],
-    mobileNav: false,
-  },
-  {
+    {
     label: "MyContests",
     icon: <AiOutlineFileDone size={20} />,
     url: "/my-contests",
     activeUrl: ["/my-contests"],
     mobileNav: true,
   },
+    {
+    label: "Explore",
+    icon: <AiOutlineFileDone size={20} />,
+    url: "/explore",
+    activeUrl: ["/explore"],
+    mobileNav: false,
+  },
   {
-    label: "Wallet",
-    icon: <IoWalletOutline size={20} />,
-    url: "/wallet",
-    activeUrl: ["/wallet"],
+    label: "Live Contests",
+    icon: <RxFileText size={20} />,
+    url: "/user/contests",
+    activeUrl: ["/user/contests"],
     mobileNav: true,
+  },
+  // {
+  //   label: "TopPicks",
+  //   icon: <PiStarLight size={20} />,
+  //   url: "/top-picks",
+  //   activeUrl: ["/top-picks"],
+  //   mobileNav: false,
+  // },
+
+  {
+    label: "Notifications",
+    icon: <IoWalletOutline size={20} />,
+    url: "/notifications",
+    activeUrl: ["/notifications"],
+    mobileNav: false,
+  },
+    {
+    label: "Support",
+    icon: <AiOutlineFileDone size={20} />,
+    url: "/support",
+    activeUrl: ["/support"],
+    mobileNav: false,
   },
   {
     label: "Profile",
