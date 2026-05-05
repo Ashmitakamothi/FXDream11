@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Card, Button, Input, Table, Tag } from "antd";
+import  { useEffect, useState, useRef } from "react";
+import { Button, Input, Table, Tag, Modal, Card } from "antd";
 import { SearchOutlined, CalendarOutlined } from "@ant-design/icons";
 import { LuWallet } from "react-icons/lu";
 import { HiArrowTrendingUp, HiMiniArrowTrendingDown } from "react-icons/hi2";
@@ -8,7 +8,9 @@ import { HiDownload, HiUpload } from "react-icons/hi";
 import useWalletStore from "../../../store/walletStore";
 import { formatDate } from "../../../utils/formatDateTime";
 import dayjs from "dayjs";
-
+import { useTheme } from "../../../ThemeContext";
+import DepositTab from "./Deposit";
+import WithdrawTab from "./Withdraw";
 
 const typeTag = (type = "") => {
     const normalized = type.toLowerCase();
@@ -45,14 +47,27 @@ const columns = [
 
 export default function Wallet() {
     const { wallet, fetchWalletDetails, fetchTransactions, transactions, loading: transactionsLoading } = useWalletStore();
+    const { theme } = useTheme();
     const [searchText, setSearchText] = useState("");
     const [activeFilter, setActiveFilter] = useState("All");
     const [isLast30Days, setIsLast30Days] = useState(false);
+    const [isDepositOpen, setIsDepositOpen] = useState(false);
+    const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
+    const [amount, setAmount] = useState("");
+
+    const [animatedValues, setAnimatedValues] = useState({});
+    const animationFrameRefs = useRef({});
+    const modalStyles = {
+        content: { background: "var(--theme-bg)", border: "1px solid var(--border)" },
+        header: { background: "transparent", borderBottom: "1px solid var(--border)", color: "var(--theme-text)" },
+        body: { background: "transparent", paddingTop: 16 },
+    };
 
     useEffect(() => {
         fetchWalletDetails();
         fetchTransactions();
     }, [fetchWalletDetails, fetchTransactions]);
+
 
     // Filtering Logic
     const filteredTransactions = (transactions || []).filter((item) => {
@@ -86,7 +101,7 @@ export default function Wallet() {
             title: "CURRENT BALANCE",
             value: wallet.balance ? `$${wallet.balance.toFixed(2)}` : "$0.00",
             sub: "+4.2% today",
-            color: "from-cyan-500 to-teal-600",
+            // color: "from-cyan-500 to-teal-600",
             icon: <LuWallet />,
         },
         {
@@ -114,6 +129,49 @@ export default function Wallet() {
             icon: <HiDownload />,
         },
     ];
+    //     useEffect(() => {
+    //     // Clear all previous animation frames
+    //     Object.values(animationFrameRefs.current).forEach(cancelAnimationFrame);
+    //     animationFrameRefs.current = {};
+
+    //     stats.forEach(item => {
+    //         const statKey = item.title;
+    //         const targetValueString = String(item.value).replace('$', '').replace(',', '');
+    //         const targetValue = parseFloat(targetValueString);
+
+    //         // If targetValue is NaN, just set it directly and skip animation
+    //         if (isNaN(targetValue)) {
+    //             setAnimatedValues(prev => ({ ...prev, [statKey]: item.value }));
+    //             return;
+    //         }
+
+    //         const duration = 1000; // milliseconds
+    //         const startValue = parseFloat(String(animatedValues[statKey]).replace('$', '').replace(',', '')) || 0; // Start from current animated value or 0
+
+    //         const animate = (startTime) => {
+    //             const currentTime = performance.now();
+    //             const progress = Math.min((currentTime - startTime) / duration, 1);
+    //             const interpolatedValue = startValue + (targetValue - startValue) * progress;
+
+    //             setAnimatedValues(prev => ({ ...prev, [statKey]: interpolatedValue }));
+
+    //             if (progress < 1) {
+    //                 animationFrameRefs.current[statKey] = requestAnimationFrame(() => animate(startTime));
+    //             } else {
+    //                 setAnimatedValues(prev => ({ ...prev, [statKey]: targetValue }));
+    //                 delete animationFrameRefs.current[statKey];
+    //             }
+    //         };
+
+    //         animationFrameRefs.current[statKey] = requestAnimationFrame(() => animate(performance.now()));
+    //     });
+
+    //     return () => {
+    //         Object.values(animationFrameRefs.current).forEach(cancelAnimationFrame);
+    //         animationFrameRefs.current = {};
+    //     };
+    // }, [fetchWalletDetails, fetchTransactions]);
+
     return (
         <div className="custom-container px-4 py-6 lg:px-8 pb-6 md:pb-10">
             <div className="flex justify-between items-center mb-6">
@@ -123,10 +181,14 @@ export default function Wallet() {
                 </div>
 
                 <div className="flex gap-3">
-                    <Button icon={<HiDownload />} type="primary" className="rounded-xl card-gradient !border-none hover:!border-none px-6 h-11">
+                    <Button   onClick={() => { setAmount("100"); setIsDepositOpen(true);  }}   icon={<HiDownload />}  type="primary" 
+                        className={`rounded-xl card-gradient !border-none hover:!border-none px-6 h-11 ${theme === 'dark' ? '!text-black' : '!text-white'}`}
+                    >
                         Deposit
                     </Button>
-                    <Button icon={<HiUpload />} className="rounded-xl gradient-card !border-none hover:!border-none  px-6 h-11 hover:bg-[var(--muted)] text-[var(--theme-text)] hover:!text-[var(--theme-text)]">
+                    <Button  onClick={() => { setAmount(""); setIsWithdrawOpen(true); }}  icon={<HiUpload />} 
+                        className="rounded-xl gradient-card !border-none hover:!border-none px-6 h-11 hover:bg-[var(--muted)] text-[var(--theme-text)] hover:!text-[var(--theme-text)]"
+                    >
                         Withdraw
                     </Button>
                 </div>
@@ -135,7 +197,7 @@ export default function Wallet() {
             {/* Stats */}
             <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-6">
                 {stats.map((item, i) => (
-                    <Card key={i} bordered={false} className={`rounded-3xl border border-[var(--border)] transition-all duration-300 hover:-translate-y-2 neon-cyan-card cursor-pointer ${i === 0 ? "card-gradient text-black" : "gradient-card"}`}>
+                    <div key={i} bordered={false} className={`p-5 rounded-3xl border border-[var(--border)] transition-all duration-300 hover:-translate-y-2 neon-cyan-card cursor-pointer ${i === 0 ? `card-gradient ${theme === 'dark' ? 'text-black' : 'text-white'}` : "gradient-card"}`}>
                         <div className="flex justify-between items-center mb-2">
                             <span className="text-xs tracking-widest">{item.title}</span>
                             <span className={`grid h-8 w-8 place-items-center rounded-full ${i === 0 ? "bg-white/20" : "bg-[var(--muted)]"}`}>
@@ -143,9 +205,11 @@ export default function Wallet() {
                             </span>
                         </div>
 
-                    <h2 className={`text-2xl font-bold mb-0 ${i === 0 ? "" : item.color}`}>{item.value}</h2>
+                    <h2 className={`text-2xl font-bold mb-0 ${i === 0 ? "" : item.color}`}>
+                        {isNaN(animatedValues[item.title]) ? item.value : `$${animatedValues[item.title]?.toFixed(2) || '0.00'}`}
+                    </h2>
                         {item.sub && (<p className="text-xs mt-0 text-lighter flex items-center gap-1"><HiArrowTrendingUp />{item.sub}</p>)}
-                    </Card>
+                    </div>
                 ))}
             </div>
 
@@ -156,9 +220,9 @@ export default function Wallet() {
                     <h2 className="font-semibold text-sm">Transactions</h2>
 
                     <div className="flex gap-3">
-                        <Input  placeholder="Search..."  prefix={<SearchOutlined />}  className="bg-[var(--input)] border-none text-[var(--theme-text)] rounded-full h-9"  value={searchText}onChange={(e) => setSearchText(e.target.value)}/>
+                        <Input  placeholder="Search..."  prefix={<SearchOutlined />}  className="bg-[var(--theme-bg)] border-[var(--border)] text-[var(--theme-text)] rounded-xl h-9"  value={searchText}onChange={(e) => setSearchText(e.target.value)}/>
                         <Button  icon={<CalendarOutlined />} onClick={() => setIsLast30Days(!isLast30Days)}
-                            className={`bg-[var(--input)] !border-none hover:!border-none text-xs rounded-full h-9 !shadow-none text-[var(--theme-text)] hover:!text-[var(--theme-text)] ${isLast30Days ? "card-gradient !text-black" : ""}`}
+                            className={`bg-[var(--theme-bg)] !border-none hover:!border-none text-xs rounded-xl h-9 !shadow-none text-[var(--theme-text)] hover:!text-[var(--theme-text)] ${isLast30Days ? `card-gradient ${theme === 'dark' ? '!text-black' : '!text-white'}` : ""}`}
                         >
                             Last 30 days
                         </Button>
@@ -170,7 +234,7 @@ export default function Wallet() {
                     {["All", "Deposit", "Withdraw", "Winning", "Losing"].map(
                         (f, i) => (
                             <Button  key={i}  size="small"  onClick={() => setActiveFilter(f)}
-                                className={`rounded-full text-xs px-4 ${activeFilter === f ? "card-gradient" : "bg-[var(--muted)]"} hover:!bg-[var(--muted)] hover:!opacity-80 !border-none hover:!border-none text-[var(--theme-text)] hover:!text-[var(--theme-text)]`}
+                                className={`rounded-full text-xs px-4 ${activeFilter === f ? `card-gradient ${theme === 'dark' ? '!text-black' : '!text-white'}` : "bg-[var(--muted)] text-[var(--theme-text)]"} hover:!bg-[var(--muted)] hover:!opacity-80 !border-none hover:!border-none hover:!text-[var(--theme-text)]`}
                             >
                                 {f}
                             </Button>
@@ -182,7 +246,15 @@ export default function Wallet() {
                 <Table columns={columns} dataSource={filteredTransactions} pagination={false} className="custom-table" rowKey={(record, index) => record.transactionId || index} loading={transactionsLoading}/>
             </Card>
 
+            {/* Deposit Modal */}
+            <Modal title="Deposit Funds" open={isDepositOpen} styles={modalStyles} onCancel={() => setIsDepositOpen(false)} footer={null} centered destroyOnClose>
+                <DepositTab amount={amount} setAmount={setAmount} onSuccess={() => { setIsDepositOpen(false); setAmount(""); }}/>
+            </Modal>
 
+            {/* Withdraw Modal */}
+            <Modal title="Withdraw Funds" open={isWithdrawOpen} styles={modalStyles} onCancel={() => setIsWithdrawOpen(false)} footer={null} centered destroyOnClose>
+                <WithdrawTab amount={amount} setAmount={setAmount} balance={wallet.balance || 0} onSuccess={() => { setIsWithdrawOpen(false); setAmount(""); }}/>
+            </Modal>
         </div>
     );
 }
