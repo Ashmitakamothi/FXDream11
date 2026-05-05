@@ -7,8 +7,8 @@ const ThemeToggle = ({ theme, toggleTheme }) => {
   const isDark = theme === "dark";
 
   return (
-    <div onClick={toggleTheme} className={`w-6 h-6 flex items-center px-1  cursor-pointer transition-all duration-500 relative bg-body`}>
-      <motion.div layout transition={{ type: "spring", stiffness: 500, damping: 30 }} className="w-5 h-5 rounded-full flex items-center justify-center relative overflow-hidden bg-body">
+    <div onClick={toggleTheme} className={`w-6 h-6 flex items-center px-1  cursor-pointer transition-all duration-500 relative `}>
+      <motion.div layout transition={{ type: "spring", stiffness: 500, damping: 30 }} className="w-5 h-5 rounded-full flex items-center justify-center relative overflow-hidden">
         {/* Sun */}
         <motion.div initial={false} animate={{ scale: isDark ? 0 : 1, opacity: isDark ? 0 : 1, rotate: isDark ? 180 : 0, }} className="absolute text-sm">
           <HiOutlineSun fontSize={18}/>

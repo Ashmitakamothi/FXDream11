@@ -8,16 +8,24 @@
     --theme-bg: #f4f7fa;
     --theme-text: #080d12;
     --gradient-primary: linear-gradient(135deg, #00A6BE, #00A5BE);
-    --text-primary: #00A6BE;
-    --text-primary-soft:#00A6BE4b;
+    --text-primary: #047788;
+    --text-primary-soft: #0F2F3F;
+    --link: #055764;
+    --card:#2B313B;
+    --glass-card: rgba(255, 255, 255, 0.558);
+    --soft-btn-bg: #00a5be2a;
+
 }
 
 .dark {
     --theme-bg: #080d12;
     --theme-text: #f4f7fa;
     --gradient-primary: linear-gradient(135deg, #00A6BE, #00A5BE);
-    --text-primary: #00A6BE;
-    --text-primary-soft:#00A6BE4b;
+    --text-primary: #1ebcd4;
+    --text-primary-soft: #0F2F3F;
+    --link: #22D3EE;
+    --glass-card: rgba(43, 49, 59, 0.558);
+    --soft-btn-bg: #0f2f3f5b;
 }
 
 body {
@@ -33,6 +41,7 @@ body {
 .text-muted {
     color: var(--theme-text);
 }
+
 .bg-soft {
     background: var(--text-primary-soft);
 }
@@ -49,6 +58,53 @@ body {
     color: var(--text-primary);
 }
 
+.custom-container {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.cyan-glow {
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    /* box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4); */
+}
+.card{
+    background: var(--card)
+}
+.glass-card {
+  background: var(--glass-card);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.dashboard-btn {
+  background: var(--soft-btn-bg);
+  color: var(--text-primary);
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* live dot */
+.live-dot {
+  @apply w-2 h-2 rounded-full bg-red-500 relative;
+}
+.live-dot::after {
+  content: "";
+  @apply absolute inset-0 rounded-full bg-red-500 animate-ping;
+}
+
+/* marquee animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+}
 /* ================= LOGIN PAGE ================= */
 
 .login-card {
