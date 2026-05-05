@@ -12,7 +12,9 @@ const VerifyOTP = lazy(() => import("../auth/VerifyOTP"));
 
 // User
 const Dashboard = lazy(() => import("../webView/user/Dashboard"));
+const Explore = lazy(() => import("../webView/user/Explore"));
 const Wallet = lazy(() => import("../webView/user/wallet/Wallet"));
+const LiveContests = lazy(() => import("../webView/user/LiveContests"));
 
 //  mobile 
 const DashboardUser = lazy(() => import("../mobileView/user/DashboardUser"));
@@ -20,6 +22,7 @@ const MobileContests = lazy(() => import("../mobileView/user/pages/MobileContest
 const MobileWallet = lazy(() => import("../mobileView/user/pages/MobileWallet"));
 const MobileProfile = lazy(() => import("../mobileView/user/pages/MobileProfile"));
 const MobileMyContests = lazy(() => import("../mobileView/user/pages/MobileMyContests"));
+const MyContests = lazy(() => import("../webView/user/MyContests"));
 const ContestDetail = lazy(() => import("../mobileView/user/pages/ContestDetail"));
 
 const Home = () => {
@@ -57,14 +60,15 @@ const routes = [
     // Private Routes
     { path: "/", type: "private", title: "Dashboard", mobile: DashboardUser , component:Dashboard},
     { path: "/dashboard", type: "private",  title: "Dashboard", mobile: DashboardUser, component:Dashboard },
+    { path: "/explore", type: "private", component: Explore, title: "Explore" },
     // { path: "/admin-dashboard", type: "private", component: AdminDashboard, title: "AdminDashboard" },
 
     // User Dashboard Routes
-    { path: "/user/contests", type: "private",  title: "Contests", mobile: MobileContests },
+    { path: "/user/contests", type: "private",  title: "Contests", mobile: MobileContests, component: LiveContests },
     { path: "/user/contests/:id", type: "private", mobile:ContestDetail, title: (params, location) => location.state?.contest?.contestName || "ContestDetails", },
     { path: "/wallet", type: "private",  title: "Wallet", mobile: MobileWallet , component:Wallet},
     { path: "/profile", type: "private",  title: "Profile", mobile: MobileProfile },
-    { path: "/my-contests", type: "private", title: "MyContests",mobile: MobileMyContests },
+    { path: "/my-contests", type: "private", title: "MyContests", mobile: MobileMyContests, component: MyContests },
     { path: "/top-picks", type: "private",  title: "TopPicks", },
     { path: "/profile/change-password", type: "private",  title: "ChangePassword", },
     { path: "/profile/manage-2fa", type: "private",  title: "Manage2FA", },

@@ -31,7 +31,7 @@ console.log(isAdmin);
                     fetchWalletDetails(),
                     fetchContests(),
                     fetchProfile(),
-                    // fetchTradingDetails()
+                    fetchTradingDetails()
                 ]);
             }
         }

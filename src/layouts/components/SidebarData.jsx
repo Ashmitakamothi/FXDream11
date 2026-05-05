@@ -7,7 +7,7 @@ import { GoShieldLock } from "react-icons/go";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { RxFileText } from "react-icons/rx";
 import { HiOutlineUsers } from "react-icons/hi2";
-import { PiDatabaseLight, PiGoogleCardboardLogo,  } from "react-icons/pi";
+import { PiDatabaseLight, PiGoogleCardboardLogo, PiStarLight  } from "react-icons/pi";
 import { m } from "framer-motion";
 
 export const UserSidebar = [
@@ -25,19 +25,19 @@ export const UserSidebar = [
     activeUrl: ["/wallet"],
     mobileNav: true,
   },
-    {
-    label: "MyContests",
+  {
+    label: "Explore",
+    icon: <PiStarLight size={20} />,
+    url: "/explore",
+    activeUrl: ["/explore"],
+    mobileNav: true,
+  },
+  {
+    label: "My Contests",
     icon: <AiOutlineFileDone size={20} />,
     url: "/my-contests",
     activeUrl: ["/my-contests"],
     mobileNav: true,
-  },
-    {
-    label: "Explore",
-    icon: <AiOutlineFileDone size={20} />,
-    url: "/explore",
-    activeUrl: ["/explore"],
-    mobileNav: false,
   },
   {
     label: "Live Contests",
