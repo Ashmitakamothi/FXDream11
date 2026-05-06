@@ -132,7 +132,7 @@ export default function LiveContests() {
               </div>
 
               <div className="relative mt-5 flex gap-2">
-                <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium gradient-primary text-primary-foreground shadow-glow hover:brightness-110 transition-all h-9 px-4 py-2 flex-1">
+                <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium gradient-primary text-white shadow-glow hover:brightness-110 transition-all h-9 px-4 py-2 flex-1">
                   Open Contest
                 </button>
                 <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors glass border border-border text-foreground hover:bg-card/80 hover:border-primary/40 h-9 px-4 py-2">
