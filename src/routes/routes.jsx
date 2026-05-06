@@ -13,9 +13,7 @@ const VerifyOTP = lazy(() => import("../auth/VerifyOTP"));
 // User
 const Dashboard = lazy(() => import("../webView/user/Dashboard"));
 const Explore = lazy(() => import("../webView/user/Explore"));
-const Explore = lazy(() => import("../webView/user/Explore"));
 const Wallet = lazy(() => import("../webView/user/wallet/Wallet"));
-const LiveContests = lazy(() => import("../webView/user/LiveContests"));
 const LiveContests = lazy(() => import("../webView/user/LiveContests"));
 
 //  mobile 
@@ -24,7 +22,6 @@ const MobileContests = lazy(() => import("../mobileView/user/pages/MobileContest
 const MobileWallet = lazy(() => import("../mobileView/user/pages/MobileWallet"));
 const MobileProfile = lazy(() => import("../mobileView/user/pages/MobileProfile"));
 const MobileMyContests = lazy(() => import("../mobileView/user/pages/MobileMyContests"));
-const MyContests = lazy(() => import("../webView/user/MyContests"));
 const MyContests = lazy(() => import("../webView/user/MyContests"));
 const Notifications = lazy(() => import("../webView/user/Notifications"));
 const Support = lazy(() => import("../webView/user/Support"));
