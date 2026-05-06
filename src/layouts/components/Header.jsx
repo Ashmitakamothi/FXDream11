@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Badge } from "antd";
+import { Layout, Badge, Modal, message } from "antd";
 import { MenuOutlined, BellOutlined, CloseOutlined } from "@ant-design/icons";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { HiArrowTrendingUp } from "react-icons/hi2";
+import { LogOut, AlertCircle } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import { UserSidebar } from "./SidebarData";
 import { useTheme } from "../../ThemeContext";
 import useWalletStore from "../../store/walletStore";
+import useAuthStore from "../../store/authStore";
+import * as authApi from "../../api/authApi";
 import '../../web.css'
 
 const { Header } = Layout;
@@ -22,8 +25,33 @@ const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const { wallet } = useWalletStore();
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPathname = location.pathname;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [logoutLoading, setLogoutLoading] = useState(false);
+
+  const handleLogout = async () => {
+    setLogoutLoading(true);
+    try {
+      // 1. Fire and forget logout API 
+      authApi.logoutUser().catch(err => console.error("Logout API failed:", err));
+
+      // 2. Clear store and localStorage IMMEDIATELY
+      useAuthStore.getState().logout();
+      
+      // 3. Force hard redirect to Login to kill all React cycles and state
+      window.location.href = "/login";
+      
+    } catch (err) {
+      console.error("Logout error:", err);
+      useAuthStore.getState().logout();
+      window.location.href = "/login";
+    } finally {
+      setLogoutLoading(false);
+      setIsLogoutModalOpen(false);
+    }
+  };
 
   // Close menu when route changes
   useEffect(() => {
@@ -101,6 +129,15 @@ const Navbar = () => {
               </div>
             </div>
 
+            {/* Logout Button */}
+            <button
+              onClick={() => setIsLogoutModalOpen(true)}
+              className="flex h-9 w-9 items-center justify-center rounded-lg bg-transparent text-red-500 cursor-pointer transition-all duration-200 hover:bg-red-500/10 outline-none"
+              title="Logout"
+            >
+              <LogOut className="h-5 w-5" />
+            </button>
+
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -156,6 +193,51 @@ const Navbar = () => {
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
+
+      {/* Logout Confirmation Modal */}
+      <Modal
+        title={
+          <div className="flex items-center gap-2 py-1">
+            <div className="grid h-8 w-8 place-items-center rounded-lg bg-red-500/10 text-red-500">
+              <AlertCircle className="h-4.5 w-4.5" />
+            </div>
+            <span className="text-base font-bold">Confirm Logout</span>
+          </div>
+        }
+        open={isLogoutModalOpen}
+        onCancel={() => setIsLogoutModalOpen(false)}
+        footer={null}
+        centered
+        destroyOnClose
+        width={360}
+        styles={{
+          content: { background: "var(--theme-bg)", border: "1px solid var(--border)", borderRadius: '20px' },
+          header: { background: "transparent", borderBottom: "1px solid var(--border)", color: "var(--theme-text)" },
+          body: { background: "transparent", paddingTop: 16 },
+        }}
+      >
+        <div className="space-y-6">
+          <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
+            Are you sure you want to logout from your account?
+          </p>
+          
+          <div className="flex gap-3">
+            <button
+              onClick={() => setIsLogoutModalOpen(false)}
+              className="flex-1 h-11 rounded-xl border border-gray-200 dark:border-gray-800 text-sm font-bold text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleLogout}
+              disabled={logoutLoading}
+              className="flex-1 h-11 rounded-xl bg-red-500 text-white font-bold shadow-lg shadow-red-500/20 hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50"
+            >
+              {logoutLoading ? "Logging out..." : "Yes, Logout"}
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };
