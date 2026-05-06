@@ -26,12 +26,9 @@ const PrivateLayout = ({ title, children }) => {
   }
 
   return (
-    <div className="h-screen flex flex-col">
-      <div className="h-[60px] shrink-0">
+    <div className="flex h-screen flex-col overflow-hidden">
+      <div className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto">
         <Navbar />
-      </div>
-
-      <div className="flex-1 overflow-auto">
         {children}
       </div>
     </div>

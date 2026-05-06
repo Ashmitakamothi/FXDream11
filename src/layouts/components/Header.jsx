@@ -33,12 +33,8 @@ const Navbar = () => {
   return (
     <>
       <Header 
-        className="sticky top-0 z-[100] border-b border-black/5 dark:border-white/5 px-0 transition-all duration-300"
-        style={{ 
-          background: theme === 'dark' ? '#0f172a' : '#ffffff', 
-          height: 'auto',
-          boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)'
-        }}
+        className="sticky top-0 z-[100] border-b border-black/5 px-0 transition-all duration-300 dark:border-white/10 !bg-white/25 shadow-[0_1px_0_0_rgba(0,0,0,0.04)] backdrop-blur-md backdrop-saturate-150 dark:!bg-slate-900/35 dark:shadow-[0_1px_0_0_rgba(255,255,255,0.06)]"
+        style={{ height: "auto" }}
       >
         <div className="custom-container flex h-16 items-center justify-between gap-4 px-4 lg:px-8">
 
@@ -66,9 +62,9 @@ const Navbar = () => {
                 <Link 
                   key={i} 
                   to={item.url} 
-                  className={`rounded-xl px-4 py-2 text-sm font-bold transition-all duration-300 ${
+                  className={`rounded-full px-4 py-2 text-sm font-bold transition-all duration-300 ${
                     active 
-                    ? 'gradient-primary text-white shadow-glow' 
+                    ? 'bg-cyan-50 text-primary dark:bg-cyan-950/40' 
                     : 'text-gray-500 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-800 dark:hover:text-white'
                   }`}
                 >
