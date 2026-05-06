@@ -39,18 +39,19 @@ const Explore = () => {
             </p>
           </div>
           
-          <div className="flex gap-2">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <div className="flex items-center gap-3">
+            <div className="relative group">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-cyan-500 transition-colors" />
               <input 
-                placeholder="Search contests…" 
-                className="h-9 w-64 rounded-lg border border-border bg-background pl-8 pr-3 text-sm outline-none focus:ring-2 focus:ring-primary/30 transition-all"
+                placeholder="Search contests..." 
+                className="h-10 w-72 rounded-full border border-cyan-500/20 bg-white dark:bg-gray-900/50 pl-11 pr-4 text-sm outline-none focus:border-cyan-500/50 focus:ring-4 focus:ring-cyan-500/5 transition-all placeholder:text-gray-400 shadow-sm"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors glass border border-border text-foreground hover:bg-card/80 hover:border-primary/40 h-9 px-4 py-2">
-              <Zap className="h-4 w-4" /> Filters
+            <button className="h-10 px-5 flex items-center gap-2 rounded-full border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900/50 text-sm font-bold text-gray-600 dark:text-gray-400 hover:border-cyan-500/30 hover:bg-gray-50 dark:hover:bg-gray-800 transition-all active:scale-[0.98] shadow-sm">
+              <Funnel className="h-4 w-4 text-gray-400" /> 
+              <span>Filters</span>
             </button>
           </div>
         </header>
