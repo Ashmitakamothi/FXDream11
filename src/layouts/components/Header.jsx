@@ -33,7 +33,7 @@ const Navbar = () => {
   return (
     <>
       <Header 
-        className="sticky top-0 z-[100] border-b border-black/5 px-0 transition-all duration-300 dark:border-white/10 !bg-white/25 shadow-[0_1px_0_0_rgba(0,0,0,0.04)] backdrop-blur-md backdrop-saturate-150 dark:!bg-slate-900/35 dark:shadow-[0_1px_0_0_rgba(255,255,255,0.06)]"
+        className="sticky top-0 z-[100] border-b border-black/5 px-0 transition-all duration-300 dark:border-white/10 bg-white/70 dark:bg-[#0b0f1a]/80 shadow-sm backdrop-blur-md backdrop-saturate-150"
         style={{ height: "auto" }}
       >
         <div className="custom-container flex h-16 items-center justify-between gap-4 px-4 lg:px-8">
@@ -64,8 +64,8 @@ const Navbar = () => {
                   to={item.url} 
                   className={`rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 ${
                     active 
-                    ? 'bg-[rgba(0,165,190,0.1)] text-primary dark:bg-primary/20' 
-                    : 'text-gray-500 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-800 dark:hover:text-white'
+                    ? 'bg-[rgba(0,165,190,0.15)] text-primary dark:bg-primary/20' 
+                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-800 dark:hover:text-white'
                   }`}
                 >
                   {item.label}

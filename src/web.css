@@ -85,7 +85,7 @@
     --banner-btn-bg: rgba(255,255,255,0.1);
     --banner-btn-text: #ffffff;
     --muted: #2F3642;
-    --gradient-card: linear-gradient(160deg, #17212A 0%, #18262F 100%);
+    --gradient-card: radial-gradient(circle at top right, rgba(0, 165, 190, 0.15), transparent 60%), linear-gradient(160deg, #111827 0%, #0F172A 100%);
     --card: #121a24;
     --border: #1f2a37;
     --input: #0b1117;
@@ -403,6 +403,7 @@ body {
     backdrop-filter: blur(18px) saturate(150%);
     -webkit-backdrop-filter: blur(18px) saturate(150%);
   }
+  .gradient-banner { background-image: var(--lovable-gradient-banner); }
   .gradient-card {
     background: var(--gradient-card);
   }
@@ -421,11 +422,11 @@ body {
     background: #ffffff;
   }
   .dark .hover-lift:hover {
+    background: #111827;
     box-shadow: 
-      0 20px 25px -5px rgba(0, 0, 0, 0.5),
-      0 0 15px rgba(6, 182, 212, 0.15);
-    background: rgba(28, 36, 51, 1);
-    border-color: rgba(6, 182, 212, 0.4);
+      0 0 50px -12px rgba(0, 166, 190, 0.35),
+      0 0 20px -5px rgba(0, 166, 190, 0.2);
+    border-color: rgba(0, 166, 190, 0.5);
   }
 
   .premium-card {
