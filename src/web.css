@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,8 +9,9 @@
 @variant dark (&:where(.dark, .dark *));
 
 :root {
-    --theme-bg: #f4f7fa;
-    --theme-text: #080d12;
+    --theme-bg: #f8fafc;
+    --theme-text: #0f172a;
+    --font-family: 'Inter', sans-serif;
     --foreground: #0f172a;
     --muted-foreground: #64748b;
     --card-bg: #ffffff;
@@ -91,6 +94,7 @@
 body {
     background: var(--theme-bg);
     color: var(--theme-text);
+    font-family: var(--font-family);
     transition: all 0.3s ease;
 }
 
@@ -146,8 +150,6 @@ body {
     border: none !important;
 }
 
-.gradient-card { background: var(--card-bg); }
-.shadow-card   { box-shadow: var(--lovable-shadow-card); }
 .bg-muted      { background: var(--muted); }
 .text-destructive { color: var(--destructive); }
 .text-accent   { color: var(--accent); }
@@ -206,9 +208,7 @@ body {
     font-size: 13px ;
 }
 
-.gradient-card {
-    background: var(--gradient-card);
-}
+
 
 .card-gradient {
     background: linear-gradient(90deg, #00BACE, #0095B1);;
@@ -403,14 +403,29 @@ body {
     backdrop-filter: blur(18px) saturate(150%);
     -webkit-backdrop-filter: blur(18px) saturate(150%);
   }
-  .gradient-banner { background-image: var(--lovable-gradient-banner); }
-  .shadow-card { box-shadow: var(--lovable-shadow-card); }
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .shadow-card { 
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 10px 15px -5px rgba(0, 0, 0, 0.05);
+  }
   
   .hover-lift {
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
   }
   .hover-lift:hover {
-    transform: translateY(-2px);
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px -12px rgba(0, 166, 190, 0.18), 0 0 20px rgba(0, 166, 190, 0.05);
+    border-color: rgba(0, 166, 190, 0.3);
+    background: #ffffff;
+  }
+  .dark .hover-lift:hover {
+    box-shadow: 
+      0 20px 25px -5px rgba(0, 0, 0, 0.5),
+      0 0 15px rgba(6, 182, 212, 0.15);
+    background: rgba(28, 36, 51, 1);
+    border-color: rgba(6, 182, 212, 0.4);
   }
 
   .premium-card {
