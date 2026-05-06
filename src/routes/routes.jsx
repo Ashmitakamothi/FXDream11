@@ -25,6 +25,7 @@ const MobileMyContests = lazy(() => import("../mobileView/user/pages/MobileMyCon
 const MyContests = lazy(() => import("../webView/user/MyContests"));
 const Notifications = lazy(() => import("../webView/user/Notifications"));
 const Support = lazy(() => import("../webView/user/Support"));
+const Profile = lazy(() => import("../webView/user/Profile"));
 const ContestDetail = lazy(() => import("../mobileView/user/pages/ContestDetail"));
 
 const Home = () => {
@@ -69,7 +70,7 @@ const routes = [
     { path: "/user/contests", type: "private",  title: "Contests", mobile: MobileContests, component: LiveContests },
     { path: "/user/contests/:id", type: "private", mobile:ContestDetail, title: (params, location) => location.state?.contest?.contestName || "ContestDetails", },
     { path: "/wallet", type: "private",  title: "Wallet", mobile: MobileWallet , component:Wallet},
-    { path: "/profile", type: "private",  title: "Profile", mobile: MobileProfile },
+    { path: "/profile", type: "private",  title: "Profile", mobile: MobileProfile, component: Profile },
     { path: "/my-contests", type: "private", title: "MyContests", mobile: MobileMyContests, component: MyContests },
     { path: "/notifications", type: "private", title: "Notifications", component: Notifications },
     { path: "/support", type: "private", title: "Support", component: Support },
