@@ -55,9 +55,9 @@ export default function Profile() {
     setPassLoading(true);
     try {
       await authApi.changePassword({
-        oldPassword: passData.oldPassword,
-        newPassword: passData.newPassword,
-        confirmPassword: passData.confirmPassword
+        CurrentPassword: passData.oldPassword,
+        NewPassword: passData.newPassword,
+        ConfirmPassword: passData.confirmPassword
       });
       message.success("Password updated successfully");
       setIsPassModalOpen(false);
