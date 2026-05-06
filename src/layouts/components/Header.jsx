@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Layout, Button, Badge } from "antd";
+import { Layout, Badge } from "antd";
 import { MenuOutlined, BellOutlined, CloseOutlined } from "@ant-design/icons";
 import { useLocation, Link } from "react-router-dom";
 import { HiArrowTrendingUp } from "react-icons/hi2";
@@ -33,12 +33,8 @@ const Navbar = () => {
   return (
     <>
       <Header 
-        className="sticky top-0 z-[100] border-b border-black/5 dark:border-white/5 px-0 transition-all duration-300"
-        style={{ 
-          background: theme === 'dark' ? '#0f172a' : '#ffffff', 
-          height: 'auto',
-          boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)'
-        }}
+        className="sticky top-0 z-[100] border-b border-black/5 px-0 transition-all duration-300 dark:border-white/10 bg-white/70 dark:bg-[#0b0f1a]/80 shadow-sm backdrop-blur-md backdrop-saturate-150"
+        style={{ height: "auto" }}
       >
         <div className="custom-container flex h-16 items-center justify-between gap-4 px-4 lg:px-8">
 
@@ -66,10 +62,10 @@ const Navbar = () => {
                 <Link 
                   key={i} 
                   to={item.url} 
-                  className={`rounded-xl px-4 py-2 text-sm font-bold transition-all duration-300 ${
+                  className={`rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 ${
                     active 
-                    ? 'gradient-primary text-white shadow-glow' 
-                    : 'text-gray-500 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-800 dark:hover:text-white'
+                    ? 'bg-[rgba(0,165,190,0.15)] text-primary dark:bg-primary/20' 
+                    : 'text-gray-500 dark:text-gray-400 hover:bg-gray-100 hover:text-black dark:hover:bg-gray-800 dark:hover:text-white'
                   }`}
                 >
                   {item.label}
@@ -82,11 +78,15 @@ const Navbar = () => {
           <div className="flex items-center gap-2">
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
 
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-transparent text-gray-500 dark:text-gray-400 cursor-pointer transition-all duration-300 hover:bg-[#f59e0b] hover:text-white group">
+            {/* Notification Bell Icon */}
+            <Link
+              to="/notifications"
+              className="flex h-9 w-9 items-center justify-center rounded-lg bg-transparent text-gray-500 dark:text-gray-400 cursor-pointer transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 outline-none"
+            >
               <Badge dot offset={[-2, 2]} color="#f59e0b">
-                <BellOutlined className="text-lg transition-colors duration-300 group-hover:text-white" />
+                <BellOutlined className="text-lg" />
               </Badge>
-            </div>
+            </Link>
 
             {/* Balance */}
             <div className="hidden sm:flex items-center gap-3 rounded-full border border-gray-200 dark:border-gray-700 pl-3 pr-1 py-1">
@@ -115,7 +115,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Mobile Menu Dropdown - Inline pushing content down exactly like mockup */}
+        {/* Mobile Menu Dropdown */}
         {isMobileMenuOpen && (
           <div className="xl:hidden border-t border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-900 px-4 py-5 animate-slide-down">
             <div className="grid grid-cols-2 gap-x-4 gap-y-3">
@@ -134,9 +134,9 @@ const Navbar = () => {
                   <Link 
                     key={idx} 
                     to={item.url} 
-                    className={`flex items-center px-4 py-2 text-sm font-bold transition-all duration-300 ${
+                    className={`flex items-center px-4 py-2 text-sm font-medium transition-all duration-200 ${
                       active 
-                      ? 'bg-[#00A5BE15] text-[#00A5BE] rounded-full' 
+                      ? 'bg-[rgba(0,165,190,0.1)] text-primary rounded-lg dark:bg-primary/20' 
                       : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-white'
                     }`}
                   >
@@ -149,7 +149,7 @@ const Navbar = () => {
         )}
       </Header>
       
-      {/* Backdrop for focus */}
+      {/* Backdrop for mobile menu */}
       {isMobileMenuOpen && (
         <div 
           className="fixed inset-0 z-[90] bg-black/5" 
