@@ -13,20 +13,20 @@ export const verifyLoginOtp = (data) => { // done
   return request("POST", "/auth/verify-login-otp", data);
 };
 
-export const enable2FA = (data) => { // done
-  return request("POST", "/auth/enable-2fa", data);
+export const enable2FA = () => { // done
+  return request("POST", "/auth/2fa", {});
 };
 
 export const verifyEnable2FA = (data) => { // done
-  return request("POST", "/auth/verify-enable-2fa", data);
+  return request("POST", "/auth/2fa/verify", data);
 };
 
-export const disable2FA = (data) => { // done
-  return request("POST", "/auth/disable-2fa", data);
+export const disable2FA = () => { // done
+  return request("DELETE", "/auth/2fa");
 };
 
 export const verifyDisable2FA = (data) => { // done
-  return request("POST", "/auth/verify-disable-2fa", data);
+  return request("POST", "/auth/2fa/disable/verify", data);
 };
 
 export const logoutUser = () => { // done
@@ -61,6 +61,10 @@ export const resendOtp = (data) => {
 
 export const getProfile = () => {  // done
   return request("GET", "/auth/profile");
+};
+
+export const updateProfile = (data) => {
+  return request("POST", "/auth/profile", data);
 };
 
 export const changePassword = (data) => { //done

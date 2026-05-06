@@ -1,4 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { Modal } from 'antd'
+import DepositTab from './wallet/Deposit'
+import WithdrawTab from './wallet/Withdraw'
 import '../../web.css'
 import { Link } from 'react-router-dom'
 import { Wallet, Trophy, Activity, Zap, Download, Upload, Plus, ArrowRight, ArrowUp, TrendingUp, TrendingDown, ArrowDownToLine, Crown, Medal, Users } from 'lucide-react'
@@ -9,10 +12,37 @@ import useProfileStore from '../../store/profileStore'
 import useTradingStore from '../../store/tradingStore'
 
 export default function Dashboard() {
-  const { wallet, transactions } = useWalletStore();
-  const { contests: activeContests, leaderboard: liveLeaderboard, myContests } = useContestStore();
-  const { userProfile } = useProfileStore();
-  const { performace } = useTradingStore();
+  const { wallet, transactions, fetchWalletDetails } = useWalletStore();
+  const { contests: activeContests, leaderboard: liveLeaderboard, myContests, fetchContests, getLeaderboard } = useContestStore();
+  const { userProfile, fetchProfile } = useProfileStore();
+  const { performace, fetchTradingDetails } = useTradingStore();
+
+  const [isDepositOpen, setIsDepositOpen] = useState(false);
+  const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
+  const [amount, setAmount] = useState("");
+
+  const modalStyles = {
+    content: { background: "var(--theme-bg)", border: "1px solid var(--border)" },
+    header: { background: "transparent", borderBottom: "1px solid var(--border)", color: "var(--theme-text)" },
+    body: { background: "transparent", paddingTop: 16 },
+  };
+
+  useEffect(() => {
+    fetchWalletDetails();
+    fetchContests();
+    fetchProfile();
+    fetchTradingDetails();
+  }, [fetchWalletDetails, fetchContests, fetchProfile, fetchTradingDetails]);
+
+  // Fetch leaderboard when contests are loaded
+  useEffect(() => {
+    if (activeContests && activeContests.length > 0) {
+      const firstContestId = activeContests[0].id || activeContests[0].contestId;
+      if (firstContestId) {
+        getLeaderboard(firstContestId);
+      }
+    }
+  }, [activeContests, getLeaderboard]);
 
   // Fallback data for empty states
   const displayContests = activeContests?.length > 0 ? activeContests : mockContests;
@@ -97,12 +127,12 @@ export default function Dashboard() {
             ${wallet?.balance?.toLocaleString() || '0.00'}
           </div>
           <div className="relative grid grid-cols-2 gap-2.5 mt-auto">
-            <div className="inset-tile px-3 py-2.5 text-center cursor-pointer transition-colors">
+            <div onClick={() => { setAmount("100"); setIsDepositOpen(true); }} className="inset-tile px-3 py-2.5 text-center cursor-pointer transition-colors hover:bg-[var(--muted)]">
               <div className="flex justify-center mb-1" style={{ color: 'var(--muted-foreground)' }}><Download className="w-3.5 h-3.5"/></div>
               <div className="text-[11px]" style={{ color: 'var(--muted-foreground)' }}>Deposit</div>
               <div className="mt-1 font-bold text-base" style={{ color: 'var(--foreground)' }}>${wallet?.totalDeposit?.toLocaleString() || '0'}</div>
             </div>
-            <div className="inset-tile px-3 py-2.5 text-center cursor-pointer transition-colors">
+            <div onClick={() => { setAmount(""); setIsWithdrawOpen(true); }} className="inset-tile px-3 py-2.5 text-center cursor-pointer transition-colors hover:bg-[var(--muted)]">
               <div className="flex justify-center mb-1" style={{ color: 'var(--muted-foreground)' }}><Upload className="w-3.5 h-3.5"/></div>
               <div className="text-[11px]" style={{ color: 'var(--muted-foreground)' }}>Withdraw</div>
               <div className="mt-1 font-bold text-base" style={{ color: 'var(--foreground)' }}>${wallet?.totalWithdrawal?.toLocaleString() || '0'}</div>
@@ -189,18 +219,18 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="relative grid grid-cols-3 gap-2.5 mb-5 mt-auto">
-            <div className="inset-tile py-3.5 flex flex-col items-center justify-center cursor-pointer gap-1.5 transition-colors">
+            <div onClick={() => { setAmount("100"); setIsDepositOpen(true); }} className="inset-tile py-3.5 flex flex-col items-center justify-center cursor-pointer gap-1.5 transition-colors hover:bg-[var(--muted)]">
               <Download className="w-4 h-4 text-amber-500/80" />
               <span className="text-[10px] font-medium" style={{ color: 'var(--foreground)' }}>Deposit</span>
             </div>
-            <div className="inset-tile py-3.5 flex flex-col items-center justify-center cursor-pointer gap-1.5 transition-colors">
+            <div onClick={() => { setAmount(""); setIsWithdrawOpen(true); }} className="inset-tile py-3.5 flex flex-col items-center justify-center cursor-pointer gap-1.5 transition-colors hover:bg-[var(--muted)]">
               <Upload className="w-4 h-4 text-amber-500/80" />
               <span className="text-[10px] font-medium" style={{ color: 'var(--foreground)' }}>Withdraw</span>
             </div>
-            <div className="inset-tile py-3.5 flex flex-col items-center justify-center cursor-pointer gap-1.5 transition-colors">
+            <Link to="/explore" className="inset-tile py-3.5 flex flex-col items-center justify-center cursor-pointer gap-1.5 transition-colors hover:bg-[var(--muted)]">
               <Plus className="w-4 h-4 text-amber-500/80" />
               <span className="text-[10px] font-medium" style={{ color: 'var(--foreground)' }}>Join</span>
-            </div>
+            </Link>
           </div>
           <div className="relative text-[10px]" style={{ color: 'var(--muted-foreground)' }}>
             <span className="text-amber-500/80 font-medium">Tip:</span> Daily bonus available for the next 4h.
@@ -479,6 +509,15 @@ export default function Dashboard() {
           </table>
         </div>
       </section>
+      {/* Deposit Modal */}
+      <Modal title="Deposit Funds" open={isDepositOpen} styles={modalStyles} onCancel={() => setIsDepositOpen(false)} footer={null} centered destroyOnClose>
+        <DepositTab amount={amount} setAmount={setAmount} onSuccess={() => { setIsDepositOpen(false); setAmount(""); fetchWalletDetails(); }}/>
+      </Modal>
+
+      {/* Withdraw Modal */}
+      <Modal title="Withdraw Funds" open={isWithdrawOpen} styles={modalStyles} onCancel={() => setIsWithdrawOpen(false)} footer={null} centered destroyOnClose>
+        <WithdrawTab amount={amount} setAmount={setAmount} balance={wallet.balance || 0} onSuccess={() => { setIsWithdrawOpen(false); setAmount(""); fetchWalletDetails(); }}/>
+      </Modal>
     </div>
   )
 }
