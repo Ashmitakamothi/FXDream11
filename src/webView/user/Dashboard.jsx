@@ -123,7 +123,7 @@ export default function Dashboard() {
       </div>
 
       {/* Hero Banner */}
-      <div className="relative overflow-hidden rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.12)] h-[200px] w-full border border-black/5 dark:border-white/5 bg-[var(--banner-bg)] transition-colors duration-300">
+      <div className="relative overflow-hidden rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.12)] h-[200px] w-full border border-black bg-[var(--banner-bg)] transition-colors duration-300">
         <div 
           className="absolute inset-0 bg-cover bg-right bg-no-repeat"
           style={{ backgroundImage: `url(${HeroBanner})` }}
