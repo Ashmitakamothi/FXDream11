@@ -3,12 +3,18 @@ import { Mail, Phone, MapPin, KeyRound, Shield, History, Lock, Eye, EyeOff } fro
 import { Modal, Input, message } from 'antd';
 import * as authApi from '../../api/authApi';
 import useProfileStore from '../../store/profileStore';
+import useWalletStore from '../../store/walletStore';
+import useContestStore from '../../store/contestStore';
 import { useTheme } from '../../ThemeContext';
 import '../../web.css';
 
 export default function Profile() {
-  const { userProfile, loading, fetchProfile } = useProfileStore();
+  const { userProfile, loading: profileLoading, fetchProfile } = useProfileStore();
+  const { transactions, fetchTransactions, loading: walletLoading } = useWalletStore();
+  const { myContests, getMyContests, loading: contestLoading } = useContestStore();
   const { theme } = useTheme();
+  
+  const loading = profileLoading || walletLoading || contestLoading;
   
   // Edit Profile States
   const [isEditing, setIsEditing] = useState(false);
@@ -41,6 +47,8 @@ export default function Profile() {
     body: { background: "transparent", paddingTop: 16 },
   };
 
+  const [sessionLogs, setSessionLogs] = useState([]);
+
   const handlePasswordUpdate = async () => {
     if (!passData.oldPassword || !passData.newPassword || !passData.confirmPassword) {
       return message.error("Please fill all fields");
@@ -55,13 +63,23 @@ export default function Profile() {
     setPassLoading(true);
     try {
       await authApi.changePassword({
-        CurrentPassword: passData.oldPassword,
-        NewPassword: passData.newPassword,
-        ConfirmPassword: passData.confirmPassword
+        currentPassword: passData.oldPassword,
+        newPassword: passData.newPassword,
+        confirmPassword: passData.confirmPassword
       });
       message.success("Password updated successfully");
       setIsPassModalOpen(false);
       setPassData({ oldPassword: '', newPassword: '', confirmPassword: '' });
+      
+      // Add to session logs for immediate feedback
+      setSessionLogs(prev => [{
+        event: "Password changed",
+        device: "Chrome · Web",
+        location: userProfile?.city || "Mumbai, IN",
+        when: "Just now",
+        timestamp: Date.now()
+      }, ...prev]);
+
     } catch (err) {
       message.error(err?.message || "Failed to update password");
     } finally {
@@ -80,11 +98,19 @@ export default function Profile() {
     setMpinLoading(true);
     try {
       // Assuming a changeMpin API exists or will be added
-      // For now, we simulate success as the API might not be ready
       await new Promise(resolve => setTimeout(resolve, 1000));
       message.success("MPIN updated successfully");
       setIsMpinModalOpen(false);
       setMpinData({ newMpin: '', confirmMpin: '' });
+      
+      setSessionLogs(prev => [{
+        event: "MPIN updated",
+        device: "Chrome · Web",
+        location: userProfile?.city || "Mumbai, IN",
+        when: "Just now",
+        timestamp: Date.now()
+      }, ...prev]);
+
     } catch (err) {
       message.error(err?.message || "Failed to update MPIN");
     } finally {
@@ -113,6 +139,15 @@ export default function Profile() {
       message.success("Two-Factor Authentication enabled!");
       setIs2faModalOpen(false);
       fetchProfile(); // Refresh to show enabled status
+      
+      setSessionLogs(prev => [{
+        event: "Two-Factor Auth enabled",
+        device: "Chrome · Web",
+        location: userProfile?.city || "Mumbai, IN",
+        when: "Just now",
+        timestamp: Date.now()
+      }, ...prev]);
+
     } catch (err) {
       message.error(err?.message || "Invalid OTP");
     } finally {
@@ -127,6 +162,15 @@ export default function Profile() {
       message.success("Two-Factor Authentication disabled");
       setIs2faModalOpen(false);
       fetchProfile();
+      
+      setSessionLogs(prev => [{
+        event: "Two-Factor Auth disabled",
+        device: "Chrome · Web",
+        location: userProfile?.city || "Mumbai, IN",
+        when: "Just now",
+        timestamp: Date.now()
+      }, ...prev]);
+
     } catch (err) {
       message.error(err?.message || "Failed to disable 2FA");
     } finally {
@@ -136,7 +180,9 @@ export default function Profile() {
 
   useEffect(() => {
     fetchProfile();
-  }, [fetchProfile]);
+    fetchTransactions({ PageNumber: 1, PageSize: 10 });
+    getMyContests({ PageNumber: 1, PageSize: 10 });
+  }, [fetchProfile, fetchTransactions, getMyContests]);
 
   // Helper to format relative time (e.g., "10m ago")
   useEffect(() => {
@@ -160,6 +206,15 @@ export default function Profile() {
       message.success("Profile updated successfully");
       setIsEditing(false);
       fetchProfile();
+      
+      setSessionLogs(prev => [{
+        event: "Profile updated",
+        device: "Chrome · Web",
+        location: userProfile?.city || "Mumbai, IN",
+        when: "Just now",
+        timestamp: Date.now()
+      }, ...prev]);
+
     } catch (err) {
       message.error(err?.message || "Failed to update profile");
     } finally {
@@ -182,18 +237,60 @@ export default function Profile() {
     return `${diffInDays}d ago`;
   };
 
-  const activityLogs = [
-    { event: "Login", device: "Chrome · macOS", location: "Mumbai, IN", when: formatRelativeTime(userProfile?.lastLoginAt) },
-    { event: "Joined contest 'Forex Frenzy'", device: "iOS App", location: "Mumbai, IN", when: "10m ago" },
-    { event: "Withdrawal initiated", device: "Chrome · macOS", location: "Mumbai, IN", when: "2h ago" },
-    { event: "Password changed", device: "Chrome · macOS", location: "Mumbai, IN", when: "2 mo ago" },
-  ];
+  const getCombinedActivityLogs = () => {
+    const logs = [...sessionLogs];
+
+    // 1. Last Login
+    if (userProfile?.lastLoginAt) {
+      logs.push({
+        event: "Login",
+        device: "Chrome · Web",
+        location: userProfile.city || "Mumbai, IN",
+        when: formatRelativeTime(userProfile.lastLoginAt),
+        timestamp: new Date(userProfile.lastLoginAt).getTime()
+      });
+    }
+
+    // 2. Transactions (Deposit, Withdraw, Contest Entry)
+    const txList = Array.isArray(transactions) ? transactions : (transactions?.items || []);
+    txList.forEach(tx => {
+      let eventName = tx.transactionType;
+      if (tx.transactionType?.toLowerCase().includes('withdraw')) eventName = "Withdrawal initiated";
+      else if (tx.transactionType?.toLowerCase().includes('deposit')) eventName = "Deposit successful";
+      else if (tx.transactionType?.toLowerCase().includes('contest')) eventName = `Joined contest '${tx.description || 'Contest'}'`;
+
+      logs.push({
+        event: eventName,
+        device: "Chrome · Web",
+        location: userProfile?.city || "Mumbai, IN",
+        when: formatRelativeTime(tx.createdAt),
+        timestamp: new Date(tx.createdAt).getTime()
+      });
+    });
+
+    // 3. Contests
+    const contestList = Array.isArray(myContests) ? myContests : (myContests?.items || []);
+    contestList.forEach(c => {
+      logs.push({
+        event: `Joined contest '${c.contestName}'`,
+        device: "Chrome · Web",
+        location: userProfile?.city || "Mumbai, IN",
+        when: formatRelativeTime(c.startDate),
+        timestamp: new Date(c.startDate).getTime()
+      });
+    });
+
+    // Sort by most recent
+    return logs.sort((a, b) => b.timestamp - a.timestamp).slice(0, 7);
+  };
+
+  const activityLogs = getCombinedActivityLogs();
 
   // Logic to get Full Name
-  const fullName = userProfile?.firstName ? `${userProfile.firstName} ${userProfile.lastName || ''}` : "Rohan Patel";
-  const initials = userProfile?.firstName ? `${userProfile.firstName[0]}${userProfile.lastName ? userProfile.lastName[0] : ''}`.toUpperCase() : "RP";
+  const fullName = userProfile?.firstName ? `${userProfile.firstName} ${userProfile.lastName || ''}` : "User";
+  const initials = userProfile?.firstName ? `${userProfile.firstName[0]}${userProfile.lastName ? userProfile.lastName[0] : ''}`.toUpperCase() : "U";
 
-  if (loading && !userProfile) {
+  if (profileLoading && !userProfile) {
     return (
       <div className="mx-auto max-w-[1400px] px-4 py-8 lg:px-8 flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-4">
@@ -323,6 +420,17 @@ export default function Profile() {
                       onChange={(e) => setEditData({...editData, phoneNumber: e.target.value})}
                       className="h-11 rounded-xl bg-[var(--muted)] border-border dark:border-gray-800 text-[var(--theme-text)]"
                     />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] uppercase tracking-widest text-gray-400 font-extrabold ml-1">Country</label>
+                    <select 
+                      value={editData.countryId || userProfile?.countryId} 
+                      onChange={(e) => setEditData({...editData, countryId: parseInt(e.target.value)})}
+                      className="w-full h-11 rounded-xl bg-[var(--muted)] border border-border dark:border-gray-800 text-[var(--theme-text)] px-3 text-sm focus:outline-none"
+                    >
+                      <option value="">Select Country</option>
+                      {userProfile?.country && <option value={userProfile.countryId}>{userProfile.country.countryName}</option>}
+                    </select>
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-[10px] uppercase tracking-widest text-gray-400 font-extrabold ml-1">Date of Birth</label>

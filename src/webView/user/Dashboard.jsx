@@ -513,10 +513,12 @@ export default function Dashboard() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-base font-bold tracking-tight" style={{ color: 'var(--foreground)' }}>🥇 Live Leaderboard</h2>
-            <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>Top 10 traders this week</p>
+            <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
+              Top 10 traders {activeContests?.[0]?.contestName ? `in ${activeContests[0].contestName}` : 'this week'}
+            </p>
           </div>
           <span className="hidden md:inline-flex items-center gap-1.5 text-xs" style={{ color: 'var(--muted-foreground)' }}>
-            <Users className="h-4 w-4" /> {performace?.totalParticipants || '12,481'} active
+            <Users className="h-4 w-4" /> {activeContests?.[0]?.currentParticipants || performace?.totalParticipants || '0'} active
           </span>
         </div>
         
