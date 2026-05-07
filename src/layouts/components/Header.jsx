@@ -9,6 +9,7 @@ import { UserSidebar } from "./SidebarData";
 import { useTheme } from "../../ThemeContext";
 import useWalletStore from "../../store/walletStore";
 import useAuthStore from "../../store/authStore";
+import useProfileStore from "../../store/profileStore";
 import * as authApi from "../../api/authApi";
 import '../../web.css'
 
@@ -24,12 +25,17 @@ const checkActive = (paths = [], currentPathname) => {
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const { wallet } = useWalletStore();
+  const { userProfile, fetchProfile } = useProfileStore();
   const location = useLocation();
   const navigate = useNavigate();
   const currentPathname = location.pathname;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [logoutLoading, setLogoutLoading] = useState(false);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
 
   const handleLogout = async () => {
     setLogoutLoading(true);
@@ -125,7 +131,9 @@ const Navbar = () => {
                 </div>
               </div>
               <div className="grid h-8 w-8 place-items-center rounded-full gradient-primary text-[10px] font-black text-white shadow-glow">
-                RP
+                {userProfile?.firstName 
+                  ? `${userProfile.firstName[0]}${userProfile.lastName ? userProfile.lastName[0] : ''}`.toUpperCase() 
+                  : 'U'}
               </div>
             </div>
 
