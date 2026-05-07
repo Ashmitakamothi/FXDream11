@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { Trophy, Users, Zap } from 'lucide-react'
 import useContestStore from '../../store/contestStore'
+import useTradingStore from '../../store/tradingStore'
 
 // Reusable Countdown Timer Component
 const CountdownTimer = ({ initialTime }) => {
   const [seconds, setSeconds] = useState(() => {
     if (!initialTime) return 0;
-    // Handle both "HH:MM:SS" and ISO dates
-    if (initialTime.includes(':')) {
+    
+    // Check if it's a simple "HH:MM:SS" duration instead of a date
+    const isDuration = /^\d{2}:\d{2}:\d{2}$/.test(initialTime);
+    
+    if (isDuration) {
       const [h, m, s] = initialTime.split(':').map(Number);
       return h * 3600 + m * 60 + s;
     }
-    const diff = Math.floor((new Date(initialTime) - new Date()) / 1000);
+    
+    // Otherwise treat as ISO date
+    const targetDate = new Date(initialTime);
+    const now = new Date();
+    const diff = Math.floor((targetDate - now) / 1000);
     return diff > 0 ? diff : 0;
   });
 
@@ -24,9 +32,14 @@ const CountdownTimer = ({ initialTime }) => {
   }, [seconds]);
 
   const formatTime = (totalSeconds) => {
-    const h = Math.floor(totalSeconds / 3600);
+    const d = Math.floor(totalSeconds / (3600 * 24));
+    const h = Math.floor((totalSeconds % (3600 * 24)) / 3600);
     const m = Math.floor((totalSeconds % 3600) / 60);
     const s = totalSeconds % 60;
+    
+    if (d > 0) {
+      return `${d}d ${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+    }
     return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
   };
 
@@ -34,11 +47,16 @@ const CountdownTimer = ({ initialTime }) => {
 };
 
 export default function LiveContests() {
-  const { contests, loading, fetchContests } = useContestStore();
+  const { contests, loading: contestLoading, fetchContests } = useContestStore();
+  const { performace, fetchTradingDetails, loading: tradingLoading } = useTradingStore();
 
   useEffect(() => {
     fetchContests();
-  }, [fetchContests]);
+    fetchTradingDetails();
+  }, [fetchContests, fetchTradingDetails]);
+
+  const loading = contestLoading || tradingLoading;
+  const pnl = performace?.pnl || 0;
 
   if (loading && contests.length === 0) {
     return (
@@ -75,8 +93,16 @@ export default function LiveContests() {
               <div className="relative flex items-start justify-between">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="live-dot"></span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-destructive">{contest.status === 'Live' ? 'Live' : 'Open'}</span>
+                    <span className={contest.status?.toLowerCase() === 'live' ? 'live-dot' : ''}></span>
+                    <span className={`text-[10px] font-bold uppercase tracking-widest ${
+                      contest.status?.toLowerCase() === 'live' ? 'text-destructive' : 
+                      contest.status?.toLowerCase() === 'completed' ? 'text-muted-foreground' : 
+                      'text-amber-600 dark:text-amber-500'
+                    }`}>
+                      {contest.status?.toLowerCase() === 'live' ? 'Live' : 
+                       contest.status?.toLowerCase() === 'completed' ? 'Ended' : 
+                       'Upcoming'}
+                    </span>
                   </div>
                   <h3 className="mt-1 text-2xl font-bold text-foreground">
                     {contest.contestName}
@@ -86,7 +112,7 @@ export default function LiveContests() {
                 
                 <div className="rounded-xl bg-background/60 backdrop-blur border border-border px-3 py-2 text-center relative z-10 min-w-[110px]">
                   <div className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-0.5">Ends in</div>
-                  <CountdownTimer initialTime={contest.endTime || "01:00:00"} />
+                  <CountdownTimer initialTime={contest.endDate || contest.endTime || "01:00:00"} />
                 </div>
               </div>
 
@@ -127,7 +153,9 @@ export default function LiveContests() {
                     <Zap className="h-3 w-3" />
                     Your P/L
                   </div>
-                  <div className="font-bold tabular-nums text-sm">+$0.00</div>
+                  <div className={`font-bold tabular-nums text-sm ${pnl >= 0 ? 'text-primary' : 'text-destructive'}`}>
+                    {pnl >= 0 ? '+' : '-'}${Math.abs(pnl).toFixed(2)}
+                  </div>
                 </div>
               </div>
 
