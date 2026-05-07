@@ -22,6 +22,7 @@ export default function Dashboard() {
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const [amount, setAmount] = useState("");
   const [chartRange, setChartRange] = useState('30D');
+  const [showAllActivity, setShowAllActivity] = useState(false);
 
   const modalStyles = {
     content: { background: "var(--theme-bg)", border: "1px solid var(--border)" },
@@ -459,12 +460,22 @@ export default function Dashboard() {
 
         {/* Recent Activity */}
         <div className="lg:col-span-3 rounded-2xl border border-border gradient-card shadow-card p-5">
-          <div>
-            <h2 className="text-base font-bold tracking-tight" style={{ color: 'var(--foreground)' }}>Recent Activity</h2>
-            <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>Last 24h</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="text-base font-bold tracking-tight" style={{ color: 'var(--foreground)' }}>Recent Activity</h2>
+              <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>Last 24h</p>
+            </div>
+            {transactions && transactions.length > 5 && (
+              <button 
+                onClick={() => setShowAllActivity(!showAllActivity)} 
+                className="text-xs font-semibold text-primary hover:underline transition-colors"
+              >
+                {showAllActivity ? 'Show Less' : `View all (${transactions.length}) →`}
+              </button>
+            )}
           </div>
-          <ul className="mt-4 space-y-3">
-            {transactions && transactions.length > 0 ? transactions.slice(0, 5).map((t, i) => {
+          <ul className="mt-4 space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+            {transactions && transactions.length > 0 ? transactions.slice(0, showAllActivity ? transactions.length : 5).map((t, i) => {
               const isPositive = t.type?.toLowerCase() === 'deposit' || t.amount > 0;
               return (
                 <li key={i} className="flex items-center gap-3">
