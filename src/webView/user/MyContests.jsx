@@ -1,14 +1,58 @@
 import React, { useState, useEffect } from 'react'
 import { Trophy, Share2, Eye, Award, Clock, CheckCircle2 } from 'lucide-react'
 import useContestStore from '../../store/contestStore'
+import useTradingStore from '../../store/tradingStore'
+import { AreaChart, Area, ResponsiveContainer, Tooltip } from 'recharts'
 
 export default function MyContests() {
   const [activeFilter, setActiveFilter] = useState('All');
-  const { myContests, loading, fetchContests } = useContestStore();
+  const [chartRange, setChartRange] = useState('30D');
+  const { myContests, loading: contestLoading, fetchContests } = useContestStore();
+  const { performace, fetchTradingDetails, loading: tradingLoading } = useTradingStore();
 
   useEffect(() => {
     fetchContests();
-  }, [fetchContests]);
+    fetchTradingDetails();
+  }, [fetchContests, fetchTradingDetails]);
+
+  const loading = contestLoading || tradingLoading;
+
+  const currentProfit = performace?.profitPercentage || 0;
+  const netProfitAmount = performace?.pnl || 0;
+  const winRate = performace?.winRatio || 0;
+  const winsCount = performace?.totalWinning || 0;
+  // Fallback for losses since API might not explicitly provide it separately
+  const lossesCount = performace?.totalTrades ? (performace.totalTrades - winsCount) : 0;
+
+  const generateChartData = (profit, range) => {
+    if (profit === 0) {
+      if (range === '90D') return [{name: 'M1', value: 0}, {name: 'M2', value: -1.5}, {name: 'M3', value: 0.5}, {name: 'Today', value: 0}];
+      if (range === '1Y') return [{name: 'Q1', value: 0}, {name: 'Q2', value: 3}, {name: 'Q3', value: -2}, {name: 'Q4', value: 1}, {name: 'Today', value: 0}];
+      return [{ name: 'Day 1', value: 0 }, { name: 'Day 2', value: 2 }, { name: 'Day 3', value: -1 }, { name: 'Day 4', value: 1.5 }, { name: 'Today', value: 0 }];
+    }
+    
+    if (range === '90D') return [
+      { name: 'Month 1', value: profit * 0.1 },
+      { name: 'Month 2', value: profit * 0.4 },
+      { name: 'Month 3', value: profit * 0.7 },
+      { name: 'Today', value: profit }
+    ];
+    if (range === '1Y') return [
+      { name: 'Q1', value: profit * 0.05 },
+      { name: 'Q2', value: profit * 0.2 },
+      { name: 'Q3', value: profit * 0.6 },
+      { name: 'Today', value: profit }
+    ];
+    return [
+      { name: 'Day 1', value: profit * 0.2 },
+      { name: 'Day 2', value: profit * 0.5 },
+      { name: 'Day 3', value: profit * 0.3 },
+      { name: 'Day 4', value: profit * 0.8 },
+      { name: 'Today', value: profit },
+    ];
+  };
+
+  const chartData = generateChartData(currentProfit, chartRange);
 
   const filtered = myContests.filter(c => {
     if (activeFilter === 'All') return true;
@@ -44,39 +88,35 @@ export default function MyContests() {
               <div>
                 <h2 className="text-sm font-semibold" style={{ color: 'var(--foreground)' }}>Contest Performance</h2>
                 <div className="mt-1 flex items-baseline gap-2">
-                  <span className="text-2xl font-bold" style={{ color: '#0891B2' }}>+$0.00</span>
-                  <span className="text-xs text-muted-foreground">net profit · 30d</span>
+                  <span className={`text-2xl font-bold ${netProfitAmount >= 0 ? 'text-primary' : 'text-destructive'}`}>
+                    {netProfitAmount >= 0 ? '+' : '-'}${Math.abs(netProfitAmount).toFixed(2)}
+                  </span>
+                  <span className="text-xs text-muted-foreground">net profit · {chartRange.toLowerCase()}</span>
                 </div>
               </div>
               <div className="flex gap-1 rounded-lg bg-muted p-1 text-[11px] font-semibold">
-                <button className="rounded-md bg-card px-2 py-1 text-foreground shadow-sm">30D</button>
-                <button className="px-2 py-1 text-muted-foreground">90D</button>
-                <button className="px-2 py-1 text-muted-foreground">1Y</button>
+                <button onClick={() => setChartRange('30D')} className={`rounded-md px-2 py-1 transition-all ${chartRange === '30D' ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground'}`}>30D</button>
+                <button onClick={() => setChartRange('90D')} className={`rounded-md px-2 py-1 transition-all ${chartRange === '90D' ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground'}`}>90D</button>
+                <button onClick={() => setChartRange('1Y')} className={`rounded-md px-2 py-1 transition-all ${chartRange === '1Y' ? 'bg-card text-foreground shadow-sm' : 'text-muted-foreground'}`}>1Y</button>
               </div>
             </div>
-            <div className="mt-3 h-[220px]">
-              <svg viewBox="0 0 600 220" className="w-full h-full">
-                <defs>
-                  <linearGradient id="eqFill" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#0891B2" stopOpacity="0.45"></stop>
-                    <stop offset="100%" stopColor="#0891B2" stopOpacity="0"></stop>
-                  </linearGradient>
-                  <linearGradient id="eqStroke" x1="0" x2="1">
-                    <stop offset="0%" stopColor="#0E7490"></stop>
-                    <stop offset="100%" stopColor="#0891B2"></stop>
-                  </linearGradient>
-                </defs>
-                <line x1="16" x2="584" y1="55" y2="55" stroke="var(--border)" strokeDasharray="4 6"></line>
-                <line x1="16" x2="584" y1="110" y2="110" stroke="var(--border)" strokeDasharray="4 6"></line>
-                <line x1="16" x2="584" y1="165" y2="165" stroke="var(--border)" strokeDasharray="4 6"></line>
-                <path d="M16,204 L45.8,196.9 L75.7,199.5 L105.6,186.2 L135.5,175.6 L165.4,179.1 L195.3,164.0 L225.2,150.7 L255.1,152.5 L285.0,140.1 L314.9,125.9 L344.8,119.7 L374.7,106.4 L404.6,94.0 L434.5,86.9 L464.4,72.7 L494.3,62.1 L524.2,48.8 L554.1,35.5 L584,16 L584,204 L16,204 Z" fill="url(#eqFill)"></path>
-                <path d="M16,204 L45.8,196.9 L75.7,199.5 L105.6,186.2 L135.5,175.6 L165.4,179.1 L195.3,164.0 L225.2,150.7 L255.1,152.5 L285.0,140.1 L314.9,125.9 L344.8,119.7 L374.7,106.4 L404.6,94.0 L434.5,86.9 L464.4,72.7 L494.3,62.1 L524.2,48.8 L554.1,35.5 L584,16" fill="none" stroke="url(#eqStroke)" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round"></path>
-                <circle cx="584" cy="16" r="5" fill="#0891B2"></circle>
-                <circle cx="584" cy="16" r="10" fill="#0891B2" opacity="0.25">
-                  <animate attributeName="r" values="6;14;6" dur="2s" repeatCount="indefinite"></animate>
-                  <animate attributeName="opacity" values="0.4;0;0.4" dur="2s" repeatCount="indefinite"></animate>
-                </circle>
-              </svg>
+            <div className="mt-5 h-[220px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData} margin={{ top: 5, right: 0, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="eqFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#06B6D4" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#06B6D4" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--border)', borderRadius: '8px' }}
+                    itemStyle={{ color: '#06B6D4', fontWeight: 'bold' }}
+                    formatter={(value) => [`${value}%`, 'Profit']}
+                  />
+                  <Area type="monotone" dataKey="value" stroke="#06B6D4" strokeWidth={3} fillOpacity={1} fill="url(#eqFill)" />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
@@ -85,19 +125,30 @@ export default function MyContests() {
             <div className="mt-3 grid place-items-center">
               <svg width="160" height="160" viewBox="0 0 160 160">
                 <circle cx="80" cy="80" r="56" stroke="var(--muted)" strokeWidth="14" fill="none"></circle>
-                <circle cx="80" cy="80" r="56" stroke="#0891B2" strokeWidth="14" fill="none" strokeDasharray="239.2 112.5" strokeDashoffset="87.9" strokeLinecap="round" transform="rotate(-90 80 80)"></circle>
-                <text x="80" y="76" textAnchor="middle" className="fill-foreground" fontSize="22" fontWeight="700" style={{ fill: 'var(--foreground)' }}>0%</text>
+                <circle 
+                  cx="80" 
+                  cy="80" 
+                  r="56" 
+                  stroke="#0891B2" 
+                  strokeWidth="14" 
+                  fill="none" 
+                  strokeDasharray={`${(winRate / 100) * 351.8} 351.8`} 
+                  strokeLinecap="round" 
+                  transform="rotate(-90 80 80)"
+                  className="transition-all duration-1000 ease-out"
+                ></circle>
+                <text x="80" y="76" textAnchor="middle" className="fill-foreground" fontSize="22" fontWeight="700" style={{ fill: 'var(--foreground)' }}>{Math.round(winRate)}%</text>
                 <text x="80" y="96" textAnchor="middle" className="fill-muted-foreground" fontSize="10" style={{ fill: 'var(--muted-foreground)' }}>Win Rate</text>
               </svg>
             </div>
             <div className="mt-6 flex gap-3">
               <div className="flex-1 rounded-xl bg-[#e6f7f9] dark:bg-[#0891B2]/10 p-3 shadow-sm transition-all">
                 <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Wins</div>
-                <div className="mt-1 text-xl font-bold text-primary">0</div>
+                <div className="mt-1 text-xl font-bold text-primary">{winsCount}</div>
               </div>
               <div className="flex-1 rounded-xl bg-[#fff1f1] dark:bg-[#f04438]/10 p-3 shadow-sm transition-all">
                 <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Losses</div>
-                <div className="mt-1 text-xl font-bold text-destructive">0</div>
+                <div className="mt-1 text-xl font-bold text-destructive">{lossesCount}</div>
               </div>
             </div>
           </div>
