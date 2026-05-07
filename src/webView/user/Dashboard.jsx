@@ -5,6 +5,7 @@ import WithdrawTab from './wallet/Withdraw'
 import '../../web.css'
 import { Link } from 'react-router-dom'
 import { Wallet, Trophy, Activity, Zap, Download, Upload, Plus, ArrowRight, ArrowUp, TrendingUp, TrendingDown, ArrowDownToLine, Crown, Medal, Users } from 'lucide-react'
+import { AreaChart, Area, ResponsiveContainer, Tooltip } from 'recharts'
 import HeroBanner from '../../assets/hero-banner.jpg'
 import useWalletStore from '../../store/walletStore'
 import useContestStore from '../../store/contestStore'
@@ -20,6 +21,7 @@ export default function Dashboard() {
   const [isDepositOpen, setIsDepositOpen] = useState(false);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const [amount, setAmount] = useState("");
+  const [chartRange, setChartRange] = useState('30D');
 
   const modalStyles = {
     content: { background: "var(--theme-bg)", border: "1px solid var(--border)" },
@@ -44,9 +46,52 @@ export default function Dashboard() {
     }
   }, [activeContests, getLeaderboard]);
 
-  // Fallback data for empty states
-  const displayContests = activeContests?.length > 0 ? activeContests : mockContests;
-  const displayLeaderboard = liveLeaderboard?.length > 0 ? liveLeaderboard : mockLeaderboard;
+  const displayContests = activeContests || [];
+  const displayLeaderboard = liveLeaderboard || [];
+  
+  const defaultWinners = [
+    { name: 'Waiting for data...', amount: '0', time: 'Just now' },
+    { name: 'Join a contest', amount: '0', time: 'Just now' }
+  ];
+
+  const topWinners = displayLeaderboard.length > 0 ? displayLeaderboard.slice(0, 8).map(u => ({
+    name: u.name || u.userName,
+    amount: u.profit || u.pnlPercentage || '0',
+    time: 'Recent'
+  })) : defaultWinners;
+
+  // Generate dynamic chart data based on current profit and selected range
+  const currentProfit = performace?.profitPercentage || 0;
+  
+  const generateChartData = (profit, range) => {
+    if (profit === 0) {
+      if (range === '90D') return [{name: 'M1', value: 0}, {name: 'M2', value: -1.5}, {name: 'M3', value: 0.5}, {name: 'Today', value: 0}];
+      if (range === '1Y') return [{name: 'Q1', value: 0}, {name: 'Q2', value: 3}, {name: 'Q3', value: -2}, {name: 'Q4', value: 1}, {name: 'Today', value: 0}];
+      return [{ name: 'Day 1', value: 0 }, { name: 'Day 2', value: 2 }, { name: 'Day 3', value: -1 }, { name: 'Day 4', value: 1.5 }, { name: 'Today', value: 0 }];
+    }
+    
+    if (range === '90D') return [
+      { name: 'Month 1', value: profit * 0.1 },
+      { name: 'Month 2', value: profit * 0.4 },
+      { name: 'Month 3', value: profit * 0.7 },
+      { name: 'Today', value: profit }
+    ];
+    if (range === '1Y') return [
+      { name: 'Q1', value: profit * 0.05 },
+      { name: 'Q2', value: profit * 0.2 },
+      { name: 'Q3', value: profit * 0.6 },
+      { name: 'Today', value: profit }
+    ];
+    return [
+      { name: 'Day 1', value: profit * 0.2 },
+      { name: 'Day 2', value: profit * 0.5 },
+      { name: 'Day 3', value: profit * 0.3 },
+      { name: 'Day 4', value: profit * 0.8 },
+      { name: 'Today', value: profit },
+    ];
+  };
+
+  const chartData = generateChartData(currentProfit, chartRange);
 
   return (
     <div className='custom-container flex flex-col gap-6 pt-6 pb-12'>
@@ -57,17 +102,17 @@ export default function Dashboard() {
         <span className="text-[11px] font-bold uppercase tracking-widest text-primary shrink-0">Live</span>
         <div className="flex-1 overflow-hidden">
           <div className="flex gap-12 whitespace-nowrap animate-marquee">
-            {winners.map((w, i) => (
-              <span key={`win-${i}`} className="text-sm font-medium text-foreground/90">🔥 {w.name} won ${w.amount} in {activeContests?.[0]?.name || 'Trading'}!</span>
+            {topWinners.map((w, i) => (
+              <span key={`win-${i}`} className="text-sm font-medium text-foreground/90">🔥 {w.name} is leading with +{w.amount}% profit!</span>
             ))}
-            {activeContests?.slice(0, 2).map((c, i) => (
-              <span key={`contest-${i}`} className="text-sm font-medium text-foreground/90">🚀 New contest: {c.name} — ${c.prize || c.prizePool} prize pool</span>
+            {displayContests?.slice(0, 2).map((c, i) => (
+              <span key={`contest-${i}`} className="text-sm font-medium text-foreground/90">🚀 New contest: {c.contestName || c.name} — ${c.prizePool || c.prize} prize pool</span>
             ))}
-            <span className="text-sm font-medium text-foreground/90">⚡ Live: {performace?.totalParticipants || '2,431'} traders competing right now</span>
+            <span className="text-sm font-medium text-foreground/90">⚡ Live: {performace?.totalParticipants || displayLeaderboard.length} traders competing right now</span>
             
             {/* Duplicate for seamless loop */}
-            {winners.slice(0, 2).map((w, i) => (
-              <span key={`win-loop-${i}`} className="text-sm font-medium text-foreground/90">🔥 {w.name} won ${w.amount} in {activeContests?.[0]?.name || 'Trading'}!</span>
+            {topWinners.slice(0, 2).map((w, i) => (
+              <span key={`win-loop-${i}`} className="text-sm font-medium text-foreground/90">🔥 {w.name} is leading with +{w.amount}% profit!</span>
             ))}
           </div>
         </div>
@@ -242,12 +287,12 @@ export default function Dashboard() {
       <section>
         <div>
           <h2 className="text-base font-bold tracking-tight">🏆 Winning Highlights</h2>
-          <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>Live wins from the community</p>
+          <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>Live leaderboard highlights</p>
         </div>
         <div className="mt-3">
           <div className="group relative overflow-hidden">
             <div className="flex w-max gap-3 animate-marquee-slow group-hover:[animation-play-state:paused]">
-              {[...winners, ...winners].map((w, i) => (
+              {[...topWinners, ...topWinners].map((w, i) => (
                 <div key={i} className="relative flex items-center gap-3 min-w-[240px] rounded-[14px] px-4 py-3 overflow-hidden transition-all duration-300 hover:-translate-y-[3px] border border-[#E2E8F0] bg-white shadow-[0_2px_8px_-4px_rgba(15,23,42,0.08)] hover:bg-[#F8FAFC] hover:border-[rgba(212,175,55,0.45)] hover:shadow-[0_8px_20px_-8px_rgba(212,175,55,0.30)] dark:border-white/[0.06] dark:bg-[#1C2433] dark:hover:bg-[#232E41] dark:hover:border-white/10">
                   <div className="pointer-events-none absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(212,175,55,0.05) 0%, rgba(34,197,94,0.03) 50%, transparent 80%)' }} />
                   <div className="relative grid h-9 w-9 shrink-0 place-items-center rounded-full border bg-[#FFF7E6] border-[rgba(212,175,55,0.25)] dark:bg-white/[0.04] dark:border-white/[0.08]" style={{ boxShadow: '0 0 10px -2px rgba(212,175,55,0.35)' }}>
@@ -259,7 +304,7 @@ export default function Dashboard() {
                   </div>
                   <div className="relative ml-2 inline-flex items-center gap-1 text-sm font-bold text-[#16A34A] dark:text-[#22C55E]">
                     <ArrowUp className="h-3.5 w-3.5" strokeWidth={2.25} />
-                    ${w.amount}
+                    +{w.amount}%
                   </div>
                 </div>
               ))}
@@ -283,7 +328,7 @@ export default function Dashboard() {
             <Link to="/explore" className="text-xs font-semibold text-primary hover:underline">View all →</Link>
           </div>
           <div className="mt-4 space-y-2.5">
-            {displayContests.map((c, i) => (
+            {displayContests.length > 0 ? displayContests.map((c, i) => (
               <div key={i} className="group relative overflow-hidden rounded-[18px] p-3.5 transition-all duration-300 hover:-translate-y-1" style={{ border: '1px solid rgba(255,255,255,0.06)', background: 'var(--lovable-card)' }}>
                 <div className="pointer-events-none absolute inset-0 opacity-60" style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 60%)' }} />
                 <div className="relative flex items-center gap-3">
@@ -330,7 +375,9 @@ export default function Dashboard() {
                   <button className="shrink-0 rounded-full px-4 py-1.5 text-xs font-semibold text-white transition-all duration-200 hover:scale-[1.03] hover:brightness-110" style={{ background: 'linear-gradient(135deg,#06B6D4,#0891B2)' }}>Join</button>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="py-12 text-center text-sm font-medium text-muted-foreground">No active contests found. Check back later!</div>
+            )}
           </div>
         </div>
 
@@ -346,26 +393,28 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="flex gap-1 rounded-full p-1 text-[11px] font-semibold" style={{ background: '#eef2f6', border: '1px solid rgba(0,0,0,0.05)' }}>
-                <button className="rounded-full px-3 py-1 bg-white shadow-sm" style={{ color: '#0f172a' }}>30D</button>
-                <button className="px-3 py-1" style={{ color: '#64748b' }}>90D</button>
-                <button className="px-3 py-1" style={{ color: '#64748b' }}>1Y</button>
+                <button onClick={() => setChartRange('30D')} className={`rounded-full px-3 py-1 transition-all ${chartRange === '30D' ? 'bg-white shadow-sm' : 'hover:bg-black/5'}`} style={{ color: chartRange === '30D' ? '#0f172a' : '#64748b' }}>30D</button>
+                <button onClick={() => setChartRange('90D')} className={`rounded-full px-3 py-1 transition-all ${chartRange === '90D' ? 'bg-white shadow-sm' : 'hover:bg-black/5'}`} style={{ color: chartRange === '90D' ? '#0f172a' : '#64748b' }}>90D</button>
+                <button onClick={() => setChartRange('1Y')} className={`rounded-full px-3 py-1 transition-all ${chartRange === '1Y' ? 'bg-white shadow-sm' : 'hover:bg-black/5'}`} style={{ color: chartRange === '1Y' ? '#0f172a' : '#64748b' }}>1Y</button>
               </div>
             </div>
-            <div className="mt-3 h-[200px]">
-              <svg viewBox="0 0 600 220" className="w-full h-full">
-                <defs>
-                  <linearGradient id="eqFill" x1="0" x2="0" y1="0" y2="1">
-                    <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.3" />
-                    <stop offset="100%" stopColor="#06B6D4" stopOpacity="0" />
-                  </linearGradient>
-                </defs>
-                <line x1="16" x2="584" y1="55" y2="55" stroke="rgba(128,128,128,0.08)" strokeDasharray="4 6" />
-                <line x1="16" x2="584" y1="110" y2="110" stroke="rgba(128,128,128,0.08)" strokeDasharray="4 6" />
-                <line x1="16" x2="584" y1="165" y2="165" stroke="rgba(128,128,128,0.08)" strokeDasharray="4 6" />
-                <path d="M16,160 L75,155 L135,135 L195,125 L255,128 L315,105 L375,95 L435,85 L495,65 L555,45 L584,20 L584,210 L16,210 Z" fill="url(#eqFill)" />
-                <path d="M16,160 L75,155 L135,135 L195,125 L255,128 L315,105 L375,95 L435,85 L495,65 L555,45 L584,20" fill="none" stroke="#06B6D4" strokeWidth="3" strokeLinejoin="round" strokeLinecap="round" />
-                <circle cx="584" cy="20" r="4.5" fill="#06B6D4" />
-              </svg>
+            <div className="mt-5 h-[200px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={chartData} margin={{ top: 5, right: 0, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="eqFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#06B6D4" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#06B6D4" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: 'var(--theme-bg)', borderColor: 'var(--border)', borderRadius: '8px' }}
+                    itemStyle={{ color: '#06B6D4', fontWeight: 'bold' }}
+                    formatter={(value) => [`${value}%`, 'Profit']}
+                  />
+                  <Area type="monotone" dataKey="value" stroke="#06B6D4" strokeWidth={3} fillOpacity={1} fill="url(#eqFill)" />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
 
@@ -515,6 +564,7 @@ export default function Dashboard() {
       </Modal>
 
       {/* Withdraw Modal */}
+      {/* Withdraw Modal */}
       <Modal title="Withdraw Funds" open={isWithdrawOpen} styles={modalStyles} onCancel={() => setIsWithdrawOpen(false)} footer={null} centered destroyOnClose>
         <WithdrawTab amount={amount} setAmount={setAmount} balance={wallet.balance || 0} onSuccess={() => { setIsWithdrawOpen(false); setAmount(""); fetchWalletDetails(); }}/>
       </Modal>
@@ -522,42 +572,3 @@ export default function Dashboard() {
   )
 }
 
-const winners = [
-  { name: 'R*** Patel',  time: '2h ago', amount: '1,200' },
-  { name: 'A*** Khan',   time: '3h ago', amount: '850'   },
-  { name: 'M*** Singh',  time: '4h ago', amount: '2,100' },
-  { name: 'S*** Verma',  time: '5h ago', amount: '540'   },
-  { name: 'K*** Rao',    time: '6h ago', amount: '3,300' },
-  { name: 'P*** Shah',   time: '7h ago', amount: '980'   },
-  { name: 'N*** Iyer',   time: '8h ago', amount: '1,750' },
-  { name: 'T*** Das',    time: '9h ago', amount: '460'   },
-]
-
-const mockContests = [
-  { name: 'Forex Frenzy', pair: 'EUR/USD', entry: 25,  prize: '5,000',  joined: 482, total: 753,  pct: 64, status: 'live'     },
-  { name: 'Pip Hunters',  pair: 'GBP/JPY', entry: 10,  prize: '2,000',  joined: 318, total: 757,  pct: 42, status: 'live'     },
-  { name: 'Gold Rush',    pair: 'XAU/USD', entry: 50,  prize: '12,000', joined: 712, total: 5933, pct: 12, status: 'upcoming' },
-  { name: 'USD Sprint',   pair: 'USD/JPY', entry: 5,   prize: '800',    joined: 211, total: 240,  pct: 88, status: 'live'     },
-  { name: 'Cable Clash',  pair: 'GBP/USD', entry: 20,  prize: '3,500',  joined: 256, total: 826,  pct: 31, status: 'live'     },
-]
-
-const mockParticipation = [
-  { label: 'Forex',   value: 78, color: '#06B6D4' },
-  { label: 'Crypto',  value: 54, color: '#0891B2' },
-  { label: 'Metals',  value: 32, color: '#D4AF37' },
-  { label: 'Indices', value: 18, color: '#f97316' },
-]
-
-const mockRecentActivity = [
-  { label: 'Won Forex Frenzy', time: '2m ago', amount: '+$320', color: '#06B6D4', bg: 'rgba(6,182,212,0.12)',  icon: <TrendingUp  className="h-4 w-4" /> },
-  { label: 'Deposit',          time: '1h ago', amount: '+$500', color: '#06B6D4', bg: 'rgba(6,182,212,0.12)',  icon: <ArrowDownToLine className="h-4 w-4" /> },
-  { label: 'Lost Pip Hunters', time: '3h ago', amount: '$25',   color: '#ef4444', bg: 'rgba(239,68,68,0.12)',  icon: <TrendingDown className="h-4 w-4" /> },
-]
-
-const mockLeaderboard = [
-  { rank: 1, name: 'Aarav M.', profit: '38.4' },
-  { rank: 2, name: 'Diya S.', profit: '34.1' },
-  { rank: 3, name: 'Rohan K.', profit: '29.7' },
-  { rank: 4, name: 'Isha P.', profit: '25.2' },
-  { rank: 5, name: 'Vivaan R.', profit: '22.8' },
-]
