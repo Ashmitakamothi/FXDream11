@@ -163,6 +163,8 @@ const useContestStore = create    ((set, get) => ({
   },
 
 
+  updateRankings: (data) => set({ rankings: data }),
+
   reset: () => set({
     contests: [],
     contestDetails: null,

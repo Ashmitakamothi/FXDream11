@@ -9,6 +9,7 @@ import useAppStore from "./store/useAppStore";
 import { useEffect } from "react";
 import SessionManager from "./components/SessionManager";
 import GlobalLoader from "./components/loader/GlobalLoader";
+import SocketManager from "./components/SocketManager";
 
 function App() {
   const { theme } = useTheme();
@@ -45,6 +46,7 @@ function App() {
         }}
         componentSize="large"
       >
+        <SocketManager />
         <Toaster position="top-right" toastOptions={{ duration: 3000 }} />
         <SessionManager>
           <AppRoutes />

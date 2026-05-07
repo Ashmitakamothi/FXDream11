@@ -10,7 +10,13 @@ export default defineConfig({
       '/api': {
         target: 'https://rest.fxdream11.com',
         changeOrigin: true,
+        ws: true,
         rewrite: (path) => path.replace(/^\/api/, '/api'),
+      },
+      '/ws': {
+        target: 'https://rest.fxdream11.com',
+        changeOrigin: true,
+        ws: true,
       },
     },
   },

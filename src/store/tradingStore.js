@@ -20,16 +20,19 @@ const useTradingStore = create((set, get) => ({
 
 
   fetchTradingDetails: async () => {
-    const { getTradingGroups, getTradingPerformance } = get();
+    const { getTradingGroups, getTradingPerformance, getTradingAccount } = get();
     const { myContests } = useContestStore.getState();
     try {
       set({ loading: true });
       const calls = [getTradingGroups()];
       
-      // If there's at least one active contest, fetch performance for it
+      // If there's at least one active contest, fetch performance and account for it
       if (myContests && myContests.length > 0) {
         const activeId = myContests[0].id || myContests[0].contestId;
-        if (activeId) calls.push(getTradingPerformance(activeId));
+        if (activeId) {
+          calls.push(getTradingPerformance(activeId));
+          calls.push(getTradingAccount(activeId));
+        }
       }
 
       await Promise.all(calls);
@@ -120,6 +123,9 @@ const useTradingStore = create((set, get) => ({
       throw error;
     }
   },
+
+  updateAccount: (data) => set((state) => ({ account: { ...state.account, ...data } })),
+  updateOpenPositions: (data) => set({ openPositions: data }),
 
   reset: () => set({ account: null, groups: [], loading: false, tabLoading: false, closedTrades: [], openPositions: [], history: [], performace: null, loadedTabs: { open: false, closed: false, history: false, performance: false } }),
 }));

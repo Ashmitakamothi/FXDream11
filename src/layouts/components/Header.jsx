@@ -208,7 +208,7 @@ const Navbar = () => {
         onCancel={() => setIsLogoutModalOpen(false)}
         footer={null}
         centered
-        destroyOnClose
+        destroyOnHidden
         width={360}
         styles={{
           content: { background: "var(--theme-bg)", border: "1px solid var(--border)", borderRadius: '20px' },
