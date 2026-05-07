@@ -20,9 +20,29 @@ const Explore = () => {
   const contestList = Array.isArray(contests) ? contests : contests?.items || [];
   
   const filteredContests = contestList.filter(c => {
-    const matchesSearch = (c.name || '').toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         (c.symbol || c.pair || '').toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = activeCategory === 'All' || (c.category || '').toLowerCase() === activeCategory.toLowerCase();
+    const searchString = `${c.name || c.contestName || ''} ${c.symbol || c.pair || c.allowedTradingPairs?.join(',') || ''}`.toLowerCase();
+    const matchesSearch = searchString.includes(searchQuery.toLowerCase());
+    
+    if (activeCategory === 'All') return matchesSearch;
+    
+    // Custom logic to map trading pairs to categories if API doesn't provide a strict `category` string
+    const categoryLower = activeCategory.toLowerCase();
+    
+    const pairs = c.allowedTradingPairs || [];
+    const isMetal = pairs.some(p => p.includes('XAU') || p.includes('XAG'));
+    const isCrypto = pairs.some(p => p.includes('BTC') || p.includes('ETH'));
+    const isIndices = pairs.some(p => p.includes('US30') || p.includes('NAS') || p.includes('SPX'));
+    const isForex = (!isMetal && !isCrypto && !isIndices && (pairs.some(p => p !== 'All') || pairs.includes('All')));
+
+    // Determine the single best category for this contest
+    let detectedCategory = (c.category || '').toLowerCase();
+    if (isMetal) detectedCategory = 'metals';
+    else if (isCrypto) detectedCategory = 'crypto';
+    else if (isIndices) detectedCategory = 'indices';
+    else if (isForex) detectedCategory = 'forex';
+    
+    const matchesCategory = detectedCategory === categoryLower;
+      
     return matchesSearch && matchesCategory;
   });
 
