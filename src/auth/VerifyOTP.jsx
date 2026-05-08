@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { HiOutlineClock, HiOutlineKey, HiOutlineShieldCheck } from "react-icons/hi2";
 import Layout from "./Layout";
-import LoadableButton from "../../components/button/LoadableButton";
-import useAuthStore from "../../../store/authStore";
-import { verifyLoginOtp, resendOtp } from "../../../api/authApi";
+import LoadableButton from "../components/button/LoadableButton";
+import useAuthStore from "../store/authStore";
+import { verifyLoginOtp, resendOtp } from "../api/authApi";
 
 const otpFeatures = [
   { icon: HiOutlineShieldCheck, title: "SecureVerification", copy: "one-time-ExtraProtection", },
