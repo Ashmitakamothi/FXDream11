@@ -6,7 +6,8 @@ const Login = lazy(() => import("../auth/Login"));
 const Register = lazy(() => import("../auth/Register"));
 const ForgetPassword = lazy(() => import("../auth/ForgetPassword"));
 const VerifyOTP = lazy(() => import("../auth/VerifyOTP"));
-
+const CreateMpin = lazy(() => import("../auth/CreateMpin"));
+const VerifyMpin = lazy(() => import("../auth/VerifyMpin"));
 
 // Admin
 
@@ -43,6 +44,8 @@ const routes = [
     { path: "/register", type: "auth", component: Register },
     { path: "/forget-password", type: "auth", component: ForgetPassword },
     { path: "/verify-otp", type: "auth", component: VerifyOTP },
+    { path: "/create-mpin", type: "auth", component: CreateMpin },
+    { path: "/verify-mpin", type: "auth", component: VerifyMpin },
 
     // Admin Dashboard Routes
     // { path: "/admin/contests", type: "private", component: ContestManagement, title: "ContestManagement", },

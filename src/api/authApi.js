@@ -13,6 +13,14 @@ export const verifyLoginOtp = (data) => { // done
   return request("POST", "/auth/verify-login-otp", data);
 };
 
+export const createMpin = (data) => {
+  return request("POST", "/auth/mpin/create", data);
+};
+
+export const verifyMpin = (data) => {
+  return request("POST", "/auth/mpin/verify", data);
+};
+
 export const enable2FA = () => { // done
   return request("POST", "/auth/2fa", {});
 };

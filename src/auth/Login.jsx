@@ -28,11 +28,27 @@ export default function Login() {
       const response = await loginUser(values);
       const loginResponse = response?.data || {};
       const otpRequired = loginResponse?.otpRequired === true;
+      const requiresMpinSetup = loginResponse?.RequiresMpinSetup === true || loginResponse?.requiresMpinSetup === true;
+      const requiresMpin = loginResponse?.RequiresMpin === true || loginResponse?.requiresMpin === true;
 
       if (otpRequired) {
         message.success("Success! Please verify your identity.");
         setLoginDetails(loginResponse || { email: values.email });
         navigate("/verify-otp");
+        return;
+      }
+
+      if (requiresMpinSetup) {
+        message.success("Please set up your MPIN.");
+        setLoginDetails(loginResponse || { email: values.email, tempToken: loginResponse?.tempToken || loginResponse?.TempToken });
+        navigate("/create-mpin");
+        return;
+      }
+
+      if (requiresMpin) {
+        message.success("Please verify your MPIN.");
+        setLoginDetails(loginResponse || { email: values.email, tempToken: loginResponse?.tempToken || loginResponse?.TempToken });
+        navigate("/verify-mpin");
         return;
       }
 
