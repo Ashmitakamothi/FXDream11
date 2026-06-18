@@ -42,8 +42,16 @@ export default function VerifyMpin() {
       message.success("Logged in successfully!");
       navigate(user?.isAdmin || user?.roleName === "admin" ? "/admin-dashboard" : "/dashboard");
     } catch (err) {
-      console.error(err);
-      message.error(err?.message || "Invalid MPIN. Please try again.");
+      console.error("Verify MPIN Error:", err);
+      let errorMsg = "MPIN is invalid";
+      if (typeof err === 'string' && err.trim() !== "") {
+        errorMsg = err;
+      } else if (err?.message) {
+        errorMsg = err.message;
+      } else if (err?.error) {
+        errorMsg = err.error;
+      }
+      message.error(errorMsg);
     } finally {
       setSubmitLoading(false);
     }

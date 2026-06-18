@@ -42,8 +42,16 @@ export default function CreateMpin() {
       message.success("MPIN created and logged in successfully!");
       navigate(user?.isAdmin || user?.roleName === "admin" ? "/admin-dashboard" : "/dashboard");
     } catch (err) {
-      console.error(err);
-      message.error(err?.message || "Failed to create MPIN. Please try again.");
+      console.error("Create MPIN Error:", err);
+      let errorMsg = "MPIN is invalid or failed to create";
+      if (typeof err === 'string' && err.trim() !== "") {
+        errorMsg = err;
+      } else if (err?.message) {
+        errorMsg = err.message;
+      } else if (err?.error) {
+        errorMsg = err.error;
+      }
+      message.error(errorMsg);
     } finally {
       setSubmitLoading(false);
     }
