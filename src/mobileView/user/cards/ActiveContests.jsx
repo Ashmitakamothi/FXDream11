@@ -10,7 +10,8 @@ const ActiveContests = () => {
             {/* HEADER */}
             <div className="flex items-center justify-between mb-3">
                 <h2 className="text-[15px] font-bold">Active Contests</h2>
-                <button className="text-xs font-semibold text-blue-500">See All</button>
+                {/* <button className="text-xs font-semibold text-blue-500">See All</button> */}
+                <button className="text-xs font-semibold text-[#059669]">See All</button>
             </div>
 
             <div className="flex flex-col gap-3">

@@ -175,6 +175,7 @@ const ContestCard = ({ contest: c, index, actionbtns }) => {
     const wavePath1 = generateRandomWavePath(c.contestId * 100 + 1, 60, 25, 360, 120);
     const wavePath2 = generateRandomWavePath(c.contestId * 100 + 2, 65, 15, 360, 120);
 
+    /* OLD CODE COMMENTED OUT AS PER REQUEST
     return (
         <div className={` ${style.card} rounded-2xl relative overflow-hidden active:scale-[0.97] transition-all duration-200 card-shine`}
             style={{ boxShadow: theme === "dark" ? "0 6px 24px rgba(0,0,0,0.4)" : "0 4px 16px rgba(0,0,0,0.06)", }}>
@@ -230,6 +231,77 @@ const ContestCard = ({ contest: c, index, actionbtns }) => {
                             Details
                         </button>
                         {renderActionButton(c, style, navigate)}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+    */
+
+    return (
+        <div className={`bg-[#0B1714] border border-[#ffffff0a] rounded-[20px] relative overflow-hidden active:scale-[0.97] transition-all duration-200`}
+            style={{ boxShadow: "0 6px 24px rgba(0,0,0,0.4)" }}>
+
+            <svg className="absolute inset-0 w-full h-full opacity-[0.03]" viewBox="0 0 360 100" preserveAspectRatio="none" fill="none">
+                <path d={wavePath1} stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+                <path d={wavePath2} stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" />
+            </svg>
+            
+            <div className="p-4 relative z-10">
+                <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                        {/* {badge && c.status?.toLowerCase() === 'open' && (
+                            <span className={`flex items-center gap-1 px-1.5 py-[2px] rounded-md bg-transparent border border-[#ef4444] text-[#ef4444] text-[9px] font-bold`}>
+                                <BadgeIcon size={9} /> {badge.label}
+                            </span>
+                        )} */}
+                        <h3 className="font-bold text-[14px] text-white tracking-wide">{c.contestName}</h3>
+                    </div>
+                    {!actionbtns && (
+                        <button className={`flex items-center gap-1 text-[11px] font-bold text-white bg-[#1C7E5F] px-4 py-[6px] rounded-full active:scale-95`} onClick={() => navigate(`/contest/${c.contestId}`)}>
+                            Join <ArrowRight size={10} />
+                        </button>
+                    )}
+                </div>
+                
+                <p className="text-[10px] text-gray-500 mb-2.5 truncate font-medium">
+                    {c.description || "We know how frustrating it is when your selection is leadin..."}
+                </p>
+                
+                <div className="w-full h-[3px] rounded-full bg-[#182824] mb-3 overflow-hidden">
+                    <div className={`h-full rounded-full bg-[#1C7E5F]`} style={{ width: `${progress}%` }} />
+                </div>
+                
+                <div className="flex items-center justify-between mb-4 mt-1">
+                    <ContestTimer endDate={c.endDate} color="bg-[#12231F] border-none !text-gray-300" />
+                    <div className="flex items-center gap-1 text-gray-400">
+                        <Users size={12} />
+                        <span className="text-[11px] font-bold font-mono">{c.currentParticipants}/{c.maxParticipants || c.currentParticipants}</span>
+                    </div>
+                </div>
+                
+                <div className="grid grid-cols-3 gap-2">
+                    {[
+                        { label: "Credit", value: `$${Number(c.virtualBalance || 1000).toFixed(2)}` },
+                        { label: "Entry", value: `$${Number(c.entryFee || 500).toFixed(2)}` },
+                        { label: "Prize Pool", value: `$${Number(c.prizePool || 900).toFixed(2)}` },
+                    ].map((stat) => (
+                        <div key={stat.label} className={`bg-[#12231F] rounded-[14px] py-2 px-2 text-center`}>
+                            <p className="text-[13px] font-bold text-white">{stat.value}</p>
+                            <p className="text-[8px] text-gray-500 uppercase mt-0.5 tracking-wider font-semibold">{stat.label}</p>
+                        </div>
+                    ))}
+                </div>
+                
+                {actionbtns && (
+                    <div className="grid grid-cols-2 gap-2 mt-4">
+                        <button
+                            className={`bg-[#12231F] border border-white/5 text-[11px] font-bold px-4 py-[8px] rounded-xl text-gray-300 w-full active:scale-95 transition-transform`}
+                            onClick={() => navigate(`/user/contests/${c.contestId}`)}
+                        >
+                            Details
+                        </button>
+                        {renderActionButton(c, { btnGradient: "from-[#1C7E5F] to-[#146048]" }, navigate)}
                     </div>
                 )}
             </div>

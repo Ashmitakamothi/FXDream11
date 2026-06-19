@@ -1,8 +1,8 @@
 import { LiaClipboardListSolid } from "react-icons/lia";
-import { LuLayoutDashboard, LuSettings, } from "react-icons/lu";
+import { LuLayoutDashboard, LuSettings } from "react-icons/lu";
 import { MdOutlineDashboardCustomize } from "react-icons/md";
 import { BsCoin } from "react-icons/bs";
-import { IoWalletOutline } from "react-icons/io5";
+import { IoWalletOutline, IoHomeOutline } from "react-icons/io5";
 import { GoShieldLock } from "react-icons/go";
 import { AiOutlineFileDone } from "react-icons/ai";
 import { RxFileText } from "react-icons/rx";
@@ -12,8 +12,8 @@ import { m } from "framer-motion";
 
 export const UserSidebar = [
   {
-    label: "Dashboard",
-    icon: <LuLayoutDashboard size={20} />,
+    label: "Home",
+    icon: <IoHomeOutline size={20} />,
     url: "/dashboard",
     activeUrl: ["/", "/dashboard"],
     mobileNav: true,

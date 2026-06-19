@@ -1,6 +1,10 @@
+import { useEffect } from "react";
 import { useTheme } from "../../../ThemeContext";
-import { Trophy, ArrowDownToLine, Sparkles, TrendingUp, TrendingDown } from "lucide-react";
+import { Trophy, ArrowDownToLine, Sparkles, TrendingUp, TrendingDown, LogIn, Upload } from "lucide-react";
+import useWalletStore from "../../../store/walletStore";
 
+/* 
+// STATIC DATA COMMENTED OUT 
 const activities = [
   {
     icon: Trophy,
@@ -55,44 +59,66 @@ const activities = [
     valueIcon: TrendingDown,
   },
 ];
+*/
 
 const RecentActivities = () => {
-      const { theme } = useTheme();
-  
+  const { theme } = useTheme();
+  const { transactions, fetchWalletDetails } = useWalletStore();
+
+  useEffect(() => {
+    fetchWalletDetails();
+  }, [fetchWalletDetails]);
+
   return (
     <div className="px-4 py-4">
       {/* HEADER */}
-      <div className="flex items-center justify-between mb-3">
-        <h2 className="text-[15px] font-bold ">Recent Activity</h2>
-        <button className="text-xs font-semibold text-blue-500">View All</button>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-[15px] font-bold text-white">Recent Activity</h2>
+        <button className="text-xs font-semibold text-[#1C7E5F]">View All</button>
       </div>
 
       {/* LIST */}
       <div className="flex flex-col gap-2.5">
-        {activities.map((a, i) => {
-          const Icon = a.icon;
-          const ValueIcon = a.valueIcon;
+        {transactions && transactions.length > 0 ? transactions.slice(0, 5).map((t, i) => {
+          const isPositive = t.type?.toLowerCase() === 'deposit' || t.amount > 0;
+          
+          let Icon = isPositive ? TrendingUp : TrendingDown;
+          if (t.type?.toLowerCase() === 'deposit') Icon = ArrowDownToLine;
+          if (t.type?.toLowerCase() === 'withdrawal') Icon = Upload;
+
+          const title = t.remark || t.description || t.type || t.category || (isPositive ? 'Deposit' : 'Withdrawal');
+          const meta = t.createdAt ? new Date(t.createdAt).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'Just now';
+          const detail = t.transactionId ? `Txn ID: ${t.transactionId}` : 'Transaction completed successfully';
+          const amount = `${isPositive ? '+' : ''}$${Math.abs(t.amount || 0).toFixed(2)}`;
+          
+          const valueColor = isPositive ? "text-[#1C7E5F]" : "text-[#EF4444]";
+          const valueBorder = isPositive ? "border-[#1C7E5F]/30" : "border-[#EF4444]/30";
+          const statusBg = isPositive ? "bg-[#12231F]" : "bg-[#EF4444]/10";
+          const ValueIcon = isPositive ? TrendingUp : TrendingDown;
 
           return (
-            <div key={i} className={`flex items-center gap-3 ${theme === "dark" ? "bg-white/10" : "bg-white"} rounded-2xl p-3.5 active:scale-[0.98] transition-all duration-200`} style={{boxShadow:"0 2px 12px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.03)", }}>
-              <div className={`w-10 h-10 rounded-2xl bg-gradient-to-br ${a.gradient} flex items-center justify-center relative overflow-hidden ${a.shadow}`} style={{boxShadow: `0 4px 14px ${a.glowColor}, 0 1px 3px rgba(0,0,0,0.15)`,}}>
-                <div className="absolute inset-x-0 top-0 h-[45%] bg-gradient-to-b from-white/10 to-transparent rounded-t-2xl" />
-                <Icon size={16} className="text-white relative z-10" />
+            <div key={i} className="flex items-center gap-3 bg-[#0B1714] border border-[#ffffff0a] rounded-[20px] p-4 active:scale-[0.98] transition-all duration-200" style={{boxShadow: "0 4px 16px rgba(0,0,0,0.2)"}}>
+              <div className={`w-[38px] h-[38px] rounded-[12px] ${statusBg} flex items-center justify-center border ${valueBorder} shrink-0`}>
+                <Icon size={16} className={valueColor} />
               </div>
 
               <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-semibold truncate"> {a.title}</p>
-                <p className="text-[11px] text-gray-500 mt-0.5"> {a.meta}</p>
-                <p className="text-[10px] text-gray-400 mt-0.5"> {a.detail}</p>
+                <p className="text-[13px] font-bold text-white truncate">{title}</p>
+                <p className="text-[11px] text-gray-400 mt-0.5">{meta}</p>
+                <p className="text-[9px] text-[#788a85] mt-1 leading-[1.3] line-clamp-2 pr-2 whitespace-pre-line">{detail}</p>
               </div>
 
-              <div className={`flex items-center gap-1 px-2.5 py-1 rounded-lg ${a.valueBg}`}>
-                {ValueIcon && (<ValueIcon size={11} className={a.valueColor} />)}
-                <span className={`text-[12px] font-bold ${a.valueColor}`}>{a.value}</span>
+              <div className="flex items-center justify-center shrink-0">
+                <div className={`px-3 py-1.5 rounded-full ${statusBg} flex items-center gap-1 border ${valueBorder}`}>
+                  <ValueIcon size={10} className={valueColor} />
+                  <span className={`text-[9px] font-bold ${valueColor} tracking-wider uppercase`}>{amount}</span>
+                </div>
               </div>
             </div>
           );
-        })}
+        }) : (
+          <div className="py-10 text-center text-xs text-gray-500">No recent activity</div>
+        )}
       </div>
     </div>
   );
