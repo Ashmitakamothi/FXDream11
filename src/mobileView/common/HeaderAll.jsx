@@ -8,28 +8,30 @@ export default function HeaderAll({ path, search, menu = true, onMenuClick }) {
     const { setIsSidebarOpen } = useSidebar() || {};
 
     return (
-        <header className="sticky top-0 z-40 glass-effect border-b border-border/30">
-            <div className="flex items-center justify-between px-5 py-3">
+        <header className="sticky top-0 z-40 glass-effect">
+            <div className="flex items-center justify-between px-5 py-2">
                 <button onClick={menu ? (onMenuClick || (() => setIsSidebarOpen?.(true))) : () => navigate(-1)}
-                    className="w-10 h-10 flex items-center justify-center rounded-full bg-primary/8 border border-primary/10 active:scale-90 transition-transform duration-150"
+                    className="w-9 h-9 flex items-center justify-center rounded-full bg-[#111a15] border border-transparent active:scale-90 transition-transform duration-150"
                 >
-                    {menu ? <Menu size={18} className="text-primary" /> : <ArrowLeft size={18} className="text-primary" />}
+                    {menu ? <Menu size={18} className="text-[#2aa880]" /> : <ArrowLeft size={18} className="text-[#2aa880]" />}
                 </button>
-                <h1 className="text-[17px] font-extrabold text-foreground tracking-tight">{path}</h1>
+                <h1 className="text-[16px] font-extrabold text-white tracking-tight">{path}</h1>
                 {search ?
                     (
-                        <div className="flex items-center gap-2">
-                            <button className="w-10 h-10 flex items-center justify-center rounded-full bg-primary/8 border border-primary/10 active:scale-90 transition-transform duration-150">
-                                <Search size={18} className="text-primary" />
+                        <div className="flex items-center gap-3">
+                            <button className="w-9 h-9 flex items-center justify-center rounded-full bg-[#111a15] border border-transparent active:scale-90 transition-transform duration-150">
+                                <Search size={18} className="text-[#2aa880]" />
                             </button>
-                            <button className="w-10 h-10 flex items-center justify-center rounded-full bg-primary/8 border border-primary/10 relative active:scale-90 transition-transform duration-150">
-                                <Bell size={18} className="text-primary" />
-                                <span className="absolute top-2 right-2.5 w-2.5 h-2.5 rounded-full bg-live ring-2 ring-background animate-pulse" />
+                            <button className="w-9 h-9 flex items-center justify-center rounded-full bg-[#111a15] border border-transparent relative active:scale-90 transition-transform duration-150">
+                                <Bell size={18} className="text-[#2aa880]" />
+                                {/* Red dot for notification indicator from screenshot */}
+                                <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-[#e85c5c] rounded-full"></span>
                             </button>
                         </div>
                     ) :
-                    (<button className="w-10 h-10 flex items-center justify-center rounded-full bg-primary/8 border border-primary/10 relative active:scale-90 transition-transform duration-150">
-                        <Bell size={18} className="text-primary" />
+                    (<button className="w-9 h-9 flex items-center justify-center rounded-full bg-[#111a15] border border-transparent relative active:scale-90 transition-transform duration-150">
+                        <Bell size={18} className="text-[#2aa880]" />
+                        <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-[#e85c5c] rounded-full"></span>
                     </button>)
                 }
 

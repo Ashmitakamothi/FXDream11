@@ -1,46 +1,52 @@
 import React from 'react';
 import { ChevronRight } from "lucide-react";
-import {formatDateTime} from "../../../../utils/formatDateTime";
+import { formatDateTime } from "../../../../utils/formatDateTime";
+
 const OverviewTab = ({ contest }) => {
   return (
-    <div className="space-y-3">
-      <div className="bg-cardM rounded-2xl p-4" style={{ boxShadow: "0 2px 12px rgba(0, 0, 0, 0.04)" }}>
-        <h3 className="text-[13px] font-bold text-foreground mb-2">About This Contest</h3>
-        <p className="text-[12px] text-muted-foreground leading-relaxed">{contest.description}</p>
+    <div className="space-y-4">
+      {/* About This Contest */}
+      <div className="bg-[#121a16] rounded-2xl p-4">
+        <h3 className="text-[14px] font-extrabold text-[#ffffff] mb-3">About This Contest</h3>
+        <p className="text-[12px] text-[#8ca8a1] leading-relaxed whitespace-pre-wrap">{contest.description}</p>
       </div>
 
-      <div className="bg-cardM rounded-2xl p-4" style={{ boxShadow: "0 2px 12px rgba(0, 0, 0, 0.04)" }}>
-        <h3 className="text-[13px] font-bold text-foreground mb-2">Rules</h3>
-        <div className="space-y-1.5">
-          {/* {contest.ruleText?.map((rule, i) => (
+      {/* Rules */}
+      <div className="bg-[#121a16] rounded-2xl p-4">
+        <h3 className="text-[14px] font-extrabold text-[#ffffff] mb-3">Rules</h3>
+        <div className="space-y-2">
+          {contest.rulesText?.split('\n').filter(Boolean).map((rule, i) => (
             <div key={i} className="flex items-start gap-2">
-              <ChevronRight size={12} className="text-primary mt-0.5 shrink-0" /> */}
-              <span className="text-[12px] text-muted-foreground">{contest.rulesText}</span>
-            {/* </div>
-          ))} */}
+              <ChevronRight size={14} className="text-[#1fa97a] mt-[2px] shrink-0" />
+              <span className="text-[12px] text-[#8ca8a1] leading-relaxed">{rule}</span>
+            </div>
+          ))}
         </div>
       </div>
 
-      <div className="bg-cardM rounded-2xl p-4" style={{ boxShadow: "0 2px 12px rgba(0, 0, 0, 0.04)" }}>
-        <h3 className="text-[13px] font-bold text-foreground mb-2">Allowed Pairs</h3>
-        <div className="flex flex-wrap gap-1.5">
-          {contest.allowedTradingPairs.map((pair) => (
-            <span key={pair} className="px-3 py-1 rounded-full bg-muted text-primary text-[11px] font-semibold">{pair}</span>
+      {/* Allowed Pairs */}
+      <div className="bg-[#121a16] rounded-2xl p-4">
+        <h3 className="text-[14px] font-extrabold text-[#ffffff] mb-3">Allowed Pairs</h3>
+        <div className="flex flex-wrap gap-3">
+          {contest.allowedTradingPairs?.map((pair) => (
+            <span key={pair} className="text-[#20b281] text-[13px] font-bold tracking-wide">
+              {pair}
+            </span>
           ))}
         </div>
       </div>
 
       {/* Duration */}
-      <div className="bg-cardM rounded-2xl p-4" style={{ boxShadow: "0 2px 12px rgba(0, 0, 0, 0.04)" }}>
-        <h3 className="text-[13px] font-bold text-foreground mb-2">Duration</h3>
-        <div className="space-y-1">
-          <div className="flex justify-between">
-            <span className="text-[11px] text-muted-foreground">Start</span>
-            <span className="text-[11px] font-semibold text-foreground">{formatDateTime(contest.startDate)}</span>
+      <div className="bg-[#121a16] rounded-2xl p-4">
+        <h3 className="text-[14px] font-extrabold text-[#ffffff] mb-3">Duration</h3>
+        <div className="space-y-2.5">
+          <div className="flex justify-between items-center">
+            <span className="text-[12px] text-[#8ca8a1]">Start</span>
+            <span className="text-[12px] font-bold text-[#ffffff]">{formatDateTime(contest.startDate)}</span>
           </div>
-          <div className="flex justify-between">
-            <span className="text-[11px] text-muted-foreground">End</span>
-            <span className="text-[11px] font-semibold text-foreground">{formatDateTime(contest.endDate)}</span>
+          <div className="flex justify-between items-center">
+            <span className="text-[12px] text-[#8ca8a1]">End</span>
+            <span className="text-[12px] font-bold text-[#ffffff]">{formatDateTime(contest.endDate)}</span>
           </div>
         </div>
       </div>

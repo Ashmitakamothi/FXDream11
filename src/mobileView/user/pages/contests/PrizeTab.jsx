@@ -2,29 +2,36 @@ import React from 'react';
 import { Trophy } from "lucide-react";
 
 const PrizeTab = ({ contest }) => {
-  
   return (
-    <div className="space-y-3">
-      <div className={`bg-muted-soft rounded-2xl p-5 text-center relative overflow-hidden card-shine`} style={{ boxShadow: "0 6px 24px rgba(0, 0, 0, 0.07)" }}>
-        <Trophy size={28} className="text-primary mx-auto mb-2" />
-        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-1">Total Prize Pool</p>
-        <p className="text-[28px] font-extrabold text-foreground">${contest.prizePool.toLocaleString()}</p>
+    <div className="space-y-4">
+      <div className="bg-[#121a16] rounded-2xl py-6 px-4 text-center">
+        <Trophy size={28} className="text-[#20b281] mx-auto mb-3" />
+        <p className="text-[11px] font-bold text-[#8ca8a1] uppercase tracking-widest mb-1.5">Total Prize Pool</p>
+        <p className="text-[26px] font-extrabold text-[#ffffff]">${Number(contest.prizePool || 0).toFixed(2)}</p>
       </div>
 
-      <div className="bg-cardM rounded-2xl p-4" style={{ boxShadow: "0 2px 12px rgba(0, 0, 0, 0.04)" }}>
-        <h3 className="text-[13px] font-bold text-foreground mb-3">Prize Distribution</h3>
-        <div className="space-y-2">
+      <div className="bg-[#121a16] rounded-2xl p-4">
+        <h3 className="text-[14px] font-extrabold text-[#ffffff] mb-4">Prize Distribution</h3>
+        <div className="space-y-3">
           {contest.prizeDistribution.map((item, i) => {
-            const isTop3 = i < 2;
+            const isFirst = i === 0;
+            const isSecond = i === 1;
+            const isThird = i === 2;
+            
+            let rankBg = "bg-[#25392f] text-[#8ca8a1]";
+            if (isFirst) rankBg = "bg-[#d9963e] text-[#ffffff]";
+            else if (isSecond) rankBg = "bg-[#9ba3a0] text-[#ffffff]";
+            else if (isThird) rankBg = "bg-[#b87645] text-[#ffffff]";
+
             return (
-              <div key={item.rankFrom} className={`flex items-center justify-between p-3 rounded-xl ${isTop3 ? "bg-muted" : "bg-muted-soft"}`}>
-                <div className="flex items-center gap-3">
-                  <div className={`w-16 h-8 rounded-full flex items-center justify-center text-[12px] font-bold ${ i === 0 ? "bg-gradient-to-br from-[#f5c518] to-[#b35d14] text-[#ffffff]" : i === 1 ? "bg-gradient-to-br from-[#b8b8b8] to-[#8c8b8b] text-[#ffffff]" : i === 2 ? "bg-gradient-to-br from-[#cc7a33] to-[#964d2b] text-[#ffffff]" : "bg-muted text-muted-foreground"}`}>
+              <div key={item.rankFrom} className="flex items-center justify-between p-3 rounded-2xl bg-[#14261e]">
+                <div className="flex items-center gap-4">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center text-[12px] font-bold ${rankBg}`}>
                     {item.rankFrom === item.rankTo ? `#${item.rankFrom}` : `#${item.rankFrom}-${item.rankTo}`}
                   </div>
-                  <span className="text-[12px] font-semibold text-foreground">{item.prizePercentage}%</span>
+                  <span className="text-[13px] font-bold text-[#ffffff]">{item.prizePercentage}%</span>
                 </div>
-                <span className="text-[14px] font-extrabold text-foreground">${item.prizeAmount.toLocaleString()}</span>
+                <span className="text-[14px] font-extrabold text-[#ffffff]">${Number(item.prizeAmount || 0).toFixed(2)}</span>
               </div>
             );
           })}

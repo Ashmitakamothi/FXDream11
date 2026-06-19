@@ -104,7 +104,7 @@ const renderActionButton = (c, style, navigate) => {
             return (
                 <button
                     disabled
-                    className="text-[11px] font-bold px-4 py-[8px] rounded-xl bg-secondary text-muted-foreground w-full cursor-default"
+                    className="bg-[#12231F] border-none text-[11px] font-bold px-4 py-[8px] rounded-xl text-gray-300 w-full cursor-default"
                 >
                     Contest Completed
                 </button>
@@ -116,14 +116,14 @@ const renderActionButton = (c, style, navigate) => {
                 return (
                     <button
                         disabled
-                        className="text-[11px] font-bold px-4 py-[8px] rounded-xl bg-gray-200 text-gray-500 w-full cursor-default"
+                        className="bg-[#12231F] border-none text-[11px] font-bold px-4 py-[8px] rounded-xl text-gray-300 w-full cursor-default"
                     >
-                        Full
+                        Contest Full
                     </button>
                 );
             }
             return (
-                <button disabled className="text-[11px] font-bold px-4 py-[8px] rounded-xl bg-primary/10 text-primary w-full cursor-default border border-primary/20">
+                <button disabled className="bg-[#12231F] border border-white/5 text-[11px] font-bold px-4 py-[8px] rounded-xl text-[#1C7E5F] w-full cursor-default">
                     Contest Started
                 </button>
             );
@@ -248,29 +248,26 @@ const ContestCard = ({ contest: c, index, actionbtns }) => {
             </svg>
             
             <div className="p-4 relative z-10">
-                <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                        {/* {badge && c.status?.toLowerCase() === 'open' && (
-                            <span className={`flex items-center gap-1 px-1.5 py-[2px] rounded-md bg-transparent border border-[#ef4444] text-[#ef4444] text-[9px] font-bold`}>
-                                <BadgeIcon size={9} /> {badge.label}
-                            </span>
-                        )} */}
-                        <h3 className="font-bold text-[14px] text-white tracking-wide">{c.contestName}</h3>
+                <div className="flex items-start justify-between mb-2">
+                    <h3 className="font-bold text-[14px] text-white tracking-wide pr-2">{c.contestName}</h3>
+                    <div className="shrink-0 flex items-center justify-end">
+                        <span className={`px-2.5 py-0.5 rounded-full bg-[#1C7E5F]/20 text-[#1C7E5F] text-[10px] font-bold`}>
+                            {c.status || 'Open'}
+                        </span>
                     </div>
-                    {!actionbtns && (
-                        <button className={`flex items-center gap-1 text-[11px] font-bold text-white bg-[#1C7E5F] px-4 py-[6px] rounded-full active:scale-95`} onClick={() => navigate(`/contest/${c.contestId}`)}>
-                            Join <ArrowRight size={10} />
-                        </button>
-                    )}
                 </div>
                 
-                <p className="text-[10px] text-gray-500 mb-2.5 truncate font-medium">
-                    {c.description || "We know how frustrating it is when your selection is leadin..."}
+                <p className="text-[10px] text-[#75847F] mb-3 leading-relaxed font-medium">
+                    {c.description || "We know how frustrating it is when your selection is leading, only to fall short in the final innings of a MLB match. That's why we're bringing Stake users an exclusive MLB betting promotion! If your Winner (Incl. Extra Innings) selection is leading at the start of the 9th Innings but ends up losing, you'll be refunded up to $100!"}
                 </p>
                 
                 <div className="w-full h-[3px] rounded-full bg-[#182824] mb-3 overflow-hidden">
                     <div className={`h-full rounded-full bg-[#1C7E5F]`} style={{ width: `${progress}%` }} />
                 </div>
+                
+                <p className="text-[9px] text-[#75847F] mb-3 font-semibold tracking-wide">
+                    {new Date(c.startDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})} | {new Date(c.startDate).toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true})} &rarr; {new Date(c.endDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})} | {new Date(c.endDate).toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true})}
+                </p>
                 
                 <div className="flex items-center justify-between mb-4 mt-1">
                     <ContestTimer endDate={c.endDate} color="bg-[#12231F] border-none !text-gray-300" />
@@ -296,7 +293,7 @@ const ContestCard = ({ contest: c, index, actionbtns }) => {
                 {actionbtns && (
                     <div className="grid grid-cols-2 gap-2 mt-4">
                         <button
-                            className={`bg-[#12231F] border border-white/5 text-[11px] font-bold px-4 py-[8px] rounded-xl text-gray-300 w-full active:scale-95 transition-transform`}
+                            className={`bg-[#12231F] border-none text-[11px] font-bold px-4 py-[8px] rounded-xl text-gray-300 w-full active:scale-95 transition-transform`}
                             onClick={() => navigate(`/user/contests/${c.contestId}`)}
                         >
                             Details

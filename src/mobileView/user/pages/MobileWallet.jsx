@@ -38,7 +38,7 @@ const MobileWallet = () => {
     return (
         <div className="min-h-screen bg-background max-w-md mx-auto relative">
 
-            <HeaderAll path="Wallet" />
+            <HeaderAll path="Wallet" menu={false} />
 
             {/* Hero Wallet Card */}
             <div className="px-5 mt-2">
@@ -50,8 +50,8 @@ const MobileWallet = () => {
                     <div className="relative z-10 flex items-start justify-between">
                         <div>
                             <p className="text-[11px] font-medium tracking-wider uppercase" style={{ color: "#a3b3c2" }}>Available Balance</p>
-                            <p className="text-[32px] font-black mt-1 leading-tight" style={{ color: "#ffc433", textShadow: "0 0 24px #ffbd1a59" }}>
-                                ${(wallet?.balance || 0).toFixed(2)}
+                            <p className="text-[32px] font-black mt-1 leading-tight flex items-baseline gap-1" style={{ color: "#ffc433", textShadow: "0 0 24px #ffbd1a59" }}>
+                                ${(wallet?.balance || 0).toFixed(2)} <span className="text-[14px] text-[#8ca8a1] font-semibold" style={{ textShadow: "none" }}>USD</span>
                             </p>
                             <div className="flex items-center gap-1.5 mt-1.5">
                                 <Clock size={10} style={{ color: "#6e8091" }} />
@@ -60,11 +60,11 @@ const MobileWallet = () => {
                         </div>
 
                         <div className="flex flex-col gap-2 mt-1">
-                            <button onClick={() => setActiveTab("Deposit")} className="flex items-center gap-1.5 px-3.5 py-2 rounded-3xl text-[11px] font-bold transition-all active:scale-90" style={{ background: "linear-gradient(135deg, #ffb500 0%, #da910b 100%)", color: "#1f1a14", boxShadow: "0 4px 16px #ffb5004d", }}>
-                                <Plus size={13} strokeWidth={3} /> Deposit
+                            <button onClick={() => setActiveTab("Deposit")} className="flex items-center gap-1.5 px-4 py-2 rounded-3xl text-[12px] font-bold transition-all active:scale-90" style={{ background: "linear-gradient(135deg, #f5a623 0%, #d97706 100%)", color: "#1c1917", boxShadow: "0 6px 24px rgba(217, 119, 6, 0.65)" }}>
+                                <Plus size={14} strokeWidth={3} /> Deposit
                             </button>
-                            <button onClick={() => setActiveTab("Withdraw")} className="flex items-center gap-1.5 px-3.5 py-2 rounded-3xl text-[11px] font-bold transition-all active:scale-90" style={{ background: "#242e4299", border: "1px solid #475a6e", color: "#ccd6e0", }}>
-                                <ArrowUpRight size={13} strokeWidth={3} /> Withdraw
+                            <button onClick={() => setActiveTab("Withdraw")} className="flex items-center gap-1.5 px-4 py-2 rounded-3xl text-[12px] font-bold transition-all active:scale-90" style={{ backgroundColor: "#1e293b", border: "1px solid #334155", color: "#f8fafc" }}>
+                                <ArrowUpRight size={14} strokeWidth={3} /> Withdraw
                             </button>
                         </div>
                     </div>

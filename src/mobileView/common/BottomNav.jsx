@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { UserSidebar } from "../../layouts/components/SidebarData";
-import { ChartColumn, Radio } from "lucide-react";
+// import { UserSidebar } from "../../layouts/components/SidebarData";
+import { ChartColumn, Home, Trophy, Wallet, Award } from "lucide-react";
 
 const BottomNav = () => {
   const navigate = useNavigate();
@@ -10,10 +10,19 @@ const BottomNav = () => {
   const { t } = useTranslation();
 
   const navItems = useMemo(() => {
-    const items = UserSidebar.filter((item) => item.mobileNav);
+    // Commented out items that are in my code but not in the image
+    // const items = UserSidebar.filter((item) => item.mobileNav);
+    // return [
+    //   ...items,
+    //   { label: "Live", url: "/live", activeUrl: ["/live"], icon: <ChartColumn size={18} /> }
+    // ];
+
     return [
-      ...items,
-      { label: "Live", url: "/live", activeUrl: ["/live"], icon: <ChartColumn size={18} /> }
+      { label: "Home", url: "/dashboard", activeUrl: ["/", "/dashboard"], icon: <Home size={22} strokeWidth={1.5} /> },
+      { label: "Contest", url: "/user/contests", activeUrl: ["/user/contests"], icon: <Trophy size={22} strokeWidth={1.5} /> },
+      { label: "Wallet", url: "/wallet", activeUrl: ["/wallet"], icon: <Wallet size={22} strokeWidth={1.5} /> },
+      { label: "My Contests", url: "/my-contests", activeUrl: ["/my-contests"], icon: <Award size={22} strokeWidth={1.5} /> },
+      { label: "Live", url: "/live", activeUrl: ["/live"], icon: <ChartColumn size={22} strokeWidth={1.5} /> }
     ];
   }, []);
 
@@ -25,15 +34,15 @@ const BottomNav = () => {
   };
 
   return (
-    <nav className="fixed bottom-4 left-4 right-4 z-50">
-      <div className="max-w-md mx-auto glass-effect rounded-2xl border-none px-1.5 py-1.5" style={{ boxShadow: '0 -2px 20px #0000000f, 0 4px 16px #00000014' }}>
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-[#0C1B14] via-[#0C1B14] to-[#0C1B14]/80 pt-1 pb-4">
+      <div className="max-w-md mx-auto glass-effect rounded-[36px] border-none px-1.5 py-1.5 mx-3" style={{ boxShadow: '0 4px 24px rgba(0,0,0,0.3)' }}>
         <div className="flex items-center justify-around">
           {navItems.map((tab) => {
             const active = isActivePath(tab.activeUrl);
             return (
-              <button key={tab.label} onClick={() => navigate(tab.url)} className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all duration-200 active:scale-90 ${active ? "bg-[#059669] text-white" : "text-muted-foreground hover:text-foreground/70"}`} style={active ? { boxShadow: '0 2px 10px rgba(5,150,105,0.25)' } : undefined }>
-                <div className={`${active ? "scale-110" : "scale-100"} transition-transform duration-200`}>{tab.icon}</div>
-                <span className={`text-[10px] font-semibold ${active ? "text-primary-foreground" : "text-muted-foreground"}`}>{t(tab.label)}</span>
+              <button key={tab.label} onClick={() => navigate(tab.url)} className={`flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-2xl transition-all duration-200 active:scale-90 ${active ? "bg-[#2aa880] text-white" : "text-[#75847F] hover:text-[#2aa880]"}`}>
+                <div className={`${active ? "scale-105 mb-0.5" : "scale-100"} transition-transform duration-200`}>{tab.icon}</div>
+                <span className={`text-[11px] font-semibold tracking-wide`}>{t(tab.label)}</span>
               </button>
             );
           })}

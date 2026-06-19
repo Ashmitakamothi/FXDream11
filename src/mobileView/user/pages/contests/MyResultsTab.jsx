@@ -24,14 +24,11 @@ const MyResultsTab = ({ id }) => {
 
   if (!myResult || Object.keys(myResult).length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 px-6 text-center gap-4">
-        <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center">
-          <Trophy size={36} className="text-muted-foreground" />
-        </div>
-        <div className="space-y-1">
-          <p className="text-[15px] font-bold text-foreground">No results data</p>
-          <p className="text-[12px] text-muted-foreground">Rankings will appear once the contest starts and participants begin trading.</p>
-        </div>
+      <div className="flex flex-col items-center justify-center py-24 px-6 text-center gap-4">
+        <Trophy size={32} className="text-[#8ca8a1]" />
+        <p className="text-[14px] font-bold text-[#8ca8a1] max-w-[250px] leading-relaxed">
+          Your result will appear here after the contest ends.
+        </p>
       </div>
     );
   }
