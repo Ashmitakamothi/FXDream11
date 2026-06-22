@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Users, ArrowRight, Flame, Zap, Brain, Clock } from "lucide-react";
+import { Users, ArrowRight, Flame, Zap, Brain, Clock, Trophy } from "lucide-react";
 import { useTheme } from '../../../ThemeContext';
 import { Button } from "antd";
 const pad = (n) => String(n).padStart(2, "0");
@@ -165,81 +165,46 @@ const ContestTimer = ({ endDate, color }) => {
 import { useNavigate } from "react-router-dom";
 
 const ContestCard = ({ contest: c, index, actionbtns }) => {
-    const { theme } = useTheme();
-    const navigate = useNavigate();
-    const badge = getStatusBadge(c.status);
-    const style = getContestStyle(index, theme);
-    const BadgeIcon = badge.icon;
-    const progress = Math.min((c.currentParticipants / c.maxParticipants) * 100, 100);
+    const palettes = [
+        {
+            darkGradient: "from-[#121a22] via-[#11161b] to-[#161a1f]",
+            barGradient: "from-[#2692ed] via-[#2767ba] to-[#2948a3]",
+            btnGradient: "from-[#2388eb] to-[#22419f]",
+            badge: { icon: Zap, label: "Trending", bg: "bg-[#2d8ce6]" }
+        },
+        {
+            darkGradient: "from-[#211d12] via-[#1b1811] to-[#211a16]",
+            barGradient: "from-[#f5a600] via-[#c46a1b] to-[#a1442b]",
+            btnGradient: "from-[#eb9f00] to-[#a14022]",
+            badge: { icon: Trophy, label: "Premium", bg: "bg-[#da8a1a]" }
+        },
+        {
+            darkGradient: "from-[#191222] via-[#16111b] to-[#1b161f]",
+            barGradient: "from-[#9966cc] via-[#804db3] to-[#664599]",
+            btnGradient: "from-[#8c52cc] to-[#5e3da6]",
+            badge: { icon: Flame, label: "Featured", bg: "bg-[#8040bf]" }
+        }
+    ];
+    
+    const style = palettes[index % palettes.length];
+    const BadgeIcon = style.badge.icon;
 
-    const wavePath1 = generateRandomWavePath(c.contestId * 100 + 1, 60, 25, 360, 120);
-    const wavePath2 = generateRandomWavePath(c.contestId * 100 + 2, 65, 15, 360, 120);
+    const formatDate = (dateString) => {
+        if (!dateString) return "TBD";
+        const d = new Date(dateString);
+        const options = { month: 'short', day: '2-digit', year: 'numeric' };
+        const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
+        return `${d.toLocaleDateString('en-US', options)} | ${d.toLocaleTimeString('en-US', timeOptions)}`;
+    };
 
-    /* OLD CODE COMMENTED OUT AS PER REQUEST
-    return (
-        <div className={` ${style.card} rounded-2xl relative overflow-hidden active:scale-[0.97] transition-all duration-200 card-shine`}
-            style={{ boxShadow: theme === "dark" ? "0 6px 24px rgba(0,0,0,0.4)" : "0 4px 16px rgba(0,0,0,0.06)", }}>
+    const waveSeed = c.contestId || index;
+    const wavePath1 = generateRandomWavePath(waveSeed, 50, 40, 360, 100);
+    const wavePath2 = generateRandomWavePath(waveSeed + 123, 60, 30, 360, 100);
 
-            <svg className="absolute inset-0 w-full h-full opacity-[0.04]" viewBox="0 0 360 100" preserveAspectRatio="none" fill="none">
-                <path d={wavePath1} stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                <path d={wavePath2} stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" />
-            </svg>
-            <div className="p-3.5 relative z-10">
-                <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                        <h3 className="font-bold text-[14px] ">{c.contestName}</h3>
-                        <span className={`flex items-center gap-1 px-1.5 py-[2px] rounded-full ${badge.bg} text-white text-[9px] font-bold`}>
-                            <BadgeIcon size={9} />
-                            {badge.label}
-                        </span>
-                    </div>
-                    {!actionbtns && (
-                        <button className={`flex items-center gap-1 text-[11px] font-bold text-white bg-gradient-to-r ${style.btnGradient} px-4 py-[6px] rounded-full active:scale-95`} onClick={() => navigate(`/contest/${c.contestId}`)}>
-                            Join <ArrowRight size={10} />
-                        </button>
-                    )}
-                </div>
-                <p className="text-[11px] text-gray-500 mb-2 truncate">{c.allowedTradingPairs?.join(", ")}</p>
-                <div className="w-full h-[6px] rounded-full bg-[#f1f5f9] dark:bg-[#0000000d] mb-2.5 overflow-hidden">
-                    <div className={`h-full rounded-full bg-gradient-to-r ${style.barGradient}`} style={{ width: `${progress}%` }} />
-                </div>
-                <div className="flex items-center justify-between mb-2.5">
-                    <ContestTimer endDate={c.endDate} color={style.statBg} />
-                    <div className="flex items-center gap-1 text-gray-500">
-                        <Users size={11} />
-                        <span className="text-[10px]">{c.currentParticipants} joined</span>
-                    </div>
-                </div>
-                <div className="grid grid-cols-3 gap-1.5">
-                    {[
-                        { label: "Credit", value: `$${c.virtualBalance?.toLocaleString()}` },
-                        { label: "Entry", value: `$${c.entryFee}` },
-                        { label: "Prize Pool", value: `$${c.prizePool?.toLocaleString()}` },
-                    ].map((stat) => (
-                        <div key={stat.label} className={`${style.statBg} rounded-2xl py-1.5 px-2 text-center`}>
-                            <p className="text-[12px] font-bold ">{stat.value}</p>
-                            <p className="text-[8px] text-gray-500 uppercase">{stat.label}</p>
-                        </div>
-                    ))}
-                </div>
-                {actionbtns && (
-                    <div className="grid grid-cols-2 gap-2 mt-3">
-                        <button
-                            className={`${style.statBg} border text-[11px] font-bold px-4 py-[8px] rounded-xl text-secondary-foreground w-full active:scale-95 transition-transform`}
-                            onClick={() => navigate(`/user/contests/${c.contestId}`)}
-                        >
-                            Details
-                        </button>
-                        {renderActionButton(c, style, navigate)}
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-    */
+    const progress = Math.min(((c.currentParticipants || 214) / (c.maxParticipants || 300)) * 100, 100);
 
     return (
-        <div className={`bg-[#0B1714] border border-[#ffffff0a] rounded-[20px] relative overflow-hidden active:scale-[0.97] transition-all duration-200`}
+        <div className={`bg-gradient-to-br ${style.darkGradient} border border-[#ffffff0a] rounded-3xl relative overflow-hidden active:scale-[0.98] transition-all duration-200`}
             style={{ boxShadow: "0 6px 24px rgba(0,0,0,0.4)" }}>
 
             <svg className="absolute inset-0 w-full h-full opacity-[0.03]" viewBox="0 0 360 100" preserveAspectRatio="none" fill="none">
@@ -248,57 +213,76 @@ const ContestCard = ({ contest: c, index, actionbtns }) => {
             </svg>
             
             <div className="p-4 relative z-10">
-                <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-bold text-[14px] text-white tracking-wide pr-2">{c.contestName}</h3>
-                    <div className="shrink-0 flex items-center justify-end">
-                        <span className={`px-2.5 py-0.5 rounded-full bg-[#1C7E5F]/20 text-[#1C7E5F] text-[10px] font-bold`}>
-                            {c.status || 'Open'}
+                {/* Top Row: Title & Badges */}
+                <div className="flex items-start justify-between mb-1 gap-2">
+                    <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <h3 className="font-bold text-[16px] text-white tracking-wide truncate">{c.contestName}</h3>
+                        <span className={`shrink-0 flex items-center gap-1 px-2 py-[2px] rounded-full ${style.badge.bg} text-white text-[10px] font-bold`}>
+                            <BadgeIcon size={10} />
+                            {style.badge.label}
+                        </span>
+                    </div>
+                    <div className="shrink-0">
+                        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3d181e] text-[#ef4444] text-[10px] font-bold tracking-widest">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#ef4444]"></span> LIVE
                         </span>
                     </div>
                 </div>
                 
-                <p className="text-[10px] text-[#75847F] mb-3 leading-relaxed font-medium">
-                    {c.description || "We know how frustrating it is when your selection is leading, only to fall short in the final innings of a MLB match. That's why we're bringing Stake users an exclusive MLB betting promotion! If your Winner (Incl. Extra Innings) selection is leading at the start of the 9th Innings but ends up losing, you'll be refunded up to $100!"}
+                {/* Pair */}
+                <p className="text-[11px] text-[#75847F] mb-3 font-semibold uppercase tracking-wider">
+                    {Array.isArray(c.allowedTradingPairs) ? c.allowedTradingPairs.join("/") : (c.allowedTradingPairs || "All Pairs")}
                 </p>
                 
-                <div className="w-full h-[3px] rounded-full bg-[#182824] mb-3 overflow-hidden">
-                    <div className={`h-full rounded-full bg-[#1C7E5F]`} style={{ width: `${progress}%` }} />
+                {/* Progress Bar */}
+                <div className="w-full h-[4px] rounded-full bg-[#ffffff0a] mb-3 overflow-hidden">
+                    <div className={`h-full rounded-full bg-gradient-to-r ${style.barGradient}`} style={{ width: `${progress}%` }} />
                 </div>
                 
-                <p className="text-[9px] text-[#75847F] mb-3 font-semibold tracking-wide">
-                    {new Date(c.startDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})} | {new Date(c.startDate).toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true})} &rarr; {new Date(c.endDate).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'})} | {new Date(c.endDate).toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit', hour12: true})}
+                {/* Dates */}
+                <p className="text-[10px] text-[#75847F] mb-3 font-semibold tracking-wide">
+                    {formatDate(c.startDate)} &rarr; {formatDate(c.endDate)}
                 </p>
                 
-                <div className="flex items-center justify-between mb-4 mt-1">
-                    <ContestTimer endDate={c.endDate} color="bg-[#12231F] border-none !text-gray-300" />
-                    <div className="flex items-center gap-1 text-gray-400">
-                        <Users size={12} />
-                        <span className="text-[11px] font-bold font-mono">{c.currentParticipants}/{c.maxParticipants || c.currentParticipants}</span>
+                {/* Timer & Participants */}
+                <div className="flex items-center justify-between mb-4">
+                    <ContestTimer endDate={c.endDate} color="bg-[#ffffff0a] border border-[#ffffff05] !text-gray-300 px-3 py-1.5" />
+                    <div className="flex items-center gap-1.5 text-[#75847F]">
+                        <Users size={13} />
+                        <span className="text-[12px] font-bold font-mono text-gray-300">{c.currentParticipants || 214}/{c.maxParticipants || 300}</span>
                     </div>
                 </div>
                 
+                {/* Stats */}
                 <div className="grid grid-cols-3 gap-2">
                     {[
-                        { label: "Credit", value: `$${Number(c.virtualBalance || 1000).toFixed(2)}` },
-                        { label: "Entry", value: `$${Number(c.entryFee || 500).toFixed(2)}` },
-                        { label: "Prize Pool", value: `$${Number(c.prizePool || 900).toFixed(2)}` },
+                        { label: "Credit", value: `$${Number(c.virtualBalance || 10000).toLocaleString()}` },
+                        { label: "Entry", value: `$${Number(c.entryFee || 100).toLocaleString()}` },
+                        { label: "Prize Pool", value: `$${Number(c.prizePool || 25000).toLocaleString()}` },
                     ].map((stat) => (
-                        <div key={stat.label} className={`bg-[#12231F] rounded-[14px] py-2 px-2 text-center`}>
-                            <p className="text-[13px] font-bold text-white">{stat.value}</p>
-                            <p className="text-[8px] text-gray-500 uppercase mt-0.5 tracking-wider font-semibold">{stat.label}</p>
+                        <div key={stat.label} className={`bg-[#ffffff08] rounded-[16px] py-3 px-2 text-center`}>
+                            <p className="text-[14px] font-bold text-white mb-0.5">{stat.value}</p>
+                            <p className="text-[9px] text-[#75847F] uppercase tracking-widest font-bold">{stat.label}</p>
                         </div>
                     ))}
                 </div>
                 
+                {/* Actions */}
                 {actionbtns && (
-                    <div className="grid grid-cols-2 gap-2 mt-4">
+                    <div className="flex items-center gap-3 mt-4">
                         <button
-                            className={`bg-[#12231F] border-none text-[11px] font-bold px-4 py-[8px] rounded-xl text-gray-300 w-full active:scale-95 transition-transform`}
+                            className="bg-[#ffffff08] border-none text-[12px] font-bold px-4 py-[11px] rounded-[14px] text-white flex-1 active:scale-95 transition-transform"
                             onClick={() => navigate(`/user/contests/${c.contestId}`)}
                         >
                             Details
                         </button>
-                        {renderActionButton(c, { btnGradient: "from-[#1C7E5F] to-[#146048]" }, navigate)}
+                        <button
+                            className={`flex items-center justify-center gap-1.5 text-[12px] font-bold text-white bg-gradient-to-r ${style.btnGradient} px-4 py-[11px] rounded-[14px] flex-1 active:scale-95 transition-transform`}
+                            onClick={() => navigate(`/user/contests/${c.contestId}`)}
+                        >
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                            Live Rank &rarr;
+                        </button>
                     </div>
                 )}
             </div>

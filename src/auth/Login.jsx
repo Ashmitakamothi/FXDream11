@@ -25,7 +25,11 @@ export default function Login() {
   const handleLogin = async (values) => {
     setLoading(true);
     try {
-      const response = await loginUser(values);
+      const payload = {
+        email: values.email?.trim(),
+        password: values.password?.trim()
+      };
+      const response = await loginUser(payload);
       const loginResponse = response?.data || {};
       const otpRequired = loginResponse?.otpRequired === true;
       const requiresMpinSetup = loginResponse?.RequiresMpinSetup === true || loginResponse?.requiresMpinSetup === true;
@@ -63,7 +67,7 @@ export default function Login() {
       navigate(roleName === "admin" ? "/admin-dashboard" : "/dashboard");
     } catch (error) {
       console.error("Login Error:", error);
-      const errorMsg = error?.message || error || "Invalid email or password";
+      const errorMsg = error?.errors?.[0]?.message || error?.message || (typeof error === 'string' ? error : "Invalid email or password");
       message.error(errorMsg);
     } finally {
       setLoading(false);

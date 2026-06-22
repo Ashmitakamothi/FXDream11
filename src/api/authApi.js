@@ -15,8 +15,8 @@ export const verifyLoginOtp = (data) => { // done
 
 export const createMpin = (data) => {
   const token = data.tempToken || data.TempToken;
-  // Send the full data (including tempToken) in payload, AND as a Bearer token
-  return request("POST", "/mpin/create", data, {
+  const payload = { mpin: data.mpin };
+  return request("POST", "/mpin/create", payload, {
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
 };

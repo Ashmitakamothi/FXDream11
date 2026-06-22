@@ -71,7 +71,8 @@ const routes = [
     // { path: "/admin-dashboard", type: "private", component: AdminDashboard, title: "AdminDashboard" },
 
     // User Dashboard Routes
-    { path: "/user/contests", type: "private",  title: "Contests", mobile: MobileContests, component: LiveContests, component: LiveContests },
+    { path: "/user/contests", type: "private",  title: "Contests", mobile: MobileContests, component: LiveContests },
+    { path: "/live", type: "private",  title: "Contests", mobile: MobileContests, component: LiveContests },
     { path: "/user/contests/:id", type: "private", mobile:ContestDetail, title: (params, location) => location.state?.contest?.contestName || "ContestDetails", },
     { path: "/wallet", type: "private",  title: "Wallet", mobile: MobileWallet , component:Wallet},
     { path: "/profile", type: "private",  title: "Profile", mobile: MobileProfile, component: Profile },

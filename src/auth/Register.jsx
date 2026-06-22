@@ -29,13 +29,18 @@ export default function Register() {
   const handleRegister = async (values) => {
     setLoading(true);
     try {
-      const payload = { ...values };
+      const payload = { 
+        ...values,
+        phone: values.phoneNumber 
+      };
+      delete payload.phoneNumber;
 
       await registerUser(payload);
       message.success("Account created successfully! Please login.");
       navigate("/login");
     } catch (error) {
-      const apiMessage = error?.response?.data?.message || error?.message || "Registration failed. Please try again.";
+      console.error("Register Error:", error);
+      const apiMessage = error?.errors?.[0]?.message || error?.message || (typeof error === 'string' ? error : "Registration failed. Please try again.");
       message.error(apiMessage);
     } finally {
       setLoading(false);

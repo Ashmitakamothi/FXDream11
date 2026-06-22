@@ -114,6 +114,25 @@ export default function CreateMpin() {
                 <Input.OTP length={6} formatter={(str) => str.replace(/\D/g, "")} className="w-full" />
               </Form.Item>
 
+              <Form.Item 
+                label={<span className="text-theme label">{t("Confirm MPIN")}</span>} 
+                name="confirmMpin" 
+                dependencies={['mpin']}
+                rules={[
+                  { required: true, message: "Please confirm your 6-digit MPIN" },
+                  ({ getFieldValue }) => ({
+                    validator(_, value) {
+                      if (!value || getFieldValue('mpin') === value) {
+                        return Promise.resolve();
+                      }
+                      return Promise.reject(new Error("The two MPINs do not match"));
+                    },
+                  }),
+                ]}
+              >
+                <Input.OTP length={6} formatter={(str) => str.replace(/\D/g, "")} className="w-full" />
+              </Form.Item>
+
               <LoadableButton htmlType="submit" lable={t("Create & Sign In")} loadingLable={t("Creating...")} isLoading={submitLoading} className="w-full login-btn text-white h-10 !rounded-lg" />
             </Form>
 
