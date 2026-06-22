@@ -215,16 +215,16 @@ const ContestCard = ({ contest: c, index, actionbtns }) => {
             </svg>
             
             <div className="p-4 relative z-10">
-                {/* Top Row: Title & Badges */}
-                <div className="flex items-start justify-between mb-1 gap-2">
-                    <div className="flex items-center gap-2 flex-1 min-w-0">
-                        <h3 className="font-bold text-[16px] text-gray-900 dark:text-white tracking-wide truncate">{c.contestName}</h3>
-                        <span className={`shrink-0 flex items-center gap-1 px-2 py-[2px] rounded-full ${style.badge.bg} text-white text-[10px] font-bold`}>
-                            <BadgeIcon size={10} />
-                            {style.badge.label}
+                <div className="flex items-center justify-between mb-1 gap-2">
+                    <h3 className="font-bold text-[16px] text-gray-900 dark:text-white tracking-wide truncate flex-1 min-w-0">
+                        {c.contestName}
+                    </h3>
+                    
+                    <div className="flex items-center gap-2 shrink-0">
+                        <span className={`flex items-center justify-center gap-1 px-2.5 py-1 rounded-full ${style.badge.bg} text-white text-[10px] font-bold leading-none shadow-sm`}>
+                            <BadgeIcon size={12} strokeWidth={2.5} />
+                            <span className="pt-[1px]">{style.badge.label}</span>
                         </span>
-                    </div>
-                    <div className="shrink-0">
                         <button 
                             onClick={() => navigate(`/user/contests/${c.contestId}`)}
                             className={`flex items-center gap-1 px-4 py-1.5 rounded-full bg-gradient-to-r ${style.btnGradient} text-white text-[12px] font-bold active:scale-95 transition-transform`}

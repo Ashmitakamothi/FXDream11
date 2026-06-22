@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import ContestCard from '../cards/ContestCard';
 import useContestStore from '../../../store/contestStore';
 import { Bell, Menu, Search, Trophy, ArrowLeft } from 'lucide-react';
@@ -9,6 +9,7 @@ import { useSidebar } from '../../common/MobileLayout';
 
 export default function MobileContests() {
     const navigate = useNavigate();
+    const location = useLocation();
     const [activeFilter, setActiveFilter] = useState("All");
     const { contests, getContests } = useContestStore();
     const { setIsSidebarOpen } = useSidebar() || {};
@@ -21,17 +22,19 @@ export default function MobileContests() {
         activeFilter === "All" || c.status?.toLowerCase() === activeFilter.toLowerCase()
     );
 
+    const isLive = location.pathname === '/live';
+
     return (
         <>
             <div className="min-h-screen bg-background max-w-md mx-auto relative">
                 
-                <HeaderAll path="Contest" menu={false} />
+                <HeaderAll path={isLive ? "Live Contest" : "Contest"} menu={false} />
 
                 <div className='flex flex-col gap-3'>
                     <div className="flex gap-2 overflow-x-auto custom-scrollbar px-4 pb-3 pt-1" >
                         {["All", "Open", "Running", "Completed", 'Cancelled'].map((item) => (
                             <button key={item} onClick={() => setActiveFilter(item)}
-                                className={`px-5 py-2 rounded-full text-[12px] font-bold whitespace-nowrap transition-all duration-200 active:scale-95 ${activeFilter === item ? "bg-primary text-primary-foreground dark:bg-[#1C7E5F] dark:text-white" : "bg-muted text-muted-foreground dark:bg-[#12231F] dark:text-gray-400"}`}
+                                className={`px-5 py-2 rounded-full text-[12px] font-bold whitespace-nowrap transition-all duration-200 active:scale-95 ${activeFilter === item ? "bg-[#2aa880] text-white shadow-sm" : "bg-gray-100 dark:bg-[#1f2d26] text-gray-500 dark:text-[#8ea399] hover:text-gray-700 dark:hover:text-white/80"}`}
                             >
                                 {item}
                             </button>

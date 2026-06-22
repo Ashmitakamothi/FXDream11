@@ -104,7 +104,7 @@ const MobileMyContests = () => {
             <div className="px-5 mt-4 mb-3">
                 <div className="flex gap-2">
                     {filterTabs.map((tab) => (
-                        <button key={tab} onClick={() => setActiveFilter(tab)} className={`px-4 py-1.5 rounded-full text-[12px] font-semibold transition-all duration-200 active:scale-95 ${activeFilter === tab ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
+                        <button key={tab} onClick={() => setActiveFilter(tab)} className={`px-4 py-1.5 rounded-full text-[12px] font-semibold transition-all duration-200 active:scale-95 ${activeFilter === tab ? "bg-[#2aa880] text-white shadow-sm" : "bg-gray-100 dark:bg-[#1f2d26] text-gray-500 dark:text-[#8ea399] hover:text-gray-700 dark:hover:text-white/80"}`}>
                             {tab}
                         </button>
                     ))}
