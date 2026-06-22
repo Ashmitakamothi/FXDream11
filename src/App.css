@@ -188,3 +188,27 @@
     border-radius: 10px;
   }
 }
+
+/* Custom Deposit Select Style */
+.custom-deposit-select .ant-select-selector {
+  background-color: #1b2622 !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  border-radius: 20px !important;
+  padding: 0 8px !important;
+}
+
+.custom-deposit-select.ant-select-focused .ant-select-selector,
+.custom-deposit-select.ant-select-open .ant-select-selector {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: #1b2622 !important;
+}
+
+.custom-deposit-select .ant-select-selection-item {
+  color: white !important;
+  display: flex !important;
+  align-items: center !important;
+}

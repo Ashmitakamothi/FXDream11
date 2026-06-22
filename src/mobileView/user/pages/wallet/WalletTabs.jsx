@@ -2,9 +2,17 @@ const tabs = ["Overview", "Deposit", "Withdraw", "Transactions"];
 
 const WalletTabs = ({ activeTab, setActiveTab }) => (
   <div className="px-5 mt-5">
-    <div className="flex items-center justify-between">
+    <div className="flex gap-1 p-1.5 rounded-full bg-[#1b2521]">
       {tabs.map((tab) => (
-        <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 rounded-full text-[12px] font-bold whitespace-nowrap transition-all duration-200 active:scale-95 ${activeTab === tab ? "bg-[#131d18] text-white border border-[#203227]" : "text-[#8ca8a1]" }`}>
+        <button 
+          key={tab} 
+          onClick={() => setActiveTab(tab)} 
+          className={`flex-1 py-2.5 rounded-full text-[12px] font-bold transition-all duration-200 ${
+            activeTab === tab 
+              ? "bg-[#111815] text-white" 
+              : "text-[#75847f] hover:text-white/70"
+          }`}
+        >
           {tab}
         </button>
       ))}

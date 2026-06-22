@@ -11,6 +11,8 @@ class SocketService {
   }
 
   connect(params = {}) {
+    console.log("WebSocket connection temporarily disabled for design work.");
+    return;
     const { terminalId, loginId, contestId } = params;
     const token = localStorage.getItem("token");
 

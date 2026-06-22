@@ -23,54 +23,61 @@ const DepositTab = ({ amount, setAmount }) => {
     return (
         <Form form={form} layout="vertical" onFinish={onFinish} initialValues={{ paymentMethod: 'bank' }}>
             <div className="space-y-5">
-                <div className="rounded-3xl p-5 bg-cardM card-shadow border border-border/50">
-                    <label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Amount (USD)</label>
-                    <div className="flex items-center gap-3 mt-3">
-                        <button type="button" onClick={() => setAmount(String(Math.max(0, Number(amount) - 10)))} className="w-10 h-10 rounded-3xl bg-muted-soft flex items-center justify-center text-foreground font-bold text-lg active:scale-90 transition-transform">−</button>
-                        <div className="flex-1 relative">
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold text-lg">$</span>
-                            <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full h-12 rounded-3xl bg-muted-soft bg-opacity-60 border border-border/50 text-center text-xl font-bold text-foreground pl-7 focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all" />
+                <div className="rounded-[24px] p-5 bg-[#121c17]">
+                    <label className="text-[11px] font-bold text-[#75847f] uppercase tracking-wider">Amount (USD)</label>
+                    <div className="flex items-center justify-between bg-[#1b2622] rounded-[24px] p-2 mt-3">
+                        <button type="button" onClick={() => setAmount(String(Math.max(0, Number(amount) - 10)))} className="w-10 h-10 rounded-full bg-[#121c17] flex items-center justify-center text-[#75847f] font-bold text-lg active:scale-90 transition-transform">−</button>
+                        <div className="flex-1 flex justify-center items-center">
+                            <span className="text-[#75847f] font-bold text-lg mr-1.5">$</span>
+                            <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-20 bg-transparent text-center text-[22px] font-bold text-white focus:outline-none p-0 border-none m-0 appearance-none" style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }} />
                         </div>
-                        <button type="button" onClick={() => setAmount(String(Number(amount) + 10))} className="w-10 h-10 rounded-3xl bg-muted-soft flex items-center justify-center text-foreground font-bold text-lg active:scale-90 transition-transform">+</button>
+                        <button type="button" onClick={() => setAmount(String(Number(amount) + 10))} className="w-10 h-10 rounded-full bg-[#121c17] flex items-center justify-center text-[#75847f] font-bold text-lg active:scale-90 transition-transform">+</button>
                     </div>
-                    <div className="flex gap-2 mt-3">
+                    <div className="flex gap-2 mt-4">
                         {quickAmounts.map((q) => (
-                            <button key={q} type="button" onClick={() => setAmount(String(q))} className={`flex-1 py-2 rounded-3xl text-[11px] font-semibold transition-all active:scale-90 ${amount === String(q) ? "bg-primary text-primary-foreground" : "bg-muted-soft text-muted-foreground"}`}>
+                            <button key={q} type="button" onClick={() => setAmount(String(q))} className={`flex-1 py-2.5 rounded-full text-[12px] font-bold transition-all active:scale-90 ${amount === String(q) ? "bg-[#1fa97a] text-white" : "bg-[#1b2622] text-[#1fa97a]"}`}>
                                 ${q}
                             </button>
                         ))}
                     </div>
                 </div>
 
-                <div className="rounded-3xl p-4 bg-cardM card-shadow border border-border/50">
-                    <label className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Payment Method</label>
+                <div className="rounded-[24px] p-5 bg-[#121c17]">
+                    <label className="text-[11px] font-bold text-[#75847f] uppercase tracking-wider">Payment Method</label>
                     <Form.Item name="paymentMethod" noStyle>
-                        <Select className="w-full mt-3 h-14 border-none bg-muted-soft rounded-3xl" dropdownStyle={{ borderRadius: '20px' }} suffixIcon={<ChevronDown size={16} className="text-muted-foreground" />}>
-                            <Select.Option value="bank">
-                                <div className="flex items-center gap-2.5 py-1">
-                                    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-500/10">
-                                        <Landmark size={14} className="text-blue-500" />
+                        <div className="bg-[#1b2622] rounded-[20px] mt-3">
+                            <Select 
+                                bordered={false}
+                                className="w-full h-[52px] [&_.ant-select-selection-item]:!text-white [&_.ant-select-selection-item]:flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-item]:pl-1" 
+                                dropdownStyle={{ borderRadius: '16px', backgroundColor: '#1b2622', border: 'none' }} 
+                                suffixIcon={<ChevronDown size={16} className="text-[#75847f] mr-2" />}
+                            >
+                                <Select.Option value="bank">
+                                    <div className="flex items-center gap-3 py-1.5 pl-2">
+                                        <div className="w-7 h-7 rounded-full flex items-center justify-center bg-[#3b82f6]">
+                                            <Landmark size={14} className="text-white" />
+                                        </div>
+                                        <span className="text-[13px] font-bold text-white">Bank Transfer</span>
                                     </div>
-                                    <span className="text-[13px] font-semibold text-foreground">Bank Transfer</span>
-                                </div>
-                            </Select.Option>
-                            <Select.Option value="card">
-                                <div className="flex items-center gap-2.5 py-1">
-                                    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-indigo-500/10">
-                                        <CreditCard size={14} className="text-indigo-500" />
+                                </Select.Option>
+                                <Select.Option value="card">
+                                    <div className="flex items-center gap-3 py-1.5 pl-2">
+                                        <div className="w-7 h-7 rounded-full flex items-center justify-center bg-[#4f46e5]">
+                                            <CreditCard size={14} className="text-white" />
+                                        </div>
+                                        <span className="text-[13px] font-bold text-white">Credit Card</span>
                                     </div>
-                                    <span className="text-[13px] font-semibold text-foreground">Credit Card</span>
-                                </div>
-                            </Select.Option>
-                            <Select.Option value="upi">
-                                <div className="flex items-center gap-2.5 py-1">
-                                    <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-emerald-500/10">
-                                        <Smartphone size={14} className="text-emerald-500" />
+                                </Select.Option>
+                                <Select.Option value="upi">
+                                    <div className="flex items-center gap-3 py-1.5 pl-2">
+                                        <div className="w-7 h-7 rounded-full flex items-center justify-center bg-[#1fa97a]">
+                                            <Smartphone size={14} className="text-white" />
+                                        </div>
+                                        <span className="text-[13px] font-bold text-white">UPI / Instant Pay</span>
                                     </div>
-                                    <span className="text-[13px] font-semibold text-foreground">UPI / Instant Pay</span>
-                                </div>
-                            </Select.Option>
-                        </Select>
+                                </Select.Option>
+                            </Select>
+                        </div>
                     </Form.Item>
                 </div>
 

@@ -94,7 +94,7 @@ const renderActionButton = (c, style, navigate) => {
             return (
                 <button
                     className={`flex items-center justify-center gap-1 text-[11px] font-bold text-white bg-gradient-to-r ${style.btnGradient} px-4 py-[8px] rounded-xl w-full active:scale-95`}
-                    onClick={() => navigate(`/contest/${c.contestId}`)}
+                    onClick={() => navigate(`/user/contests/${c.contestId}`)}
                 >
                     Join Now <ArrowRight size={10} />
                 </button>

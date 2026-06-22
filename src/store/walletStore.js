@@ -24,7 +24,8 @@ const useWalletStore = create((set, get) => ({
         set({ loading: true });
         try {
             const res = await getWallet();
-            set({ wallet: res?.data });
+            const payload = res?.data !== undefined ? res.data : res;
+            set({ wallet: payload });
         }
         catch (error) {
             set({ error: error?.response?.data?.message || error?.message });
@@ -36,7 +37,8 @@ const useWalletStore = create((set, get) => ({
         set({ loading: true, error: null });
         try {
             const res = await walletDeposit(data);
-            set({ wallet: res?.data });
+            const payload = res?.data !== undefined ? res.data : res;
+            set({ wallet: payload });
             return res;
         }
         catch (error) {
@@ -51,7 +53,8 @@ const useWalletStore = create((set, get) => ({
         set({ loading: true, error: null });
         try {
             const res = await walletWithdraw(data);
-            set({ wallet: res?.data });
+            const payload = res?.data !== undefined ? res.data : res;
+            set({ wallet: payload });
             return res;
         }
         catch (error) {
@@ -66,7 +69,9 @@ const useWalletStore = create((set, get) => ({
         set({ loading: true });
         try {
             const res = await getWalletTransactions(params);
-            set({ transactions: res?.data });
+            const payload = res?.data !== undefined ? res.data : res;
+            const list = Array.isArray(payload) ? payload : Array.isArray(payload?.items) ? payload.items : [];
+            set({ transactions: list });
         }
         catch (error) {
             set({ error: error?.response?.data?.message || error?.message });
