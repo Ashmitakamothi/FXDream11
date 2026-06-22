@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, ShieldCheck, ArrowLeft, Mail, ShieldAlert, Info, ChevronRight } from "lucide-react";
+import { Lock, ShieldCheck, ArrowLeft, Mail, ShieldAlert, Info, ChevronRight, Shield, X } from "lucide-react";
 import { Button, Input, message, Switch, Form, Card, Alert } from "antd";
 import SectionCard from "./components/SectionCard";
 import Field from "./components/Field";
@@ -79,6 +79,7 @@ export default function SecurityTab() {
         }
     };
 
+    /* 
     return (
         <div className="space-y-4">
             {view === "summary" && (
@@ -252,5 +253,146 @@ export default function SecurityTab() {
                 </div>
             )}
         </div>
+    )
+    */
+
+    const [isMpinModalOpen, setIsMpinModalOpen] = useState(false);
+
+    return (
+        <>
+            <div className="space-y-4">
+                <SectionCard className="!bg-[#111a15] !border-none !rounded-3xl space-y-5 p-5">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#1a241f] flex items-center justify-center">
+                            <Lock size={18} className="text-[#2bd99b]" />
+                        </div>
+                        <div>
+                            <p className="text-[15px] font-bold text-white leading-tight">Change Password</p>
+                            <p className="text-[11px] text-gray-500 font-medium">Keep your account secure</p>
+                        </div>
+                    </div>
+
+                    <div className="space-y-4">
+                        <div className="space-y-1.5">
+                            <label className="text-[12px] font-bold text-gray-400">Current Password</label>
+                            <Input.Password value="********" readOnly className="!bg-[#1a241f] !border-none !text-white !rounded-2xl h-12 !font-medium" />
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <label className="text-[12px] font-bold text-gray-400">New Password</label>
+                            <Input.Password value="********" readOnly className="!bg-[#1a241f] !border-none !text-white !rounded-2xl h-12 !font-medium" />
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <label className="text-[12px] font-bold text-gray-400">Confirm New Password</label>
+                            <Input.Password value="********" readOnly className="!bg-[#1a241f] !border-none !text-white !rounded-2xl h-12 !font-medium" />
+                        </div>
+
+                        <div className="bg-[#1a241f] rounded-2xl p-4 mt-2">
+                            <p className="text-[10px] font-bold text-gray-500 mb-3 tracking-wider">PASSWORD REQUIREMENTS</p>
+                            <ul className="space-y-2">
+                                {['Minimum 8 characters', 'At least 1 uppercase letter', 'At least 1 number', 'At least 1 special character'].map((req, idx) => (
+                                    <li key={idx} className="flex items-center gap-2 text-[12px] text-gray-400 font-medium">
+                                        <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center">
+                                            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                        </div>
+                                        {req}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <Button block className="!h-[52px] !rounded-2xl !bg-[#2bd99b] hover:!bg-[#22b883] !text-[#111a15] !font-extrabold !text-[14px] !border-none mt-2 transition-all active:scale-[0.98]">
+                            Update Password
+                        </Button>
+                    </div>
+                </SectionCard>
+
+                <SectionCard className="!bg-[#111a15] !border-none !rounded-3xl p-5">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-xl bg-[#1a241f] flex items-center justify-center">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#2bd99b]"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+                            </div>
+                            <div>
+                                <p className="text-[15px] font-bold text-white leading-tight">MPIN</p>
+                                <div className="flex items-center gap-1.5 mt-0.5">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-[#2bd99b]"></span>
+                                    <p className="text-[11px] text-[#2bd99b] font-bold">MPIN Active</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button 
+                            onClick={() => setIsMpinModalOpen(true)}
+                            className="px-4 py-2 rounded-full bg-[#1a241f] text-[#2bd99b] text-[12px] font-bold active:scale-95 transition-transform"
+                        >
+                            Change MPIN
+                        </button>
+                    </div>
+                </SectionCard>
+            </div>
+
+            {/* Custom MPIN Modal */}
+            {isMpinModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="w-full max-w-sm bg-[#111a15] rounded-[24px] p-6 shadow-2xl relative">
+                        {/* Header */}
+                        <div className="flex items-center justify-between mb-4">
+                            <div className="flex items-center gap-3">
+                                <Shield className="text-[#2bd99b]" size={24} />
+                                <h3 className="text-xl font-bold text-white">Update MPIN</h3>
+                            </div>
+                            <button onClick={() => setIsMpinModalOpen(false)} className="text-gray-400 hover:text-white transition-colors">
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="h-[1px] w-full bg-white/10 mb-6" />
+
+                        <p className="text-center text-[13px] text-gray-300 font-medium mb-8">
+                            Set a 6-digit PIN for secure transactions.
+                        </p>
+
+                        <div className="space-y-6">
+                            <div className="space-y-2">
+                                <label className="text-[11px] font-extrabold text-gray-400 tracking-wider">NEW 6-DIGIT MPIN</label>
+                                <div className="relative">
+                                    <input 
+                                        type="password" 
+                                        placeholder="E n t e r  6 - d i g i t  P I N" 
+                                        className="w-full h-12 bg-transparent border border-[#2bd99b] rounded-xl px-4 text-white placeholder-gray-500 focus:outline-none tracking-widest text-sm"
+                                        maxLength={6}
+                                    />
+                                    <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-[11px] font-extrabold text-gray-400 tracking-wider">CONFIRM MPIN</label>
+                                <div className="relative">
+                                    <input 
+                                        type="password" 
+                                        placeholder="C o n f i r m  6 - d i g i t  P I N" 
+                                        className="w-full h-12 bg-[#1a241f] border-none rounded-xl px-4 text-white placeholder-gray-500 focus:outline-none tracking-widest text-sm"
+                                        maxLength={6}
+                                    />
+                                    <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><line x1="2" y1="2" x2="22" y2="22"/></svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <Button block className="!h-[52px] !rounded-2xl !bg-[#2bd99b] hover:!bg-[#22b883] !text-[#111a15] !font-extrabold !text-[15px] !border-none mt-6 transition-all active:scale-[0.98]">
+                                Set MPIN
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     )
 }

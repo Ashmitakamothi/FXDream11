@@ -21,6 +21,7 @@ const Settings = () => {
 
     const { Option } = Select;
 
+    /* 
     return (
         <div className="space-y-4">
             <SectionCard className="divide-y divide-border/40 !p-2">
@@ -71,6 +72,47 @@ const Settings = () => {
                         </Option>
                     </Select>
                 </Field>
+            </SectionCard>
+        </div>
+    );
+    */
+
+    return (
+        <div className="space-y-4">
+            <SectionCard className="!bg-[#111a15] !border-none !rounded-3xl !p-2 py-3">
+                {items.map((item) => (
+                    <div key={item.label} className="flex items-center justify-between p-3">
+                        <div className="flex items-center gap-4">
+                            <div className="w-10 h-10 rounded-xl bg-[#1a241f] flex items-center justify-center">
+                                <item.icon size={18} className="text-[#2bd99b]" />
+                            </div>
+                            <div>
+                                <p className="text-[15px] font-bold text-white">{item.label}</p>
+                                <p className="text-[11px] text-gray-400 font-medium">{item.desc}</p>
+                            </div>
+                        </div>
+                        {/* Custom switch styling to match screenshot */}
+                        <div 
+                            className={`w-11 h-6 rounded-full flex items-center px-1 cursor-pointer transition-colors duration-300 ${item.value ? 'bg-[#2bd99b]' : 'bg-[#1a241f]'}`}
+                            onClick={() => item.onChange(!item.value)}
+                        >
+                            <div className={`w-4 h-4 rounded-full transition-transform duration-300 ${item.value ? 'translate-x-5 bg-[#111a15]' : 'translate-x-0 bg-gray-500'}`} />
+                        </div>
+                    </div>
+                ))}
+            </SectionCard>
+
+            <SectionCard className="!bg-[#111a15] !border-none !rounded-3xl p-5">
+                <div className="space-y-2">
+                    <label className="text-[12px] font-bold text-gray-400">Language</label>
+                    <div className="flex items-center justify-between bg-[#1a241f] rounded-2xl h-12 px-4 cursor-pointer">
+                        <div className="flex items-center gap-2">
+                            <Globe size={16} className="text-gray-400" />
+                            <span className="text-white text-[14px] font-bold">English</span>
+                        </div>
+                        <ChevronDown size={16} className="text-gray-500" />
+                    </div>
+                </div>
             </SectionCard>
         </div>
     );

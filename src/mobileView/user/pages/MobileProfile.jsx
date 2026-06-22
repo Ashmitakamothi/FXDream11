@@ -41,40 +41,48 @@ export default function MobileProfile() {
       <div className="flex justify-center items-start p-3">
         <div className="w-full max-w-md space-y-4">
 
-          <div className="bg-white/90 rounded-2xl p-4 flex items-center justify-between shadow-sm">
+          <div className="bg-[#e0f8ed] rounded-3xl p-4 flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-3">
-              <Avatar src={user?.pictureProfile} alt="avatar" className="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-white font-bold text-lg">
-                <span className="text-lg font-medium leading-none">{getInitials((userProfile?.firstName || "") + " " + (userProfile?.lastName || ""))}</span>
+              <Avatar src={user?.pictureProfile} alt="avatar" className="w-14 h-14 rounded-2xl bg-[#2bd99b] flex items-center justify-center text-white font-bold text-lg">
+                <span className="text-lg font-bold leading-none text-white">{getInitials((userProfile?.firstName || "") + " " + (userProfile?.lastName || ""))}</span>
               </Avatar>
 
               <div>
-                <p className="font-semibold text-gray-700">{userProfile?.firstName} {userProfile?.lastName}</p>
-                <p className="text-xs text-gray-500">ID: FX-{userProfile?.userId}</p>
+                <p className="font-bold text-[#111a15] text-[15px]">{userProfile?.firstName} {userProfile?.lastName}</p>
+                <p className="text-xs text-gray-500 font-medium">ID: FX-{userProfile?.userId}</p>
               </div>
 
             </div>
 
-            <div className="w-9 h-9 flex items-center justify-center bg-gray-800 rounded-full shadow-sm ring-2 ring-white active:scale-90 transition">
-              <Pencil size={14} className="text-white" />
+            <div className="w-9 h-9 flex items-center justify-center bg-[#111a15]/10 rounded-full active:scale-90 transition">
+              <Pencil size={14} className="text-[#111a15]" />
             </div>
 
           </div>
 
-          <div className="mt-5">
-            <div className="flex gap-1 p-1 rounded-3xl bg-muted-soft rounded-2xl px-1.5 py-1.5" >
+          <div className="mt-4">
+            <div className="flex gap-1 p-1 rounded-2xl bg-[#111a15]" >
               {tabs.map((tab) => (
-                <button key={tab.name} onClick={() => setActiveTab(tab.name)} className={`flex-1 py-2 rounded-2xl text-[10px] font-semibold flex flex-col items-center gap-1 transition-all ${activeTab === tab.name ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground/70"}`}>
-                  <tab.icon size={16} />
+                <button key={tab.name} onClick={() => setActiveTab(tab.name)} className={`flex-1 py-3 rounded-2xl text-[11px] font-semibold flex flex-col items-center gap-1.5 transition-all ${activeTab === tab.name ? "bg-[#2bd99b] text-[#111a15]" : "text-gray-400 hover:text-gray-300"}`}>
+                  <tab.icon size={18} />
                   <span>{tab.name}</span>
                 </button>
               ))}
             </div>
           </div>
-          <div className="mt-4 pb-20">
+          
+          <div className="mt-4">
             {activeTab === "Personal" && <PersonalInformation user={user} userProfile={userProfile} />}
             {activeTab === "Security" && <SecurityTab />}
             {activeTab === "Settings" && <Settings />}
             {activeTab === "Activity" && <ActivityTab />}
+          </div>
+
+          <div className="flex justify-center pt-6 pb-24">
+            <button className="flex items-center gap-2 text-[#ef4444] font-bold text-[13px] px-6 py-3 rounded-2xl bg-[#111a15] w-full justify-center active:scale-95 transition-transform">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Sign Out
+            </button>
           </div>
         </div>
       </div>
