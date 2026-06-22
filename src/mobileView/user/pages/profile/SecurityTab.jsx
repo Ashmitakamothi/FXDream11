@@ -261,40 +261,40 @@ export default function SecurityTab() {
     return (
         <>
             <div className="space-y-4">
-                <SectionCard className="!bg-[#111a15] !border-none !rounded-3xl space-y-5 p-5">
+                <SectionCard className="!bg-card dark:!bg-[#111a15] !border-none !rounded-3xl space-y-5 p-5">
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-[#1a241f] flex items-center justify-center">
-                            <Lock size={18} className="text-[#2bd99b]" />
+                        <div className="w-10 h-10 rounded-xl bg-primary/10 dark:bg-[#1a241f] flex items-center justify-center">
+                            <Lock size={18} className="text-primary dark:text-[#2bd99b]" />
                         </div>
                         <div>
-                            <p className="text-[15px] font-bold text-white leading-tight">Change Password</p>
-                            <p className="text-[11px] text-gray-500 font-medium">Keep your account secure</p>
+                            <p className="text-[15px] font-bold text-foreground dark:text-white leading-tight">Change Password</p>
+                            <p className="text-[11px] text-muted-foreground dark:text-gray-500 font-medium">Keep your account secure</p>
                         </div>
                     </div>
 
                     <div className="space-y-4">
                         <div className="space-y-1.5">
-                            <label className="text-[12px] font-bold text-gray-400">Current Password</label>
-                            <Input.Password value="********" readOnly className="!bg-[#1a241f] !border-none !text-white !rounded-2xl h-12 !font-medium" />
+                            <label className="text-[12px] font-bold text-muted-foreground dark:text-gray-400">Current Password</label>
+                            <Input.Password value="********" readOnly className="!bg-muted dark:!bg-[#1a241f] !border-none !text-foreground dark:!text-white !rounded-2xl h-12 !font-medium" />
                         </div>
 
                         <div className="space-y-1.5">
-                            <label className="text-[12px] font-bold text-gray-400">New Password</label>
-                            <Input.Password value="********" readOnly className="!bg-[#1a241f] !border-none !text-white !rounded-2xl h-12 !font-medium" />
+                            <label className="text-[12px] font-bold text-muted-foreground dark:text-gray-400">New Password</label>
+                            <Input.Password value="********" readOnly className="!bg-muted dark:!bg-[#1a241f] !border-none !text-foreground dark:!text-white !rounded-2xl h-12 !font-medium" />
                         </div>
 
                         <div className="space-y-1.5">
-                            <label className="text-[12px] font-bold text-gray-400">Confirm New Password</label>
-                            <Input.Password value="********" readOnly className="!bg-[#1a241f] !border-none !text-white !rounded-2xl h-12 !font-medium" />
+                            <label className="text-[12px] font-bold text-muted-foreground dark:text-gray-400">Confirm New Password</label>
+                            <Input.Password value="********" readOnly className="!bg-muted dark:!bg-[#1a241f] !border-none !text-foreground dark:!text-white !rounded-2xl h-12 !font-medium" />
                         </div>
 
-                        <div className="bg-[#1a241f] rounded-2xl p-4 mt-2">
-                            <p className="text-[10px] font-bold text-gray-500 mb-3 tracking-wider">PASSWORD REQUIREMENTS</p>
+                        <div className="bg-muted dark:bg-[#1a241f] rounded-2xl p-4 mt-2">
+                            <p className="text-[10px] font-bold text-muted-foreground dark:text-gray-500 mb-3 tracking-wider">PASSWORD REQUIREMENTS</p>
                             <ul className="space-y-2">
                                 {['Minimum 8 characters', 'At least 1 uppercase letter', 'At least 1 number', 'At least 1 special character'].map((req, idx) => (
-                                    <li key={idx} className="flex items-center gap-2 text-[12px] text-gray-400 font-medium">
-                                        <div className="w-4 h-4 rounded-full bg-white/10 flex items-center justify-center">
-                                            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                    <li key={idx} className="flex items-center gap-2 text-[12px] text-muted-foreground dark:text-gray-400 font-medium">
+                                        <div className="w-4 h-4 rounded-full bg-border/50 dark:bg-white/10 flex items-center justify-center">
+                                            <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground dark:text-gray-400"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                         </div>
                                         {req}
                                     </li>
@@ -302,30 +302,30 @@ export default function SecurityTab() {
                             </ul>
                         </div>
 
-                        <Button block className="!h-[52px] !rounded-2xl !bg-[#2bd99b] hover:!bg-[#22b883] !text-[#111a15] !font-extrabold !text-[14px] !border-none mt-2 transition-all active:scale-[0.98]">
+                        <Button block className="!h-[52px] !rounded-2xl !bg-primary dark:!bg-[#2bd99b] hover:!bg-primary/90 dark:hover:!bg-[#22b883] !text-primary-foreground dark:!text-[#111a15] !font-extrabold !text-[14px] !border-none mt-2 transition-all active:scale-[0.98]">
                             Update Password
                         </Button>
                     </div>
                 </SectionCard>
 
-                <SectionCard className="!bg-[#111a15] !border-none !rounded-3xl p-5">
+                <SectionCard className="!bg-card dark:!bg-[#111a15] !border-none !rounded-3xl p-5">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-[#1a241f] flex items-center justify-center">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#2bd99b]"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
+                            <div className="w-10 h-10 rounded-xl bg-primary/10 dark:bg-[#1a241f] flex items-center justify-center">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary dark:text-[#2bd99b]"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path></svg>
                             </div>
                             <div>
-                                <p className="text-[15px] font-bold text-white leading-tight">MPIN</p>
+                                <p className="text-[15px] font-bold text-foreground dark:text-white leading-tight">MPIN</p>
                                 <div className="flex items-center gap-1.5 mt-0.5">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-[#2bd99b]"></span>
-                                    <p className="text-[11px] text-[#2bd99b] font-bold">MPIN Active</p>
+                                    <span className="w-1.5 h-1.5 rounded-full bg-primary dark:bg-[#2bd99b]"></span>
+                                    <p className="text-[11px] text-primary dark:text-[#2bd99b] font-bold">MPIN Active</p>
                                 </div>
                             </div>
                         </div>
                         
                         <button 
                             onClick={() => setIsMpinModalOpen(true)}
-                            className="px-4 py-2 rounded-full bg-[#1a241f] text-[#2bd99b] text-[12px] font-bold active:scale-95 transition-transform"
+                            className="px-4 py-2 rounded-full bg-primary/10 dark:bg-[#1a241f] text-primary dark:text-[#2bd99b] text-[12px] font-bold active:scale-95 transition-transform"
                         >
                             Change MPIN
                         </button>

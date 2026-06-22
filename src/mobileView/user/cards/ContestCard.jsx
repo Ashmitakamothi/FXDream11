@@ -153,9 +153,9 @@ const ContestTimer = ({ endDate, color }) => {
     }, [endDate]);
 
     return (
-        <div className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-full ${color} backdrop-blur-sm border border-[#0000000a]`}>
+        <div className={`flex items-center gap-1.5 rounded-full ${color} backdrop-blur-sm`}>
             <Clock size={12} />
-            <span className="text-[12px] font-bold  font-mono">
+            <span className="text-[12px] font-bold font-mono">
                 {pad(time.d)}:{pad(time.h)}:{pad(time.m)}:{pad(time.s)}
             </span>
         </div>
@@ -165,6 +165,9 @@ const ContestTimer = ({ endDate, color }) => {
 import { useNavigate } from "react-router-dom";
 
 const ContestCard = ({ contest: c, index, actionbtns }) => {
+    const { theme } = useTheme();
+    const navigate = useNavigate();
+
     const palettes = [
         {
             darkGradient: "from-[#121a22] via-[#11161b] to-[#161a1f]",
@@ -204,10 +207,9 @@ const ContestCard = ({ contest: c, index, actionbtns }) => {
     const progress = Math.min(((c.currentParticipants || 214) / (c.maxParticipants || 300)) * 100, 100);
 
     return (
-        <div className={`bg-gradient-to-br ${style.darkGradient} border border-[#ffffff0a] rounded-3xl relative overflow-hidden active:scale-[0.98] transition-all duration-200`}
-            style={{ boxShadow: "0 6px 24px rgba(0,0,0,0.4)" }}>
+        <div className={`bg-card ${theme === 'dark' ? `bg-gradient-to-br ${style.darkGradient}` : ''} border border-gray-100 dark:border-[#ffffff0a] rounded-[24px] relative overflow-hidden active:scale-[0.98] transition-all duration-200 shadow-sm dark:shadow-[0_6px_24px_rgba(0,0,0,0.4)]`}>
 
-            <svg className="absolute inset-0 w-full h-full opacity-[0.03]" viewBox="0 0 360 100" preserveAspectRatio="none" fill="none">
+            <svg className="absolute inset-0 w-full h-full opacity-[0.03] text-primary" viewBox="0 0 360 100" preserveAspectRatio="none" fill="none">
                 <path d={wavePath1} stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
                 <path d={wavePath2} stroke="currentColor" strokeWidth="0.8" strokeLinecap="round" />
             </svg>
@@ -216,40 +218,38 @@ const ContestCard = ({ contest: c, index, actionbtns }) => {
                 {/* Top Row: Title & Badges */}
                 <div className="flex items-start justify-between mb-1 gap-2">
                     <div className="flex items-center gap-2 flex-1 min-w-0">
-                        <h3 className="font-bold text-[16px] text-white tracking-wide truncate">{c.contestName}</h3>
+                        <h3 className="font-bold text-[16px] text-gray-900 dark:text-white tracking-wide truncate">{c.contestName}</h3>
                         <span className={`shrink-0 flex items-center gap-1 px-2 py-[2px] rounded-full ${style.badge.bg} text-white text-[10px] font-bold`}>
                             <BadgeIcon size={10} />
                             {style.badge.label}
                         </span>
                     </div>
                     <div className="shrink-0">
-                        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#3d181e] text-[#ef4444] text-[10px] font-bold tracking-widest">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#ef4444]"></span> LIVE
-                        </span>
+                        <button 
+                            onClick={() => navigate(`/user/contests/${c.contestId}`)}
+                            className={`flex items-center gap-1 px-4 py-1.5 rounded-full bg-gradient-to-r ${style.btnGradient} text-white text-[12px] font-bold active:scale-95 transition-transform`}
+                        >
+                            Join &rarr;
+                        </button>
                     </div>
                 </div>
                 
                 {/* Pair */}
-                <p className="text-[11px] text-[#75847F] mb-3 font-semibold uppercase tracking-wider">
+                <p className="text-[11px] text-gray-500 dark:text-[#75847F] mb-3 font-semibold uppercase tracking-wider">
                     {Array.isArray(c.allowedTradingPairs) ? c.allowedTradingPairs.join("/") : (c.allowedTradingPairs || "All Pairs")}
                 </p>
                 
                 {/* Progress Bar */}
-                <div className="w-full h-[4px] rounded-full bg-[#ffffff0a] mb-3 overflow-hidden">
+                <div className="w-full h-[4px] rounded-full bg-gray-100 dark:bg-[#ffffff0a] mb-4 overflow-hidden">
                     <div className={`h-full rounded-full bg-gradient-to-r ${style.barGradient}`} style={{ width: `${progress}%` }} />
                 </div>
                 
-                {/* Dates */}
-                <p className="text-[10px] text-[#75847F] mb-3 font-semibold tracking-wide">
-                    {formatDate(c.startDate)} &rarr; {formatDate(c.endDate)}
-                </p>
-                
                 {/* Timer & Participants */}
                 <div className="flex items-center justify-between mb-4">
-                    <ContestTimer endDate={c.endDate} color="bg-[#ffffff0a] border border-[#ffffff05] !text-gray-300 px-3 py-1.5" />
-                    <div className="flex items-center gap-1.5 text-[#75847F]">
+                    <ContestTimer endDate={c.endDate} color="bg-[#f3f4f6] dark:bg-[#ffffff0a] border-none dark:border dark:border-[#ffffff05] text-gray-900 dark:text-gray-300 px-3 py-1.5" />
+                    <div className="flex items-center gap-1.5 text-gray-500 dark:text-[#75847F]">
                         <Users size={13} />
-                        <span className="text-[12px] font-bold font-mono text-gray-300">{c.currentParticipants || 214}/{c.maxParticipants || 300}</span>
+                        <span className="text-[12px] font-medium font-mono text-gray-500 dark:text-gray-300">{c.currentParticipants || 214} joined</span>
                     </div>
                 </div>
                 
@@ -260,31 +260,13 @@ const ContestCard = ({ contest: c, index, actionbtns }) => {
                         { label: "Entry", value: `$${Number(c.entryFee || 100).toLocaleString()}` },
                         { label: "Prize Pool", value: `$${Number(c.prizePool || 25000).toLocaleString()}` },
                     ].map((stat) => (
-                        <div key={stat.label} className={`bg-[#ffffff08] rounded-[16px] py-3 px-2 text-center`}>
-                            <p className="text-[14px] font-bold text-white mb-0.5">{stat.value}</p>
-                            <p className="text-[9px] text-[#75847F] uppercase tracking-widest font-bold">{stat.label}</p>
+                        <div key={stat.label} className={`bg-[#f8fafc] dark:bg-[#ffffff08] border-none rounded-[16px] py-2.5 px-2 text-center`}>
+                            <p className="text-[14px] font-bold text-gray-900 dark:text-white mb-0.5">{stat.value}</p>
+                            <p className="text-[9px] text-gray-500 dark:text-[#75847F] uppercase tracking-widest font-bold">{stat.label}</p>
                         </div>
                     ))}
                 </div>
                 
-                {/* Actions */}
-                {actionbtns && (
-                    <div className="flex items-center gap-3 mt-4">
-                        <button
-                            className="bg-[#ffffff08] border-none text-[12px] font-bold px-4 py-[11px] rounded-[14px] text-white flex-1 active:scale-95 transition-transform"
-                            onClick={() => navigate(`/user/contests/${c.contestId}`)}
-                        >
-                            Details
-                        </button>
-                        <button
-                            className={`flex items-center justify-center gap-1.5 text-[12px] font-bold text-white bg-gradient-to-r ${style.btnGradient} px-4 py-[11px] rounded-[14px] flex-1 active:scale-95 transition-transform`}
-                            onClick={() => navigate(`/user/contests/${c.contestId}`)}
-                        >
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                            Live Rank &rarr;
-                        </button>
-                    </div>
-                )}
             </div>
         </div>
     );

@@ -30,30 +30,30 @@ const WithdrawTab = ({ amount, setAmount, balance }) => {
     return (
         <Form form={form} onFinish={onFinish} layout="vertical">
             <div className="space-y-4">
-                <div className="rounded-[24px] p-6 text-center bg-[#121c17]">
+                <div className="rounded-[24px] p-6 text-center bg-white dark:bg-[#121c17] shadow-sm dark:shadow-none">
                     <p className="text-[12px] font-medium text-[#75847f]">Available for Withdrawal</p>
                     <p className="text-[32px] font-black mt-1 text-[#33e6a6]">${balance.toFixed(2)}</p>
                 </div>
 
-                <div className="rounded-[24px] p-5 bg-[#121c17]">
+                <div className="rounded-[24px] p-5 bg-white dark:bg-[#121c17] shadow-sm dark:shadow-none">
                     <label className="text-[11px] font-bold text-[#75847f] uppercase tracking-wider">Amount (USD)</label>
                     <input 
                         type="number" 
                         value={amount} 
                         onChange={(e) => setAmount(e.target.value)} 
                         placeholder="Enter amount" 
-                        className="w-full h-[52px] rounded-[20px] bg-[#1b2622] text-center text-[18px] font-bold text-white mt-3 focus:outline-none placeholder:text-[#4d5d56] placeholder:font-bold border-none" 
+                        className="w-full h-[52px] rounded-[20px] bg-gray-50 dark:bg-[#1b2622] text-center text-[18px] font-bold text-gray-900 dark:text-white mt-3 focus:outline-none placeholder:text-gray-400 dark:placeholder:text-[#4d5d56] placeholder:font-bold border-none" 
                         style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }}
                     />
                 </div>
 
-                <div className="rounded-[24px] p-5 bg-[#121c17]">
+                <div className="rounded-[24px] p-5 bg-white dark:bg-[#121c17] shadow-sm dark:shadow-none">
                     <label className="text-[11px] font-bold text-[#75847f] uppercase tracking-wider">Withdraw To</label>
                     <Form.Item name="withdrawMethod" initialValue="bank" noStyle>
-                        <div className="bg-[#1b2622] rounded-[20px] mt-3">
+                        <div className="bg-gray-50 dark:bg-[#1b2622] rounded-[20px] mt-3">
                             <Select 
                                 bordered={false}
-                                className="w-full h-[52px] [&_.ant-select-selection-item]:!text-white [&_.ant-select-selection-item]:flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-item]:pl-1" 
+                                className="w-full h-[52px] [&_.ant-select-selection-item]:!text-gray-900 dark:[&_.ant-select-selection-item]:!text-white [&_.ant-select-selection-item]:flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-item]:pl-1" 
                                 dropdownStyle={{ borderRadius: '16px', backgroundColor: '#1b2622', border: 'none' }} 
                                 suffixIcon={<ChevronDown size={16} className="text-[#75847f] mr-2" />}
                             >
@@ -62,7 +62,7 @@ const WithdrawTab = ({ amount, setAmount, balance }) => {
                                         <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[#1fa97a]">
                                             <WalletIcon size={14} className="text-white" />
                                         </div>
-                                        <span className="text-[14px] font-bold text-white">Bank Account</span>
+                                        <span className="text-[14px] font-bold text-gray-900 dark:text-white">Bank Account</span>
                                     </div>
                                 </Select.Option>
                             </Select>

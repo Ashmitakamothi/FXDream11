@@ -8,7 +8,7 @@ const TransactionList = ({ items }) => (
       ))
     ) : (
       <div className="py-10 text-center">
-        <p className="text-sm text-muted-foreground">No transactions found</p>
+        <p className="text-sm text-gray-500 dark:text-gray-400">No transactions found</p>
       </div>
     )}
   </div>

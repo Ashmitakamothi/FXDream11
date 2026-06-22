@@ -23,32 +23,32 @@ const DepositTab = ({ amount, setAmount }) => {
     return (
         <Form form={form} layout="vertical" onFinish={onFinish} initialValues={{ paymentMethod: 'bank' }}>
             <div className="space-y-5">
-                <div className="rounded-[24px] p-5 bg-[#121c17]">
+                <div className="rounded-[24px] p-5 bg-white dark:bg-[#121c17] shadow-sm dark:shadow-none">
                     <label className="text-[11px] font-bold text-[#75847f] uppercase tracking-wider">Amount (USD)</label>
-                    <div className="flex items-center justify-between bg-[#1b2622] rounded-[24px] p-2 mt-3">
-                        <button type="button" onClick={() => setAmount(String(Math.max(0, Number(amount) - 10)))} className="w-10 h-10 rounded-full bg-[#121c17] flex items-center justify-center text-[#75847f] font-bold text-lg active:scale-90 transition-transform">−</button>
+                    <div className="flex items-center justify-between bg-gray-50 dark:bg-[#1b2622] rounded-[24px] p-2 mt-3">
+                        <button type="button" onClick={() => setAmount(String(Math.max(0, Number(amount) - 10)))} className="w-10 h-10 rounded-full bg-white dark:bg-[#121c17] shadow-sm dark:shadow-none flex items-center justify-center text-gray-500 dark:text-[#75847f] font-bold text-lg active:scale-90 transition-transform">−</button>
                         <div className="flex-1 flex justify-center items-center">
                             <span className="text-[#75847f] font-bold text-lg mr-1.5">$</span>
-                            <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-20 bg-transparent text-center text-[22px] font-bold text-white focus:outline-none p-0 border-none m-0 appearance-none" style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }} />
+                            <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} className="w-20 bg-transparent text-center text-[22px] font-bold text-gray-900 dark:text-white focus:outline-none p-0 border-none m-0 appearance-none" style={{ WebkitAppearance: 'none', MozAppearance: 'textfield' }} />
                         </div>
-                        <button type="button" onClick={() => setAmount(String(Number(amount) + 10))} className="w-10 h-10 rounded-full bg-[#121c17] flex items-center justify-center text-[#75847f] font-bold text-lg active:scale-90 transition-transform">+</button>
+                        <button type="button" onClick={() => setAmount(String(Number(amount) + 10))} className="w-10 h-10 rounded-full bg-white dark:bg-[#121c17] shadow-sm dark:shadow-none flex items-center justify-center text-gray-500 dark:text-[#75847f] font-bold text-lg active:scale-90 transition-transform">+</button>
                     </div>
                     <div className="flex gap-2 mt-4">
                         {quickAmounts.map((q) => (
-                            <button key={q} type="button" onClick={() => setAmount(String(q))} className={`flex-1 py-2.5 rounded-full text-[12px] font-bold transition-all active:scale-90 ${amount === String(q) ? "bg-[#1fa97a] text-white" : "bg-[#1b2622] text-[#1fa97a]"}`}>
+                            <button key={q} type="button" onClick={() => setAmount(String(q))} className={`flex-1 py-2.5 rounded-full text-[12px] font-bold transition-all active:scale-90 ${amount === String(q) ? "bg-[#1fa97a] text-white" : "bg-gray-100 dark:bg-[#1b2622] text-[#1fa97a]"}`}>
                                 ${q}
                             </button>
                         ))}
                     </div>
                 </div>
 
-                <div className="rounded-[24px] p-5 bg-[#121c17]">
+                <div className="rounded-[24px] p-5 bg-white dark:bg-[#121c17] shadow-sm dark:shadow-none">
                     <label className="text-[11px] font-bold text-[#75847f] uppercase tracking-wider">Payment Method</label>
                     <Form.Item name="paymentMethod" noStyle>
-                        <div className="bg-[#1b2622] rounded-[20px] mt-3">
+                        <div className="bg-gray-50 dark:bg-[#1b2622] rounded-[20px] mt-3">
                             <Select 
                                 bordered={false}
-                                className="w-full h-[52px] [&_.ant-select-selection-item]:!text-white [&_.ant-select-selection-item]:flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-item]:pl-1" 
+                                className="w-full h-[52px] [&_.ant-select-selection-item]:!text-gray-900 dark:[&_.ant-select-selection-item]:!text-white [&_.ant-select-selection-item]:flex [&_.ant-select-selector]:!items-center [&_.ant-select-selection-item]:pl-1" 
                                 dropdownStyle={{ borderRadius: '16px', backgroundColor: '#1b2622', border: 'none' }} 
                                 suffixIcon={<ChevronDown size={16} className="text-[#75847f] mr-2" />}
                             >
@@ -57,7 +57,7 @@ const DepositTab = ({ amount, setAmount }) => {
                                         <div className="w-7 h-7 rounded-full flex items-center justify-center bg-[#3b82f6]">
                                             <Landmark size={14} className="text-white" />
                                         </div>
-                                        <span className="text-[13px] font-bold text-white">Bank Transfer</span>
+                                        <span className="text-[13px] font-bold text-gray-900 dark:text-white">Bank Transfer</span>
                                     </div>
                                 </Select.Option>
                                 <Select.Option value="card">
@@ -65,7 +65,7 @@ const DepositTab = ({ amount, setAmount }) => {
                                         <div className="w-7 h-7 rounded-full flex items-center justify-center bg-[#4f46e5]">
                                             <CreditCard size={14} className="text-white" />
                                         </div>
-                                        <span className="text-[13px] font-bold text-white">Credit Card</span>
+                                        <span className="text-[13px] font-bold text-gray-900 dark:text-white">Credit Card</span>
                                     </div>
                                 </Select.Option>
                                 <Select.Option value="upi">
@@ -73,7 +73,7 @@ const DepositTab = ({ amount, setAmount }) => {
                                         <div className="w-7 h-7 rounded-full flex items-center justify-center bg-[#1fa97a]">
                                             <Smartphone size={14} className="text-white" />
                                         </div>
-                                        <span className="text-[13px] font-bold text-white">UPI / Instant Pay</span>
+                                        <span className="text-[13px] font-bold text-gray-900 dark:text-white">UPI / Instant Pay</span>
                                     </div>
                                 </Select.Option>
                             </Select>

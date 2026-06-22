@@ -24,34 +24,14 @@ export default function MobileContests() {
     return (
         <>
             <div className="min-h-screen bg-background max-w-md mx-auto relative">
+                
+                <HeaderAll path="Contest" menu={false} />
 
-                <header className="sticky top-0 z-40 glass-effect pt-3 pb-2 px-5">
-                    <div className="flex items-start justify-between">
-                        <button onClick={() => navigate(-1)} className="mt-1 w-9 h-9 flex items-center justify-center rounded-full bg-[#111a15] border border-transparent active:scale-90 transition-transform duration-150">
-                            <ArrowLeft size={18} className="text-[#2aa880]" />
-                        </button>
-                        
-                        <div className="flex flex-col items-center flex-1 mx-2">
-                            <div className="flex items-center gap-2">
-                                <span className="w-2.5 h-2.5 rounded-full bg-[#ef4444]"></span>
-                                <h1 className="text-[18px] font-extrabold text-white tracking-tight">Live Contests</h1>
-                            </div>
-                            <p className="text-[11px] text-[#75847F] mt-0.5 text-center leading-tight">
-                                Compete in real-time and climb the leaderboard
-                            </p>
-                        </div>
-
-                        <button className="mt-1 w-9 h-9 flex items-center justify-center rounded-full bg-[#111a15] border border-transparent relative active:scale-90 transition-transform duration-150">
-                            <Bell size={18} className="text-[#2aa880]" />
-                            <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 bg-[#e85c5c] rounded-full"></span>
-                        </button>
-                    </div>
-                </header>
                 <div className='flex flex-col gap-3'>
                     <div className="flex gap-2 overflow-x-auto custom-scrollbar px-4 pb-3 pt-1" >
                         {["All", "Open", "Running", "Completed", 'Cancelled'].map((item) => (
                             <button key={item} onClick={() => setActiveFilter(item)}
-                                className={`px-5 py-2 rounded-full text-[12px] font-bold whitespace-nowrap transition-all duration-200 active:scale-95 ${activeFilter === item ? "bg-[#1C7E5F] text-white" : "bg-[#12231F] text-gray-400"}`}
+                                className={`px-5 py-2 rounded-full text-[12px] font-bold whitespace-nowrap transition-all duration-200 active:scale-95 ${activeFilter === item ? "bg-primary text-primary-foreground dark:bg-[#1C7E5F] dark:text-white" : "bg-muted text-muted-foreground dark:bg-[#12231F] dark:text-gray-400"}`}
                             >
                                 {item}
                             </button>
