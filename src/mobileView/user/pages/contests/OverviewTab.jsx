@@ -28,9 +28,11 @@ const OverviewTab = ({ contest }) => {
       <div className="bg-[#121a16] rounded-2xl p-4">
         <h3 className="text-[14px] font-extrabold text-[#ffffff] mb-3">Allowed Pairs</h3>
         <div className="flex flex-wrap gap-3">
-          {contest.allowedTradingPairs?.map((pair) => (
+          {(typeof contest.allowedTradingPairs === 'string' 
+            ? contest.allowedTradingPairs.split(',') 
+            : contest.allowedTradingPairs || []).map((pair) => (
             <span key={pair} className="text-[#20b281] text-[13px] font-bold tracking-wide">
-              {pair}
+              {pair.trim()}
             </span>
           ))}
         </div>

@@ -17,7 +17,7 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-export const request = async (method, url, payload = null) => {
+export const request = async (method, url, payload = null, config = {}) => {
     try {
         const isGet = method.toUpperCase() === "GET";
         const response = await api({
@@ -25,6 +25,7 @@ export const request = async (method, url, payload = null) => {
             url,
             data: isGet ? null : payload,
             params: isGet ? payload : null,
+            ...config,
         });
 
         return response.data;

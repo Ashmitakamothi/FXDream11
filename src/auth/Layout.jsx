@@ -9,8 +9,11 @@ export default function Layout({ children }) {
     const { t } = useTranslation();
 
     return (
-        <div className="min-h-screen bg-body relative overflow-hidden">
-            <div className="absolute inset-0 opacity-20 bg-dots"></div>
+        <div className="min-h-screen bg-body relative overflow-hidden flex flex-col">
+            {/* Global background gradient for extra depth */}
+            <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at top right, rgba(0, 166, 190, 0.08), transparent 50%), radial-gradient(ellipse at bottom left, rgba(59, 130, 246, 0.05), transparent 50%)" }}></div>
+            
+            <div className="absolute inset-0 opacity-[0.15] bg-dots pointer-events-none"></div>
             <div className="absolute top-4 sm:top-6 right-4 sm:right-10 flex items-center gap-4 sm:gap-6 text-muted text-xs sm:text-sm z-20">
                 <span className="cursor-pointer hover:text-theme">{t("Terms")}</span>
                 <span className="cursor-pointer hover:text-theme">{t("Privacy")}</span>
@@ -26,8 +29,8 @@ export default function Layout({ children }) {
                 </div>
             </div>
 
-            <div className="absolute bottom-4 w-full text-center text-muted text-xs">
-                © TerioPay. All rights reserved.
+            <div className="absolute bottom-4 w-full text-center text-muted text-xs z-20">
+                © FXDream11. All rights reserved.
             </div>
         </div>
     );

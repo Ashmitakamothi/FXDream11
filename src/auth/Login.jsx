@@ -74,13 +74,16 @@ export default function Login() {
     <Layout>
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }} className="hidden md:flex md:flex-1 md:min-w-0 md:max-w-lg lg:max-w-xl flex-col justify-center md:pr-6 lg:pr-8 xl:pr-10">
         <div className="relative w-full min-w-0 pl-1 sm:pl-2">
-          <div className="pointer-events-none absolute -left-8 md:left-0 -top-24 h-72 w-72 rounded-full blur-3xl opacity-40 dark:opacity-25" style={{ background:"radial-gradient(circle at center, var(--theme-primary-light) 0%, transparent 70%)", }}/>
+          {/* Enhanced background glows */}
+          <div className="pointer-events-none absolute -left-12 md:-left-10 -top-32 h-96 w-96 rounded-full blur-[80px] opacity-60 dark:opacity-30" style={{ background:"var(--theme-primary-light)" }}/>
+          <div className="pointer-events-none absolute left-32 md:left-40 top-20 h-64 w-64 rounded-full blur-[80px] opacity-40 dark:opacity-20" style={{ background:"rgba(59, 130, 246, 0.15)" }}/>
+          
           <div className="relative flex items-center gap-3 mb-8">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl shadow-lg" style={{ background: "var(--blueGradient)" }}>
-              <span className="text-lg font-bold text-white tracking-tight">T</span>
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl shadow-md border border-white/20 dark:border-white/5" style={{ background: "var(--blueGradient)", boxShadow: "0 10px 20px -5px rgba(0, 166, 190, 0.4)" }}>
+              <span className="text-xl font-bold text-white tracking-tight">T</span>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">TerioPay</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">FXDream11</p>
               <p className="text-sm text-theme font-medium">Forex contest platform</p>
             </div>
           </div>
@@ -93,11 +96,11 @@ export default function Login() {
 
           <ul className="space-y-5">
             {heroFeatures.map(({ icon: Icon, title, copy }) => (
-              <li key={title} className="flex gap-4">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border" style={{ borderColor: "var(--theme-border)", background: "var(--card-bg-small)", color: "var(--theme-primary)", }}>
-                  <Icon className="h-5 w-5" aria-hidden />
+              <li key={title} className="flex gap-4 group">
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border shadow-sm transition-all duration-300 group-hover:scale-105 group-hover:shadow-md" style={{ borderColor: "var(--theme-border)", background: "var(--theme-card)", color: "var(--theme-primary)", }}>
+                  <Icon className="h-6 w-6" aria-hidden />
                 </span>
-                <div>
+                <div className="flex flex-col justify-center">
                   <p className="text-sm font-semibold text-theme">{t(title)}</p>
                   <p className="text-sm text-muted leading-snug mt-0.5">{t(copy)}</p>
                 </div>
@@ -108,17 +111,26 @@ export default function Login() {
       </motion.div>
 
       {/* Form column */}
-      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }} className="w-full max-w-[420px] shrink-0 mx-auto md:mx-0 flex justify-center">
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }} className="w-full max-w-[420px] shrink-0 mx-auto md:mx-0 flex justify-center relative">
+        {/* Glow effect behind the form card */}
+        <div className="absolute inset-0 -z-10 blur-[80px] opacity-30 bg-gradient-to-br from-[#00A6BE]/40 to-blue-500/20 rounded-full w-[110%] h-[110%] -left-[5%] -top-[5%] dark:opacity-20 pointer-events-none"></div>
+        
         <div className="w-full">
-          <p className="md:hidden text-center text-xs font-semibold uppercase tracking-[0.18em] text-muted mb-3">TerioPay</p>
+          <p className="md:hidden text-center text-xs font-semibold uppercase tracking-[0.18em] text-muted mb-3">FXDream11</p>
 
-          <div className="login-card z-10 overflow-hidden rounded-2xl border shadow-2xl px-6 py-8 sm:px-8 sm:py-9" style={{ borderColor: "var(--theme-border)", background: "linear-gradient(165deg, var(--theme-card) 0%, var(--theme-light-bg) 100%)", boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(255,255,255,0.04) inset", }}>
+          <div className="login-card z-10 overflow-hidden rounded-[24px] border px-7 py-9 sm:px-10 sm:py-10 relative backdrop-blur-md" 
+               style={{ 
+                 borderColor: "var(--theme-border)", 
+                 background: "var(--theme-card)", 
+                 boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.1), 0 0 30px -5px rgba(0, 166, 190, 0.15), inset 0 1px 0 rgba(255,255,255,0.3)" 
+               }}>
+            
             <div className="text-center mb-8">
-              <span className="inline-flex items-center rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted mb-4" style={{ background: "var(--card-bg-small)", border: "1px solid var(--card-border-small)", }}>
-                {t("Signin")}
-              </span>
-              <h2 className="text-2xl font-bold text-theme tracking-tight">{t("Welcomeback")}</h2>
-              <p className="text-muted text-sm mt-2 leading-relaxed">{t("EnterYourCredentials")}</p>
+              <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: "var(--theme-primary-light)", color: "var(--theme-primary)" }}>
+                 <HiOutlineShieldCheck className="h-7 w-7" />
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-theme tracking-tight">{t("Welcomeback")}</h2>
+              <p className="text-muted text-sm mt-3 leading-relaxed px-2">{t("EnterYourCredentials")}</p>
             </div>
 
             <div className="h-px w-full mb-6 opacity-60" style={{ background: "linear-gradient(90deg, transparent, var(--theme-border), transparent)" }}/>

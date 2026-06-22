@@ -44,7 +44,7 @@ export default function ForgetPassword() {
               <span className="text-lg font-bold text-white tracking-tight">T</span>
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">TerioPay</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">FXDream11</p>
               <p className="text-sm text-theme font-medium">Forex contest platform</p>
             </div>
           </div>
@@ -73,7 +73,7 @@ export default function ForgetPassword() {
 
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.08, ease: [0.22, 1, 0.36, 1] }} className="w-full max-w-[420px] shrink-0 mx-auto md:mx-0 flex justify-center">
         <div className="w-full">
-          <p className="md:hidden text-center text-xs font-semibold uppercase tracking-[0.18em] text-muted mb-3">TerioPay</p>
+          <p className="md:hidden text-center text-xs font-semibold uppercase tracking-[0.18em] text-muted mb-3">FXDream11</p>
 
           <div className="login-card z-10 overflow-hidden rounded-2xl border shadow-2xl px-6 py-8 sm:px-8 sm:py-9" style={{ borderColor: "var(--theme-border)", background: "linear-gradient(165deg, var(--theme-card) 0%, var(--theme-light-bg) 100%)", boxShadow: "0 25px 50px -12px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(255,255,255,0.04) inset", }}>
             <div className="text-center mb-8">

@@ -14,11 +14,19 @@ export const verifyLoginOtp = (data) => { // done
 };
 
 export const createMpin = (data) => {
-  return request("POST", "/auth/mpin/create", data);
+  const token = data.tempToken || data.TempToken;
+  // Send the full data (including tempToken) in payload, AND as a Bearer token
+  return request("POST", "/mpin/create", data, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
 };
 
 export const verifyMpin = (data) => {
-  return request("POST", "/auth/mpin/verify", data);
+  const token = data.tempToken || data.TempToken;
+  // Send the full data (including tempToken) in payload, AND as a Bearer token
+  return request("POST", "/mpin/verify", data, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
 };
 
 export const enable2FA = () => { // done
@@ -68,11 +76,11 @@ export const resendOtp = (data) => {
 };
 
 export const getProfile = () => {  // done
-  return request("GET", "/auth/profile");
+  return request("GET", "/profile");
 };
 
 export const updateProfile = (data) => {
-  return request("POST", "/auth/profile", data);
+  return request("POST", "/profile", data);
 };
 
 export const changePassword = (data) => { //done

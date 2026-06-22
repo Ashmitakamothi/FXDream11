@@ -48,6 +48,19 @@
     --gradient-card: linear-gradient(160deg, #FFFFFF, #F7FAFF);
     --card: #F7FBFC;
     --border: #E5EAF0;
+    
+    /* Auth Pages Variables */
+    --theme-card: var(--card-bg);
+    --theme-light-bg: var(--theme-bg);
+    --card-bg-small: var(--muted);
+    --theme-border: var(--border);
+    --theme-primary: var(--accent);
+    --theme-primary-light: var(--soft-btn-bg);
+    --blueGradient: var(--gradient-primary);
+    --input-bg: #ffffff;
+    --input-border: var(--border);
+    --label-text: var(--theme-text);
+    --theme-light-gray: var(--muted-foreground);
 }
 
 .dark {
@@ -89,6 +102,19 @@
     --card: #121a24;
     --border: #1f2a37;
     --input: #0b1117;
+    
+    /* Auth Pages Variables */
+    --theme-card: var(--card-bg);
+    --theme-light-bg: var(--theme-bg);
+    --card-bg-small: var(--muted);
+    --theme-border: var(--border);
+    --theme-primary: var(--accent);
+    --theme-primary-light: var(--soft-btn-bg);
+    --blueGradient: var(--gradient-primary);
+    --input-bg: var(--input);
+    --input-border: var(--border);
+    --label-text: var(--theme-text);
+    --theme-light-gray: var(--muted-foreground);
 }
 
 body {
@@ -103,6 +129,10 @@ body {
 }
 
 .text-muted {
+    color: var(--muted-foreground);
+}
+
+.text-theme {
     color: var(--theme-text);
 }
 
@@ -248,6 +278,8 @@ body {
     padding: 0 10px !important;
     display: flex;
     align-items: center;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02) !important;
+    transition: all 0.3s ease;
 }
 
 .login-input textarea.ant-input {

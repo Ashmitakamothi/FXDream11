@@ -34,10 +34,10 @@ const useContestStore = create    ((set, get) => ({
   getContests: async (data) => {
     set({ loading: true });
     try {
-      // Request parameters: PageNumber, PageSize, SortBy, SortOrder, HasPreviousPage, status
       const response = await api.getContests(data);
-      // We store the data payload. If the response is paginated, 'contests' will hold the items and metadata.
-      set({ contests: response?.data, loading: false });
+      const payload = response?.data !== undefined ? response.data : response;
+      const list = Array.isArray(payload) ? payload : Array.isArray(payload?.items) ? payload.items : [];
+      set({ contests: list, loading: false });
     } catch (err) {
       set({ error: err, loading: false });
     }
@@ -47,7 +47,8 @@ const useContestStore = create    ((set, get) => ({
     set({ loading: true });
     try {
       const res = await api.getContestByID(id);
-      set({ contestDetails: res?.data, loading: false });
+      const payload = res?.data !== undefined ? res.data : res;
+      set({ contestDetails: payload, loading: false });
     } catch (err) {
       set({ error: err, loading: false });
     }
@@ -68,7 +69,8 @@ const useContestStore = create    ((set, get) => ({
     set({ loading: true });
     try {
       const res = await api.getLeaderboard(id, params);
-      set({ leaderboard: res?.data || [], loading: false });
+      const payload = res?.data !== undefined ? res.data : res;
+      set({ leaderboard: payload || [], loading: false });
     } catch (err) {
       console.error("Leaderboard fetch error:", err);
       set({ error: err, loading: false });
@@ -79,7 +81,8 @@ const useContestStore = create    ((set, get) => ({
     set({ loading: true });
     try {
       const res = await api.getMyResult(id);
-      set({ myResult: res?.data, loading: false });
+      const payload = res?.data !== undefined ? res.data : res;
+      set({ myResult: payload, loading: false });
     } catch (err) {
       set({ error: err, loading: false });
     }
@@ -89,7 +92,9 @@ const useContestStore = create    ((set, get) => ({
     set({ loading: true });
     try {
       const response = await api.getMyContest(params);
-      set({ myContests: response?.data, loading: false });
+      const payload = response?.data !== undefined ? response.data : response;
+      const list = Array.isArray(payload) ? payload : Array.isArray(payload?.items) ? payload.items : [];
+      set({ myContests: list, loading: false });
     } catch (err) {
       set({ error: err, loading: false });
     }
@@ -98,7 +103,9 @@ const useContestStore = create    ((set, get) => ({
     set({ loading: true });
     try {
       const response = await api.getTopPicks(data);
-      set({ topPicks: response?.data, loading: false });
+      const payload = response?.data !== undefined ? response.data : response;
+      const list = Array.isArray(payload) ? payload : Array.isArray(payload?.items) ? payload.items : [];
+      set({ topPicks: list, loading: false });
     }
     catch (err) {
       set({ error: err, loading: false });
