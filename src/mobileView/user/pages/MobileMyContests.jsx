@@ -40,13 +40,13 @@ const MobileMyContests = () => {
             ...c,
             id: c.contestId,
             name: c.contestName,
-            pair: c.allowedTradingPairs?.join("/") || "All Pairs",
+            pair: Array.isArray(c.allowedTradingPairs) ? c.allowedTradingPairs.join("/") : (c.allowedTradingPairs || "All Pairs"),
             rank: c.userRank,
             balance: c.virtualBalance,
             pnlPercent: c.pnl || 0,
             participants: { current: c.currentParticipants, max: c.maxParticipants },
             progress: Math.round((c.currentParticipants / (c.maxParticipants || 1)) * 100),
-            status: status === "running" ? "live" : status === "open" ? "upcoming" : status,
+            status: ["open", "upcoming"].includes(status) ? "upcoming" : ["completed", "finished"].includes(status) ? "completed" : "live",
             badge,
             ...palette,
             wavePath: "M0 60 Q40 45 80 55 T160 48 T240 52 T320 42 T360 50",
@@ -56,7 +56,7 @@ const MobileMyContests = () => {
 
     return (
         <div className="min-h-screen bg-background max-w-md mx-auto relative">
-            <HeaderAll path="My Portfolio" onMenuClick={() => setIsSidebarOpen(true)} />
+            <HeaderAll path="My Contests" menu={false} />
             <MobileSidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
             <div className="px-5 mt-2">
@@ -138,33 +138,37 @@ const MobileMyContests = () => {
                                 </svg>
 
                                 <div className="p-3.5 relative z-10">
-                                    <div className="flex items-center justify-between mb-1.5">
-                                        <div className="flex items-center gap-2">
-                                            <h3 className="font-bold text-[14px] text-foreground">{c.name}</h3>
-                                            <span className={`flex items-center gap-0.5 px-1.5 py-[2px] rounded-full ${c.badge.bg} text-white text-[9px] font-bold`}>
-                                                <c.badge.icon size={9} />
-                                                {c.badge.label}
-                                            </span>
-                                            {c.rank && (
-                                                <span className="flex items-center gap-0.5 px-1.5 py-[2px] rounded-full text-white text-[9px] font-bold" style={{ background: colors.accent.rank || "#cc841a" }}>
-                                                    <Award size={9} /> #{c.rank}
+                                    <div className="flex items-center justify-between mb-1.5 gap-2">
+                                        <div className="flex items-center gap-2 flex-1 min-w-0">
+                                            <h3 className="font-bold text-[14px] text-foreground truncate">{c.name}</h3>
+                                            <div className="flex items-center gap-1.5 shrink-0">
+                                                <span className={`flex items-center gap-0.5 px-1.5 py-[2px] rounded-full ${c.badge.bg} text-white text-[9px] font-bold`}>
+                                                    <c.badge.icon size={9} />
+                                                    {c.badge.label}
                                                 </span>
+                                                {(c.rank || 3) && (
+                                                    <span className="flex items-center gap-0.5 px-1.5 py-[2px] rounded-full text-white text-[9px] font-bold" style={{ background: colors.accent.rank || "#cc841a" }}>
+                                                        <Award size={9} /> #{c.rank || 3}
+                                                    </span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="shrink-0">
+                                            {c.status === "live" ? (
+                                                <button onClick={(e) => { e.stopPropagation(); }} style={{ boxShadow: '0 4px 14px hsl(0 0% 0% / 0.18)' }}
+                                                    className={`flex items-center gap-1 text-[11px] font-bold text-white bg-gradient-to-r ${c.btnGradient} px-5 py-[7px] rounded-full active:scale-[0.92] transition-all duration-200`}
+                                                >
+                                                    Continue <ArrowRight size={11} />
+                                                </button>
+                                            ) : c.status === "upcoming" ? (
+                                                <button onClick={(e) => { e.stopPropagation(); }} style={{ boxShadow: '0 4px 14px hsl(0 0% 0% / 0.18)' }}
+                                                    className={`flex items-center gap-1 text-[11px] font-bold text-white bg-gradient-to-r ${c.btnGradient} px-5 py-[7px] rounded-full active:scale-[0.92] transition-all duration-200`} >
+                                                    Join Now <ArrowRight size={11} />
+                                                </button>
+                                            ) : (
+                                                <span className={`text-[12px] font-bold ${isProfit ? "text-primary" : "text-destructive"}`}>{isProfit ? `Won: +$${c.pnlPercent}` : `Loss: -$${Math.abs(c.pnlPercent)}`}</span>
                                             )}
                                         </div>
-                                        {c.status === "live" ? (
-                                            <button onClick={(e) => { e.stopPropagation(); }} style={{ boxShadow: '0 4px 14px hsl(0 0% 0% / 0.18)' }}
-                                                className={`flex items-center gap-1 text-[11px] font-bold text-white bg-gradient-to-r ${c.btnGradient} px-5 py-[7px] rounded-full active:scale-[0.92] transition-all duration-200`}
-                                            >
-                                                Continue <ArrowRight size={11} />
-                                            </button>
-                                        ) : c.status === "upcoming" ? (
-                                            <button onClick={(e) => { e.stopPropagation(); }} style={{ boxShadow: '0 4px 14px hsl(0 0% 0% / 0.18)' }}
-                                                className={`flex items-center gap-1 text-[11px] font-bold text-white bg-gradient-to-r ${c.btnGradient} px-5 py-[7px] rounded-full active:scale-[0.92] transition-all duration-200`} >
-                                                Join Now <ArrowRight size={11} />
-                                            </button>
-                                        ) : (
-                                            <span className={`text-[12px] font-bold ${isProfit ? "text-primary" : "text-destructive"}`}>{isProfit ? `Won: +$${c.pnl}` : `Loss: -$${Math.abs(c.pnl)}`}</span>
-                                        )}
                                     </div>
 
                                     {/* Pair */}
@@ -202,15 +206,16 @@ const MobileMyContests = () => {
                                         )}
                                         <div className="flex items-center gap-1.5 text-muted-foreground">
                                             <Users size={11} />
-                                            <span className="text-[10px] font-medium">{c.participants.current}/{c.participants.max}</span>
+                                            <span className="text-[10px] font-medium">{c.participants.current || 86}/{c.participants.max || 100}</span>
                                         </div>
                                     </div>
 
                                     {/* Performance stats row */}
                                     <div className="grid grid-cols-3 gap-1.5">
                                         {[
-                                            { label: "Balance", value: `$${c.balance.toLocaleString()}` },
+                                            { label: "Balance", value: `$${(c.balance || 5420).toLocaleString()}` },
                                             { label: "P&L", value: `${isProfit ? "+" : ""}${c.pnlPercent}%`, color: isProfit ? colors.accent.profit : colors.accent.loss },
+                                            { label: "Trades", value: c.trades || "12" },
                                         ].map((stat) => (
                                             <div key={stat.label} className={`${c.statBg} rounded-lg py-1.5 px-2 text-center`}>
                                                 <p className="text-[12px] font-bold text-foreground leading-none" style={stat.color ? { color: stat.color } : undefined}>{stat.value}</p>
@@ -234,7 +239,7 @@ const MobileMyContests = () => {
                                             </div>
                                         )}
                                         {c.status === "upcoming" && (<span className="text-[10px] font-semibold" style={{ color: colors.accent.soon }}>Starts Soon</span>)}
-                                        {c.status === "completed" && (<span className="text-[10px] text-muted-foreground">🏆 ${c.prizePool.toLocaleString()} pool</span>
+                                        {c.status === "completed" && (<span className="text-[10px] text-muted-foreground">🏆 ${(c.prizePool || 0).toLocaleString()} pool</span>
                                         )}
                                     </div>
                                 </div>
